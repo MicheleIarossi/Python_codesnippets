@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Usage of __getattr__ and __getattribute__ &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Type built-in function applied to classes and instances" href="feature74.html" />
+    <link rel="prev" title="Inheritance attribute lister class" href="feature72.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature74.html" title="Type built-in function applied to classes and instances"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature72.html" title="Inheritance attribute lister class"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Usage of <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> and <code class="docutils literal notranslate"><span class="pre">__getattribute__</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature73"></span><div class="section" id="usage-of-getattr-and-getattribute">
+<h1>Usage of <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> and <code class="docutils literal notranslate"><span class="pre">__getattribute__</span></code><a class="headerlink" href="#usage-of-getattr-and-getattribute" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature73">
+<h2><a class="reference internal" href="#module-codesnippets.feature73" title="codesnippets.feature73"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature73</span></code></a><a class="headerlink" href="#codesnippets-feature73" title="Permalink to this headline">¶</a></h2>
+<p>In the delegation pattern, <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> is used for forwarding
+undefined attribute fetches to encapsulated objects:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> is called when the requested attribute is not defined for the current instance</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__getattribute__</span></code> is always called on every attribute fetch, irrespective of the requested
+attribute being defined or not for the current instance</p></li>
+</ul>
+<p>Consider the following classes:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ClassA</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;a class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_a</span> <span class="o">=</span> <span class="n">val</span>
+
+<span class="k">class</span> <span class="nc">ClassB</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;another class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_b</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obj_a</span>  <span class="o">=</span> <span class="n">ClassA</span><span class="p">(</span><span class="n">val</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attrstr</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; ClassB.__getattr__(self,</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attrstr</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj_a</span><span class="p">,</span> <span class="n">attrstr</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attrstr</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; ClassB.__getattribute__(self,</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attrstr</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attrstr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Given an object of <code class="docutils literal notranslate"><span class="pre">ClassB</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_b</span> <span class="o">=</span> <span class="n">ClassB</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>the following attribute fetch of <code class="docutils literal notranslate"><span class="pre">data_b</span></code> is defined for <code class="docutils literal notranslate"><span class="pre">obj_b</span></code> and only
+<code class="docutils literal notranslate"><span class="pre">__getattribute__</span></code> is called:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_b</span><span class="o">.</span><span class="n">data_b</span>
+<span class="go">        -&gt; ClassB.__getattribute__(self,data_b)</span>
+<span class="go">8</span>
+</pre></div>
+</div>
+<p>But the following attribute fetch of <code class="docutils literal notranslate"><span class="pre">data_a</span></code> is undefined for <code class="docutils literal notranslate"><span class="pre">obj_b</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_b</span><span class="o">.</span><span class="n">data_a</span> <span class="c1"># instance obj_b has no attribute data_a!</span>
+<span class="go">        -&gt; ClassB.__getattribute__(self,data_a)</span>
+<span class="go">        -&gt; ClassB.__getattr__(self,data_a)</span>
+<span class="go">        -&gt; ClassB.__getattribute__(self,obj_a)</span>
+<span class="go">80</span>
+</pre></div>
+</div>
+<p>From the calls above notice that:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">__getattribute__</span></code> is called irrespective of <code class="docutils literal notranslate"><span class="pre">data_a</span></code> being defined or undefined for <code class="docutils literal notranslate"><span class="pre">obj_b</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> is called because <code class="docutils literal notranslate"><span class="pre">data_a</span></code> is undefined for <code class="docutils literal notranslate"><span class="pre">obj_b</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__getattribute__</span></code> is called again because of the attribute fetch <code class="docutils literal notranslate"><span class="pre">self.obj_a</span></code>
+inside <code class="docutils literal notranslate"><span class="pre">ClassB.__getattr__</span></code></p></li>
+</ul>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Usage of <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> and <code class="docutils literal notranslate"><span class="pre">__getattribute__</span></code></a><ul>
+<li><a class="reference internal" href="#codesnippets-feature73"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature73</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature72.html"
+                        title="previous chapter">Inheritance attribute lister class</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature74.html"
+                        title="next chapter">Type built-in function applied to classes and instances</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature73.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature74.html" title="Type built-in function applied to classes and instances"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature72.html" title="Inheritance attribute lister class"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Usage of <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> and <code class="docutils literal notranslate"><span class="pre">__getattribute__</span></code></a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

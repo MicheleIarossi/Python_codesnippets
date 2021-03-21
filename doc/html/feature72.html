@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inheritance attribute lister class &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage of __getattr__ and __getattribute__" href="feature73.html" />
+    <link rel="prev" title="Unbound and bound methods" href="feature71.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature73.html" title="Usage of __getattr__ and __getattribute__"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature71.html" title="Unbound and bound methods"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Inheritance attribute lister class</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature72"></span><div class="section" id="inheritance-attribute-lister-class">
+<h1>Inheritance attribute lister class<a class="headerlink" href="#inheritance-attribute-lister-class" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature72">
+<h2><a class="reference internal" href="#module-codesnippets.feature72" title="codesnippets.feature72"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature72</span></code></a><a class="headerlink" href="#codesnippets-feature72" title="Permalink to this headline">¶</a></h2>
+<p>The class below uses the <code class="docutils literal notranslate"><span class="pre">dir()</span></code> function for getting all attributes and names,
+and the <code class="docutils literal notranslate"><span class="pre">getattr()</span></code> function for retrieving their values:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ClassInspector</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;a self inspecting class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__attr_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="mi">4</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;provides list of attributes&quot;&quot;&quot;</span>
+        <span class="n">result</span>  <span class="o">=</span> <span class="s1">&#39;Interns</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s%%</span><span class="s1">s</span><span class="se">\n</span><span class="s1">Others</span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">120</span><span class="p">,</span> <span class="n">indent</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">120</span><span class="p">)</span>
+        <span class="n">unders</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                              <span class="c1"># Instance dir()</span>
+            <span class="k">if</span> <span class="n">attr</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;__&#39;</span> <span class="ow">and</span> <span class="n">attr</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="s1">&#39;__&#39;</span><span class="p">:</span>      <span class="c1"># Skip internals</span>
+                <span class="n">unders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">display</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">))[:</span><span class="mi">120</span><span class="o">-</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">attr</span><span class="p">))]</span>
+                <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">%s%s</span><span class="s1">=</span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">indent</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">display</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span> <span class="o">%</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unders</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;overloading repr operator&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;Instance of </span><span class="si">%s</span><span class="s1">, address 0x</span><span class="si">%x</span><span class="s1">:</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                       <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>         <span class="c1"># My class&#39;s name</span>
+                       <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>                        <span class="c1"># My address</span>
+                       <span class="bp">self</span><span class="o">.</span><span class="n">__attr_list</span><span class="p">())</span>              <span class="c1"># name=value list</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;overloading repr operator&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;ClassInspector()&#39;</span>
+</pre></div>
+</div>
+<p>The following are some test classes:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Parent</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;a parent class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_parent</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="k">def</span> <span class="nf">parent_method_1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;a method function&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">parent_method_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;a method function&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">ClassInspector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;a child class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Parent</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_child1</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_child2</span> <span class="o">=</span> <span class="mi">201</span>
+    <span class="k">def</span> <span class="nf">child_method_1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;a method function&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">child_method_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;a method function&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">Child</span></code> object is created as follows:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_child</span> <span class="o">=</span> <span class="n">Child</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>By invoking the <code class="docutils literal notranslate"><span class="pre">print</span></code> function on it, the <code class="docutils literal notranslate"><span class="pre">__str__</span></code> method of the <code class="docutils literal notranslate"><span class="pre">ClassInspector</span></code> is called:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">a_child</span><span class="p">)</span>
+<span class="go">&lt;Instance of Child, address 0x7f9b4839d3a0:</span>
+<span class="go">Interns--------------------------------------------------------------------------------------------------------</span>
+<span class="go">    __class__, __delattr__, __dict__, __dir__, __doc__,</span>
+<span class="go">    __eq__, __format__, __ge__, __getattribute__, __gt__, __hash__,</span>
+<span class="go">    __init__, __init_subclass__, __le__, __lt__, __module__, __ne__,</span>
+<span class="go">    __new__, __reduce__, __reduce_ex__, __repr__, __setattr__, __sizeof__,</span>
+<span class="go">    __str__, __subclasshook__, __weakref__</span>
+<span class="go">Others---------------------------------------------------------------------------------------------------------</span>
+<span class="go">    _ClassInspector__attr_list=&lt;bound method feature72.&lt;locals&gt;.ClassInspector.__attr_list of ClassInspector()&gt;</span>
+<span class="go">    child_method_1=&lt;bound method feature72.&lt;locals&gt;.Child.child_method_1 of ClassInspector()&gt;</span>
+<span class="go">    child_method_2=&lt;bound method feature72.&lt;locals&gt;.Child.child_method_2 of ClassInspector()&gt;</span>
+<span class="go">    data_child1=200</span>
+<span class="go">    data_child2=201</span>
+<span class="go">    data_parent=100</span>
+<span class="go">    parent_method_1=&lt;bound method feature72.&lt;locals&gt;.Parent.parent_method_1 of ClassInspector()&gt;</span>
+<span class="go">    parent_method_2=&lt;bound method feature72.&lt;locals&gt;.Parent.parent_method_2 of ClassInspector()&gt;</span>
+<span class="go">&gt;</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="feature1.html"><span class="doc">dir() on an integer variable</span></a></p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Inheritance attribute lister class</a><ul>
+<li><a class="reference internal" href="#codesnippets-feature72"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature72</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature71.html"
+                        title="previous chapter">Unbound and bound methods</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature73.html"
+                        title="next chapter">Usage of <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> and <code class="docutils literal notranslate"><span class="pre">__getattribute__</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature72.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature73.html" title="Usage of __getattr__ and __getattribute__"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature71.html" title="Unbound and bound methods"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Inheritance attribute lister class</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>
