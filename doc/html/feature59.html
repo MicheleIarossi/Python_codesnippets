@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Built-in class attributes for introspection &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Adding features via inheritance" href="feature60.html" />
+    <link rel="prev" title="First classes" href="feature58.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature60.html" title="Adding features via inheritance"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature58.html" title="First classes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Built-in <code class="docutils literal notranslate"><span class="pre">class</span></code> attributes for introspection</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature59"></span><div class="section" id="built-in-class-attributes-for-introspection">
+<h1>Built-in <code class="docutils literal notranslate"><span class="pre">class</span></code> attributes for introspection<a class="headerlink" href="#built-in-class-attributes-for-introspection" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature59">
+<h2><a class="reference internal" href="#module-codesnippets.feature59" title="codesnippets.feature59"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature59</span></code></a><a class="headerlink" href="#codesnippets-feature59" title="Permalink to this headline">¶</a></h2>
+<p>Instances of classes have built-in attributes that are available for introspection.</p>
+<p>Given the <code class="docutils literal notranslate"><span class="pre">Mammal</span></code> class in <a class="reference internal" href="feature58.html"><span class="doc">First classes</span></a>, a <code class="docutils literal notranslate"><span class="pre">tiger</span></code> is instanced as:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span> <span class="o">=</span> <span class="n">Mammal</span><span class="p">(</span><span class="s1">&#39;tiger&#39;</span><span class="p">,</span><span class="mi">143</span><span class="p">,</span><span class="mi">132</span><span class="p">,</span><span class="mi">110</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span>
+<span class="go">Mammal(name=&#39;Tiger&#39;,rank=143,weight=132,height=110)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span><span class="o">.</span><span class="n">elevate_rank</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span>
+<span class="go">Mammal(name=&#39;Tiger&#39;,rank=149,weight=132,height=110)</span>
+</pre></div>
+</div>
+<p>The following are some of the built-in attributes available for introspection:</p>
+<ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">__class__</span></code> attribute points to the class object</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span><span class="o">.</span><span class="vm">__class__</span>
+<span class="go">&lt;class &#39;codesnippets.feature59.feature59.&lt;locals&gt;.Mammal&#39;&gt;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">__class__.__name__</span></code> attribute is a string of the name of the class</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+<span class="go">Mammal</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">__dict__</span></code> attribute is a dictionary of the instance attributes</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">tiger</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;name&#39;, &#39;species&#39;, &#39;rank&#39;, &#39;weight&#39;, &#39;height&#39;]</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="feature58.html"><span class="doc">First classes</span></a>, <a class="reference internal" href="feature62.html"><span class="doc">More on class introspection tools: __class__,
+__bases__, __dict__</span></a></p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Built-in <code class="docutils literal notranslate"><span class="pre">class</span></code> attributes for introspection</a><ul>
+<li><a class="reference internal" href="#codesnippets-feature59"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature59</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature58.html"
+                        title="previous chapter">First classes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature60.html"
+                        title="next chapter">Adding features via inheritance</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature59.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature60.html" title="Adding features via inheritance"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature58.html" title="First classes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Built-in <code class="docutils literal notranslate"><span class="pre">class</span></code> attributes for introspection</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The LEGB rule (nested scopes) &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="How to avoid nested scopes" href="feature31.html" />
+    <link rel="prev" title="Accessing global variables" href="feature29.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature31.html" title="How to avoid nested scopes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature29.html" title="Accessing global variables"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">The LEGB rule (nested scopes)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature30"></span><div class="section" id="the-legb-rule-nested-scopes">
+<h1>The LEGB rule (nested scopes)<a class="headerlink" href="#the-legb-rule-nested-scopes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature30">
+<h2><a class="reference internal" href="#module-codesnippets.feature30" title="codesnippets.feature30"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature30</span></code></a><a class="headerlink" href="#codesnippets-feature30" title="Permalink to this headline">¶</a></h2>
+<p>Remember that LEGB = Local, Enclosing, Global(Module), Built-in.</p>
+<p>Given the following code:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">global_counter</span> <span class="o">=</span> <span class="mi">100</span>                <span class="c1"># global variable at module level</span>
+
+<span class="k">def</span> <span class="nf">func1</span><span class="p">():</span>
+    <span class="n">global_counter</span> <span class="o">=</span> <span class="mi">200</span>            <span class="c1"># shadows the global variable</span>
+    <span class="k">def</span> <span class="nf">func2</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">global_counter</span><span class="p">)</span>       <span class="c1"># gets global_counter from the enclosing scope</span>
+    <span class="n">func2</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the function <code class="docutils literal notranslate"><span class="pre">func1</span></code> the local <code class="docutils literal notranslate"><span class="pre">global_counter</span></code> variable shadows the global
+<code class="docutils literal notranslate"><span class="pre">global_counter</span></code> one, and the function <code class="docutils literal notranslate"><span class="pre">func2</span></code> gets the global counter
+from the enclosing scope.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func1</span><span class="p">()</span>
+<span class="go">200</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The LEGB rule (nested scopes)</a><ul>
+<li><a class="reference internal" href="#codesnippets-feature30"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature30</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature29.html"
+                        title="previous chapter">Accessing global variables</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature31.html"
+                        title="next chapter">How to avoid nested scopes</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature30.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature31.html" title="How to avoid nested scopes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature29.html" title="Accessing global variables"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">The LEGB rule (nested scopes)</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

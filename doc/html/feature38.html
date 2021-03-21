@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arguments matched by default values, by position and by name &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Arbitrary arguments" href="feature39.html" />
+    <link rel="prev" title="Simulating output parameters in a function call" href="feature37.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature39.html" title="Arbitrary arguments"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature37.html" title="Simulating output parameters in a function call"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Arguments matched by default values, by position and by name</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature38"></span><div class="section" id="arguments-matched-by-default-values-by-position-and-by-name">
+<h1>Arguments matched by default values, by position and by name<a class="headerlink" href="#arguments-matched-by-default-values-by-position-and-by-name" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature38">
+<h2><a class="reference internal" href="#module-codesnippets.feature38" title="codesnippets.feature38"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature38</span></code></a><a class="headerlink" href="#codesnippets-feature38" title="Permalink to this headline">¶</a></h2>
+<p>The following function assigns default values to its parameters:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">a_value</span><span class="o">=</span><span class="mi">44</span><span class="p">,</span><span class="n">b_value</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span><span class="n">c_value</span><span class="o">=</span><span class="mi">66</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">a_value</span><span class="p">,</span><span class="n">b_value</span><span class="p">,</span><span class="n">c_value</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If no arguments are provided, the default values are used:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">()</span>  <span class="c1"># uses default values</span>
+<span class="go">(44, 55, 66)</span>
+</pre></div>
+</div>
+<p>If no special matching is used, position is the normal matching mode, where
+arguments are matched from left to right:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="mi">222</span><span class="p">,</span><span class="mi">333</span><span class="p">)</span>  <span class="c1"># match by position</span>
+<span class="go">(111, 222, 333)</span>
+</pre></div>
+</div>
+<p>If keyword arguments are used, the matching is done by name in any order:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="n">c_value</span><span class="o">=</span><span class="mi">333</span><span class="p">,</span><span class="n">b_value</span><span class="o">=</span><span class="mi">222</span><span class="p">,</span><span class="n">a_value</span><span class="o">=</span><span class="mi">111</span><span class="p">)</span>  <span class="c1"># match by name</span>
+<span class="go">(111, 222, 333)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Positional arguments must precede any keyword arguments.</p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Arguments matched by default values, by position and by name</a><ul>
+<li><a class="reference internal" href="#codesnippets-feature38"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature38</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature37.html"
+                        title="previous chapter">Simulating output parameters in a function call</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature39.html"
+                        title="next chapter">Arbitrary arguments</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature38.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature39.html" title="Arbitrary arguments"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature37.html" title="Simulating output parameters in a function call"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Arguments matched by default values, by position and by name</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

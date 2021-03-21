@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Module import &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Side effects when importing modules" href="feature51.html" />
+    <link rel="prev" title="Module import information" href="feature49.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature51.html" title="Side effects when importing modules"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature49.html" title="Module import information"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module import</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature50"></span><div class="section" id="module-import">
+<h1>Module import<a class="headerlink" href="#module-import" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature50">
+<h2><a class="reference internal" href="#module-codesnippets.feature50" title="codesnippets.feature50"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature50</span></code></a><a class="headerlink" href="#codesnippets-feature50" title="Permalink to this headline">¶</a></h2>
+<p>When an <code class="docutils literal notranslate"><span class="pre">import</span></code> statement is run, the module is compiled and the module code is run:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">module1</span>
+</pre></div>
+</div>
+<p>A module object is created:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span>
+<span class="go">&lt;module &#39;codesnippets.module1&#39;</span>
+<span class="go">from &#39;/Users/miia/Programming/LearningPython/Python_codesnippets/codesnippets/module1.py&#39;&gt;</span>
+</pre></div>
+</div>
+<p>Its global variables become its attributes:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="n">A_VARIABLE</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+<p>The attributes can be changed:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="n">A_VARIABLE</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="n">A_VARIABLE</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>But when an <code class="docutils literal notranslate"><span class="pre">import</span></code> statement is rerun, the module is NOT imported again:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">module1</span>
+</pre></div>
+</div>
+<p>The attribute <code class="docutils literal notranslate"><span class="pre">A_VARIABLE</span></code> is unchanged, the module code has not been rerun!</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="n">A_VARIABLE</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>Module namespaces are stored internally as dictionary objects, e.g. <code class="docutils literal notranslate"><span class="pre">module1.__dict__</span></code> :</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">module1</span><span class="o">.</span><span class="vm">__dict__</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">))</span>
+<span class="go">[&#39;a_function&#39;, &#39;A_VARIABLE&#39;, &#39;A_LIST&#39;]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">module1</span><span class="p">)</span>
+<span class="go">[&#39;__builtins__&#39;, &#39;__cached__&#39;, &#39;__doc__&#39;, &#39;__file__&#39;, &#39;__loader__&#39;, &#39;__name__&#39;,</span>
+<span class="go">&#39;__package__&#39;, &#39;__spec__&#39;, &#39;a_function&#39;, &#39;A_VARIABLE&#39;, &#39;A_LIST&#39;]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you wish to rerun this example, you need to restart the Python shell.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="feature1.html"><span class="doc">dir() on an integer variable</span></a></p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Module import</a><ul>
+<li><a class="reference internal" href="#codesnippets-feature50"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature50</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature49.html"
+                        title="previous chapter">Module import information</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature51.html"
+                        title="next chapter">Side effects when importing modules</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature50.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature51.html" title="Side effects when importing modules"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature49.html" title="Module import information"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module import</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

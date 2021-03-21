@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>examples.py &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Add your own codesnippet" href="expand.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="expand.html" title="Add your own codesnippet"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">examples.py</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-examples"></span><div class="section" id="examples-py">
+<h1>examples.py<a class="headerlink" href="#examples-py" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>When <code class="docutils literal notranslate"><span class="pre">examples.py</span></code> runs, a menu like the one shown below is printed on the screen, allowing
+the user to choose a code snippet to run:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">List</span> <span class="n">of</span> <span class="n">code</span> <span class="n">snippets</span> <span class="p">(</span><span class="n">features</span><span class="p">)</span> <span class="n">to</span> <span class="n">run</span><span class="p">:</span>
+
+  <span class="mi">1</span><span class="p">:</span> <span class="nb">dir</span><span class="p">()</span> <span class="n">on</span> <span class="n">an</span> <span class="n">integer</span> <span class="n">variable</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="n">Slicing</span> <span class="n">strings</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="n">Transforming</span> <span class="n">a</span> <span class="n">string</span> <span class="n">into</span> <span class="n">a</span> <span class="nb">list</span>
+  <span class="mi">4</span><span class="p">:</span> <span class="n">Formatting</span> <span class="n">string</span> <span class="n">expressions</span> <span class="k">with</span> <span class="n">the</span> <span class="n">basic</span> <span class="n">syntax</span>
+  <span class="mi">5</span><span class="p">:</span> <span class="n">Formatting</span> <span class="n">string</span> <span class="n">expressions</span> <span class="k">with</span> <span class="o">.</span><span class="n">format</span><span class="p">()</span> <span class="n">syntax</span>
+  <span class="mi">6</span><span class="p">:</span> <span class="n">Formatting</span> <span class="n">string</span> <span class="n">expressions</span> <span class="k">with</span> <span class="n">f</span><span class="o">-</span><span class="n">strings</span> <span class="n">syntax</span>
+  <span class="mi">7</span><span class="p">:</span> <span class="n">Changing</span> <span class="n">lists</span> <span class="ow">in</span> <span class="n">place</span>
+  <span class="mi">8</span><span class="p">:</span> <span class="n">List</span> <span class="n">comprehension</span>
+  <span class="mi">9</span><span class="p">:</span> <span class="nb">map</span><span class="p">()</span> <span class="n">on</span> <span class="n">the</span> <span class="n">elements</span> <span class="n">of</span> <span class="n">a</span> <span class="nb">list</span>
+
+<span class="n">Enter</span> <span class="n">a</span> <span class="n">number</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span> <span class="k">for</span> <span class="n">the</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">features</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span> <span class="k">for</span> <span class="n">updating</span> <span class="n">the</span> <span class="nb">list</span><span class="p">,</span>
+<span class="s1">&#39;t&#39;</span> <span class="k">for</span> <span class="n">a</span> <span class="n">complete</span> <span class="n">test</span> <span class="n">run</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span> <span class="ow">or</span> <span class="s1">&#39;q&#39;</span> <span class="k">for</span> <span class="n">exiting</span><span class="o">...</span>
+<span class="o">-&gt;</span> 
+</pre></div>
+</div>
+<p>After running an example, you can enter <code class="docutils literal notranslate"><span class="pre">l</span></code> for having the list of features shown again. Option <code class="docutils literal notranslate"><span class="pre">u</span></code> is
+useful when a new feature is being developed and added to the <code class="docutils literal notranslate"><span class="pre">codesnippets</span></code> package as explained in
+<a class="reference internal" href="expand.html"><span class="doc">Add your own codesnippet</span></a>. Enter <code class="docutils literal notranslate"><span class="pre">t</span></code> if you want a complete run of all the features.</p>
+</div>
+</div>
+<p>You might wish to have a look at the following module functions:</p>
+<dl class="py function">
+<dt id="examples.main">
+<code class="sig-prename descclassname">examples.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#examples.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the Python code snippets menu script.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="examples.menu">
+<code class="sig-prename descclassname">examples.</code><code class="sig-name descname">menu</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">codesnippets</span></em><span class="sig-paren">)</span><a class="headerlink" href="#examples.menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows the user the menu of available code snippets and allows her or him to choose
+which code snippet to run.
+The input parameter <em>codesnippets</em> is a list of one-line docstrings
+describing each feature item selectable from the menu.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="examples.show_list">
+<code class="sig-prename descclassname">examples.</code><code class="sig-name descname">show_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">codesnippets</span></em><span class="sig-paren">)</span><a class="headerlink" href="#examples.show_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the list of the available code snippets on the screen.
+The input parameter <em>codesnippets</em> is a list of one-line docstrings
+describing each feature item selectable from the menu.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="examples.run_feature">
+<code class="sig-prename descclassname">examples.</code><code class="sig-name descname">run_feature</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">choice</span></em><span class="sig-paren">)</span><a class="headerlink" href="#examples.run_feature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the chosen code snippet given by the input parameter <em>choice</em> by calling
+the corresponding feature function after having imported the associated feature module
+from the <code class="docutils literal notranslate"><span class="pre">codesnippets</span></code> package.
+If the <em>choice</em> is out of range, prints an error message on the screen.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="examples.load_snippets">
+<code class="sig-prename descclassname">examples.</code><code class="sig-name descname">load_snippets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#examples.load_snippets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of the <em>codesnippets</em> available by collecting the docstrings
+from the feature functions inside the feature modules belonging
+to the the <code class="docutils literal notranslate"><span class="pre">codesnippets</span></code> package.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="examples.update_list">
+<code class="sig-prename descclassname">examples.</code><code class="sig-name descname">update_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#examples.update_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the new list of <em>codesnippets</em> available and updates the database.</p>
+</dd></dl>
+
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">examples.py</a><ul>
+<li><a class="reference internal" href="#getting-started">Getting started</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="install.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="expand.html"
+                        title="next chapter">Add your own codesnippet</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/examples.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="expand.html" title="Add your own codesnippet"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">examples.py</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

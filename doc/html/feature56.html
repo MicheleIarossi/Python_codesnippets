@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Module attribute access &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Module imports with importlib" href="feature57.html" />
+    <link rel="prev" title="Relative import from a module package" href="feature55.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature57.html" title="Module imports with importlib"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature55.html" title="Relative import from a module package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module attribute access</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature56"></span><div class="section" id="module-attribute-access">
+<h1>Module attribute access<a class="headerlink" href="#module-attribute-access" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature56">
+<h2><a class="reference internal" href="#module-codesnippets.feature56" title="codesnippets.feature56"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature56</span></code></a><a class="headerlink" href="#codesnippets-feature56" title="Permalink to this headline">¶</a></h2>
+<p>There are several ways to access module attibutes.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">module1</span>
+</pre></div>
+</div>
+<p>Via direct module attribute:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="n">A_LIST</span>
+<span class="go">[4, 5, 6]</span>
+</pre></div>
+</div>
+<p>Via module dictionary attribute:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;A_LIST&#39;</span><span class="p">]</span>
+<span class="go">[4, 5, 6]</span>
+</pre></div>
+</div>
+<p>Via <code class="docutils literal notranslate"><span class="pre">sys.modules</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;module1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">A_LIST</span>
+<span class="go">[4, 5, 6]</span>
+</pre></div>
+</div>
+<p>Via the <code class="docutils literal notranslate"><span class="pre">getattr</span></code> built-in function:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">getattr</span><span class="p">(</span><span class="n">module1</span><span class="p">,</span> <span class="s1">&#39;A_LIST&#39;</span><span class="p">)</span>
+<span class="go">[4, 5, 6]</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="feature49.html"><span class="doc">Module import information</span></a></p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Module attribute access</a><ul>
+<li><a class="reference internal" href="#codesnippets-feature56"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature56</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature55.html"
+                        title="previous chapter">Relative import from a module package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature57.html"
+                        title="next chapter">Module imports with <code class="docutils literal notranslate"><span class="pre">importlib</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature56.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature57.html" title="Module imports with importlib"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature55.html" title="Relative import from a module package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module attribute access</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

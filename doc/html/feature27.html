@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>List comprehension on a file &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Function definitions" href="feature28.html" />
+    <link rel="prev" title="The iteration protocol" href="feature26.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature28.html" title="Function definitions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature26.html" title="The iteration protocol"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">List comprehension on a file</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature27"></span><div class="section" id="list-comprehension-on-a-file">
+<h1>List comprehension on a file<a class="headerlink" href="#list-comprehension-on-a-file" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature27">
+<h2><a class="reference internal" href="#module-codesnippets.feature27" title="codesnippets.feature27"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature27</span></code></a><a class="headerlink" href="#codesnippets-feature27" title="Permalink to this headline">¶</a></h2>
+<p>Opens, reads the file line by line and
+closes it too (garbage collected because the stream is not assigned):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">a_line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a_line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;examples.py&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>First lines read from the file <code class="docutils literal notranslate"><span class="pre">examples.py</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+<span class="go">##    Python codesnippets runner</span>
+<span class="go">##    Copyright (C) 2021  Michele Iarossi</span>
+<span class="go">##</span>
+<span class="go">##    This program is free software: you can redistribute it and/or modify</span>
+<span class="go">##    it under the terms of the GNU General Public License as published by</span>
+<span class="go">##    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="go">##    (at your option) any later version.</span>
+<span class="go">##</span>
+<span class="go">##    This program is distributed in the hope that it will be useful,</span>
+<span class="go">##    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">List comprehension on a file</a><ul>
+<li><a class="reference internal" href="#codesnippets-feature27"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature27</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature26.html"
+                        title="previous chapter">The iteration protocol</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature28.html"
+                        title="next chapter">Function definitions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature27.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature28.html" title="Function definitions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature26.html" title="The iteration protocol"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">List comprehension on a file</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

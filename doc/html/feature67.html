@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Operator overloading: specific membership with __contains__ &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Operator overloading: __call__ , __len__ , __bool__" href="feature68.html" />
+    <link rel="prev" title="Operator overloading: iteration protocol via function generator" href="feature66.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature68.html" title="Operator overloading: __call__ , __len__ , __bool__"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature66.html" title="Operator overloading: iteration protocol via function generator"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Operator overloading: specific membership with <code class="docutils literal notranslate"><span class="pre">__contains__</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature67"></span><div class="section" id="operator-overloading-specific-membership-with-contains">
+<h1>Operator overloading: specific membership with <code class="docutils literal notranslate"><span class="pre">__contains__</span></code><a class="headerlink" href="#operator-overloading-specific-membership-with-contains" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature67">
+<h2><a class="reference internal" href="#module-codesnippets.feature67" title="codesnippets.feature67"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature67</span></code></a><a class="headerlink" href="#codesnippets-feature67" title="Permalink to this headline">¶</a></h2>
+<p>Specific class membership requires the class to overload the <code class="docutils literal notranslate"><span class="pre">__contains__</span></code>  operator.
+In the following, the <code class="docutils literal notranslate"><span class="pre">MyContainerClass</span></code> from <a class="reference internal" href="feature66.html"><span class="doc">Operator overloading: iteration
+protocol via function generator</span></a> is extended  to support specific membership testing:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyContainer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;my container class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__init__&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:]</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__repr__&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;MyContainer(data=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__add__&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_val</span><span class="o">+</span><span class="n">y_val</span> <span class="k">for</span> <span class="p">(</span><span class="n">x_val</span><span class="p">,</span><span class="n">y_val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span><span class="n">other</span><span class="o">.</span><span class="n">_data</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">MyContainer</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__sub__&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_val</span><span class="o">-</span><span class="n">y_val</span> <span class="k">for</span> <span class="p">(</span><span class="n">x_val</span><span class="p">,</span><span class="n">y_val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span><span class="n">other</span><span class="o">.</span><span class="n">_data</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">MyContainer</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__contains__&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__iter__&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">v_val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">v_val</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__getitem__&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__setitem__&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> instances are created as usual:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container1</span> <span class="o">=</span> <span class="n">MyContainer</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="go">        -&gt; MyContainer.__init__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">container1</span>
+<span class="go">        -&gt; MyContainer.__repr__</span>
+<span class="go">MyContainer(data=[0, 1, 2, 3, 4, 5])</span>
+</pre></div>
+</div>
+<p>When membership of an element is tested, the <code class="docutils literal notranslate"><span class="pre">__contains__</span></code> operator of <code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> is called:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="mi">9</span> <span class="ow">in</span> <span class="n">container1</span>
+<span class="go">        -&gt; MyContainer.__contains__</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">3</span> <span class="ow">in</span> <span class="n">container1</span>
+<span class="go">        -&gt; MyContainer.__contains__</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Operator overloading: specific membership with <code class="docutils literal notranslate"><span class="pre">__contains__</span></code></a><ul>
+<li><a class="reference internal" href="#codesnippets-feature67"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature67</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature66.html"
+                        title="previous chapter">Operator overloading: iteration protocol via function generator</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature68.html"
+                        title="next chapter">Operator overloading: <code class="docutils literal notranslate"><span class="pre">__call__</span></code> , <code class="docutils literal notranslate"><span class="pre">__len__</span></code> , <code class="docutils literal notranslate"><span class="pre">__bool__</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature67.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature68.html" title="Operator overloading: __call__ , __len__ , __bool__"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature66.html" title="Operator overloading: iteration protocol via function generator"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Operator overloading: specific membership with <code class="docutils literal notranslate"><span class="pre">__contains__</span></code></a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

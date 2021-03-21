@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>More on class introspection tools: __class__ , __bases__ , __dict__ &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Class interface techniques" href="feature63.html" />
+    <link rel="prev" title="Class and per-instance attributes" href="feature61.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature63.html" title="Class interface techniques"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature61.html" title="Class and per-instance attributes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">More on class introspection tools: <code class="docutils literal notranslate"><span class="pre">__class__</span></code> , <code class="docutils literal notranslate"><span class="pre">__bases__</span></code> , <code class="docutils literal notranslate"><span class="pre">__dict__</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature62"></span><div class="section" id="more-on-class-introspection-tools-class-bases-dict">
+<h1>More on class introspection tools: <code class="docutils literal notranslate"><span class="pre">__class__</span></code> , <code class="docutils literal notranslate"><span class="pre">__bases__</span></code> , <code class="docutils literal notranslate"><span class="pre">__dict__</span></code><a class="headerlink" href="#more-on-class-introspection-tools-class-bases-dict" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature62">
+<h2><a class="reference internal" href="#module-codesnippets.feature62" title="codesnippets.feature62"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature62</span></code></a><a class="headerlink" href="#codesnippets-feature62" title="Permalink to this headline">¶</a></h2>
+<p>These special attributes are useful as introspection tools:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">__class__</span></code> is a reference to the class object,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__bases__</span></code> is a list of references to the base class objects,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__dict__</span></code> is a dictionary of the object attributes.</p></li>
+</ul>
+<p>Their usage is shown by means of the following classes:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Aircraft</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;a base class&quot;&quot;&quot;</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">Aircraft</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;overloads repr operator&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;Aircraft(name=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Airplane</span><span class="p">(</span><span class="n">Aircraft</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;a derived class&quot;&quot;&quot;</span>
+    <span class="n">max_speed</span> <span class="o">=</span> <span class="mi">900</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">passengers</span><span class="p">):</span>
+        <span class="n">Aircraft</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_passengers</span> <span class="o">=</span> <span class="n">passengers</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;overloads repr operator&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;Airplane(name=</span><span class="si">%r</span><span class="s1">,passengers=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_passengers</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These are now examples of instances:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">helicopter</span> <span class="o">=</span> <span class="n">Aircraft</span><span class="p">(</span><span class="s1">&#39;Helicopter&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">helicopter</span>
+<span class="go">Aircraft(name=&#39;Helicopter&#39;)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">airbus320</span> <span class="o">=</span> <span class="n">Airplane</span><span class="p">(</span><span class="s1">&#39;Airbus_320&#39;</span><span class="p">,</span><span class="mi">300</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">airbus320</span>
+<span class="go">Airplane(name=&#39;Airbus_320&#39;,passengers=300)</span>
+</pre></div>
+</div>
+<p>The attribute <code class="docutils literal notranslate"><span class="pre">__class__</span></code> provides a reference to the class object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">helicopter</span><span class="o">.</span><span class="vm">__class__</span>
+<span class="go">&lt;class &#39;codesnippets.feature62.feature62.&lt;locals&gt;.Aircraft&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">helicopter</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="c1"># String of the name of the class</span>
+<span class="go">Aircraft</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">airbus320</span><span class="o">.</span><span class="vm">__class__</span>
+<span class="go">&lt;class &#39;codesnippets.feature62.feature62.&lt;locals&gt;.Airplane&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">airbus320</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="c1"># String of the name of the class</span>
+<span class="go">Airplane</span>
+</pre></div>
+</div>
+<p>The attribute <code class="docutils literal notranslate"><span class="pre">__dict__</span></code> provides a dictionary of attributes.
+Notice the difference when applied to an instance and to a class:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">helicopter</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;_name&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">airbus320</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;_name&#39;, &#39;_passengers&#39;]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">Aircraft</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;__module__&#39;, &#39;__doc__&#39;, &#39;counter&#39;, &#39;__init__&#39;, &#39;__repr__&#39;, &#39;__dict__&#39;, &#39;__weakref__&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">Airplane</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;__module__&#39;, &#39;__doc__&#39;, &#39;max_speed&#39;, &#39;__init__&#39;, &#39;__repr__&#39;]</span>
+</pre></div>
+</div>
+<p>The attribute <code class="docutils literal notranslate"><span class="pre">__bases__</span></code> provides a list of the superclasses.
+It can be used only on class objects, not instances:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Aircraft</span><span class="o">.</span><span class="vm">__bases__</span>
+<span class="go">(&lt;class &#39;object&#39;&gt;,)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Airplane</span><span class="o">.</span><span class="vm">__bases__</span>
+<span class="go">(&lt;class &#39;codesnippets.feature62.feature62.&lt;locals&gt;.Aircraft&#39;&gt;,)</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="feature59.html"><span class="doc">Built-in class attributes for introspection</span></a></p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">More on class introspection tools: <code class="docutils literal notranslate"><span class="pre">__class__</span></code> , <code class="docutils literal notranslate"><span class="pre">__bases__</span></code> , <code class="docutils literal notranslate"><span class="pre">__dict__</span></code></a><ul>
+<li><a class="reference internal" href="#codesnippets-feature62"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature62</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature61.html"
+                        title="previous chapter">Class and per-instance attributes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature63.html"
+                        title="next chapter">Class interface techniques</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature62.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature63.html" title="Class interface techniques"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature61.html" title="Class and per-instance attributes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">More on class introspection tools: <code class="docutils literal notranslate"><span class="pre">__class__</span></code> , <code class="docutils literal notranslate"><span class="pre">__bases__</span></code> , <code class="docutils literal notranslate"><span class="pre">__dict__</span></code></a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

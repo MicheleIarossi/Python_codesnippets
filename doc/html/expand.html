@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add your own codesnippet &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="dir() on an integer variable" href="feature1.html" />
+    <link rel="prev" title="examples.py" href="examples.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature1.html" title="dir() on an integer variable"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="examples.py"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Add your own codesnippet</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="add-your-own-codesnippet">
+<h1>Add your own codesnippet<a class="headerlink" href="#add-your-own-codesnippet" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="add-a-new-feature-module">
+<h2>Add a new feature module<a class="headerlink" href="#add-a-new-feature-module" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">examples.py</span></code> script does nothing else than collecting the available feature modules
+inside the <code class="docutils literal notranslate"><span class="pre">codesnippets</span></code> package and storing the list in its <code class="docutils literal notranslate"><span class="pre">codesnippets</span></code> database.
+This happens either the very first time that the script is run when no database is available or
+every time that the option <code class="docutils literal notranslate"><span class="pre">u</span></code> is entered.</p>
+<p>You can add your own <em>codesnippet</em> by simply adding a new <code class="docutils literal notranslate"><span class="pre">featureN.py</span></code> module
+inside the package <code class="docutils literal notranslate"><span class="pre">codesnippets</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is a new number: for sake
+of simplicity you can just copy an existing module and rename it with a new number.</p>
+<p>Inside the module, you need to define a <code class="docutils literal notranslate"><span class="pre">featureN()</span></code> function and you need to provide also
+a <code class="docutils literal notranslate"><span class="pre">docstring</span></code> because it is this docstring that is parsed by <code class="docutils literal notranslate"><span class="pre">examples.py</span></code> and added
+to the list with the number <code class="docutils literal notranslate"><span class="pre">N</span></code> provided.</p>
+<p>As an example, consider the module <code class="docutils literal notranslate"><span class="pre">feature1.py</span></code> which corresponds to the feature
+<a class="reference internal" href="feature1.html"><span class="doc">dir() on an integer variable</span></a>. The feature is defined by the function <code class="docutils literal notranslate"><span class="pre">feature1()</span></code>
+and its docstring describes its entry in the list of available features shown by
+<code class="docutils literal notranslate"><span class="pre">examples.py</span></code>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">feature1</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;dir() on an integer variable&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;``dir()`` on an integer variable&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;================================</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;:py:mod:`codesnippets.feature1`&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&gt;&gt;&gt; a_value = 5</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">a_value</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&gt;&gt;&gt; dir(a_value)&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">a_value</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&gt;&gt;&gt; a_value.bit_length()&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">a_value</span><span class="o">.</span><span class="n">bit_length</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="mi">80</span><span class="o">*</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="document-the-feature">
+<h2>Document the feature<a class="headerlink" href="#document-the-feature" title="Permalink to this headline">¶</a></h2>
+<p>For documenting your new feature, you need to install the
+<a class="reference external" href="https://www.sphinx-doc.org/en/master/index.html">Sphinx Python Documentation Generator</a>.</p>
+<p>The basic idea is to have your feature document itself by
+printing example code along with explanations when run. Copy and paste this output
+as the docstring of your module. The printed text should be formatted according to
+<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html">reStructuredText</a>,
+the default plaintext markup language used by Sphinx.</p>
+<p>As an example, consider again <code class="docutils literal notranslate"><span class="pre">feature1.py</span></code> above and notice how the module docstring
+is actually the output text generated by the feature function itself:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">``dir()`` on an integer variable</span>
+<span class="sd">================================</span>
+
+<span class="sd">:py:mod:`codesnippets.feature1`</span>
+<span class="sd">-------------------------------</span>
+
+<span class="sd">&gt;&gt;&gt; a_value = 5</span>
+
+<span class="sd">&gt;&gt;&gt; dir(a_value)</span>
+<span class="sd">[&#39;__abs__&#39;, &#39;__add__&#39;, &#39;__and__&#39;, &#39;__bool__&#39;, &#39;__ceil__&#39;, &#39;__class__&#39;, &#39;__delattr__&#39;, &#39;__dir__&#39;,</span>
+<span class="sd">&#39;__divmod__&#39;, &#39;__doc__&#39;, &#39;__eq__&#39;, &#39;__float__&#39;, &#39;__floor__&#39;, &#39;__floordiv__&#39;, &#39;__format__&#39;,</span>
+<span class="sd">&#39;__ge__&#39;, &#39;__getattribute__&#39;, &#39;__getnewargs__&#39;, &#39;__gt__&#39;, &#39;__hash__&#39;, &#39;__index__&#39;, &#39;__init__&#39;,</span>
+<span class="sd">&#39;__init_subclass__&#39;, &#39;__int__&#39;, &#39;__invert__&#39;, &#39;__le__&#39;, &#39;__lshift__&#39;, &#39;__lt__&#39;, &#39;__mod__&#39;,</span>
+<span class="sd">&#39;__mul__&#39;, &#39;__ne__&#39;, &#39;__neg__&#39;, &#39;__new__&#39;, &#39;__or__&#39;, &#39;__pos__&#39;, &#39;__pow__&#39;, &#39;__radd__&#39;,</span>
+<span class="sd">&#39;__rand__&#39;, &#39;__rdivmod__&#39;, &#39;__reduce__&#39;, &#39;__reduce_ex__&#39;, &#39;__repr__&#39;, &#39;__rfloordiv__&#39;,</span>
+<span class="sd">&#39;__rlshift__&#39;, &#39;__rmod__&#39;, &#39;__rmul__&#39;, &#39;__ror__&#39;, &#39;__round__&#39;, &#39;__rpow__&#39;, &#39;__rrshift__&#39;,</span>
+<span class="sd">&#39;__rshift__&#39;, &#39;__rsub__&#39;, &#39;__rtruediv__&#39;, &#39;__rxor__&#39;, &#39;__setattr__&#39;, &#39;__sizeof__&#39;, &#39;__str__&#39;,</span>
+<span class="sd">&#39;__sub__&#39;, &#39;__subclasshook__&#39;, &#39;__truediv__&#39;, &#39;__trunc__&#39;, &#39;__xor__&#39;, &#39;as_integer_ratio&#39;,</span>
+<span class="sd">&#39;bit_length&#39;, &#39;conjugate&#39;, &#39;denominator&#39;, &#39;from_bytes&#39;, &#39;imag&#39;, &#39;numerator&#39;, &#39;real&#39;, &#39;to_bytes&#39;]</span>
+
+<span class="sd">&gt;&gt;&gt; a_value.bit_length()</span>
+<span class="sd">3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-the-documentation">
+<h2>Build the documentation<a class="headerlink" href="#build-the-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Once the new feature module is properly documented, you need to add a new <code class="docutils literal notranslate"><span class="pre">featureN.rst</span></code>
+file inside the  <code class="docutils literal notranslate"><span class="pre">./sphinx/source</span></code> folder, which is best done by simply copying an existing one
+and renaming it. Inside this file adapt then the feature module reference, in order
+for the automodule plugin to parse the documentation from the module docstring:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">automodule</span><span class="p">::</span> <span class="n">codesnippets</span><span class="o">.</span><span class="n">featureN</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the new module number.</p>
+<p>As a last step, open the file <code class="docutils literal notranslate"><span class="pre">index.rst</span></code> located in the same
+<code class="docutils literal notranslate"><span class="pre">./sphinx/source</span></code> folder and add an entry for your new feature module, so that it appears
+in the table of the contents.</p>
+<p>Now build the documentation from a terminal window inside the folder <code class="docutils literal notranslate"><span class="pre">./sphinx</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">make</span> <span class="n">clean</span> <span class="o">&amp;&amp;</span> <span class="n">make</span> <span class="n">html</span>
+</pre></div>
+</div>
+<p>When you open the documentation in your browser <code class="docutils literal notranslate"><span class="pre">./doc/html/index.html</span></code>, your new module should
+appear as selectable in the list.</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Add your own codesnippet</a><ul>
+<li><a class="reference internal" href="#add-a-new-feature-module">Add a new feature module</a></li>
+<li><a class="reference internal" href="#document-the-feature">Document the feature</a></li>
+<li><a class="reference internal" href="#build-the-documentation">Build the documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="examples.html"
+                        title="previous chapter">examples.py</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature1.html"
+                        title="next chapter"><code class="docutils literal notranslate"><span class="pre">dir()</span></code> on an integer variable</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/expand.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature1.html" title="dir() on an integer variable"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="examples.py"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Add your own codesnippet</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>
