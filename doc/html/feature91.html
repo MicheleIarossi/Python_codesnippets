@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bytes, bytearray and string &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The property protocol" href="feature92.html" />
+    <link rel="prev" title="String and byte literals" href="feature90.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature92.html" title="The property protocol"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature90.html" title="String and byte literals"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Bytes, bytearray and string</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature91"></span><div class="section" id="bytes-bytearray-and-string">
+<h1>Bytes, bytearray and string<a class="headerlink" href="#bytes-bytearray-and-string" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature91">
+<h2><a class="reference internal" href="#module-codesnippets.feature91" title="codesnippets.feature91"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature91</span></code></a><a class="headerlink" href="#codesnippets-feature91" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">bytes</span></code> and <code class="docutils literal notranslate"><span class="pre">bytearray</span></code> are sequences of integers.
+<code class="docutils literal notranslate"><span class="pre">str</span></code> is a sequence of characters:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b_byte</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;pippolone&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b_byte</span><span class="p">)</span>
+<span class="go">[112, 105, 112, 112, 111, 108, 111, 110, 101]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b_bytearray</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">b_byte</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b_bytearray</span><span class="p">)</span>
+<span class="go">[112, 105, 112, 112, 111, 108, 111, 110, 101]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s_str</span> <span class="o">=</span> <span class="s1">&#39;pippolone&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">s_str</span><span class="p">)</span>
+<span class="go">[&#39;p&#39;, &#39;i&#39;, &#39;p&#39;, &#39;p&#39;, &#39;o&#39;, &#39;l&#39;, &#39;o&#39;, &#39;n&#39;, &#39;e&#39;]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">bytearray</span></code> is a mutable variant of <code class="docutils literal notranslate"><span class="pre">bytes</span></code>.</p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Bytes, bytearray and string</a><ul>
+<li><a class="reference internal" href="#codesnippets-feature91"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature91</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature90.html"
+                        title="previous chapter">String and byte literals</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature92.html"
+                        title="next chapter">The property protocol</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature91.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature92.html" title="The property protocol"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature90.html" title="String and byte literals"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Bytes, bytearray and string</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

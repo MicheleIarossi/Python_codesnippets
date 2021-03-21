@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Implementation of the singleton pattern via function attributes &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Implementation of the singleton pattern via class decorator" href="feature106.html" />
+    <link rel="prev" title="Call tracer with a class descriptor used as decorator" href="feature104.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature106.html" title="Implementation of the singleton pattern via class decorator"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature104.html" title="Call tracer with a class descriptor used as decorator"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Implementation of the singleton pattern via function attributes</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature105"></span><div class="section" id="implementation-of-the-singleton-pattern-via-function-attributes">
+<h1>Implementation of the singleton pattern via function attributes<a class="headerlink" href="#implementation-of-the-singleton-pattern-via-function-attributes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature105">
+<h2><a class="reference internal" href="#module-codesnippets.feature105" title="codesnippets.feature105"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature105</span></code></a><a class="headerlink" href="#codesnippets-feature105" title="Permalink to this headline">¶</a></h2>
+<p>In the singleton pattern only one instance of a class is allowed.</p>
+<p>The following decorator stores the single instance as a function attribute:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">singleton</span><span class="p">(</span><span class="n">a_class</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;singleton decorator&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">singleton_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;creates an instance and throws exception&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; Decorating class </span><span class="si">{</span><span class="n">a_class</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">singleton_wrapper</span><span class="o">.</span><span class="n">instance</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        -&gt; Creating single instance of class </span><span class="si">{</span><span class="n">a_class</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">singleton_wrapper</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">a_class</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">exc_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Class </span><span class="si">{</span><span class="n">a_class</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> is a singleton class&quot;</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">exc_str</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">singleton_wrapper</span><span class="o">.</span><span class="n">instance</span>
+    <span class="n">singleton_wrapper</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">singleton_wrapper</span>
+</pre></div>
+</div>
+<p>Example of a decorated class</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@singleton</span>
+<span class="go">    class Car():</span>
+<span class="go">        &quot;&quot;&quot;a car class&quot;&quot;&quot;</span>
+<span class="go">        def __init__(self,name):</span>
+<span class="go">            print(&quot;     -&gt; Creating an instance of Car({repr(name)})&quot;)</span>
+<span class="go">            self._name = name</span>
+<span class="go">        def __repr__(self):</span>
+<span class="go">            return f&quot;Car(name={repr(self._name)})&quot;</span>
+<span class="go">        -&gt; Decorating class Car</span>
+</pre></div>
+</div>
+<p>Creation of a single instance is allowed:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="go">        bmw_5_limo = Car(&quot;BMW 5 Limousine&quot;)</span>
+<span class="go">    except RuntimeError as exc:</span>
+<span class="go">        print(exc.__class__.__name__ + &#39;: &#39; + str(exc))</span>
+<span class="go">        -&gt; Creating single instance of class Car</span>
+<span class="go">        -&gt; Creating an instance of Car(&#39;BMW 5 Limousine&#39;)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bmw_5_limo</span>
+<span class="go">Car(name=&#39;BMW 5 Limousine&#39;)</span>
+</pre></div>
+</div>
+<p>Creation of a second instance is NOT allowed:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="go">        audi_a6_limo = Car(&quot;AUDI A6 Limousine&quot;)</span>
+<span class="go">    except RuntimeError as exc:</span>
+<span class="go">        print(exc.__class__.__name__ + &#39;: &#39; + str(exc))</span>
+<span class="go">RuntimeError: Class Car is a singleton class</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Implementation of the singleton pattern via function attributes</a><ul>
+<li><a class="reference internal" href="#codesnippets-feature105"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature105</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature104.html"
+                        title="previous chapter">Call tracer with a class descriptor used as decorator</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature106.html"
+                        title="next chapter">Implementation of the singleton pattern via class decorator</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature105.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature106.html" title="Implementation of the singleton pattern via class decorator"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature104.html" title="Call tracer with a class descriptor used as decorator"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Implementation of the singleton pattern via function attributes</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

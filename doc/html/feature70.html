@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pseudoprivate class attributes &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Unbound and bound methods" href="feature71.html" />
+    <link rel="prev" title="Operator overloading: final MyContainer class" href="feature69.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature71.html" title="Unbound and bound methods"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature69.html" title="Operator overloading: final MyContainer class"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Pseudoprivate class attributes</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature70"></span><div class="section" id="pseudoprivate-class-attributes">
+<h1>Pseudoprivate class attributes<a class="headerlink" href="#pseudoprivate-class-attributes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature70">
+<h2><a class="reference internal" href="#module-codesnippets.feature70" title="codesnippets.feature70"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature70</span></code></a><a class="headerlink" href="#codesnippets-feature70" title="Permalink to this headline">¶</a></h2>
+<p>If attributes in a class hierarchy have the same names, then some
+unintended attribute hiding might occur.
+Pseudoprivate class attributes solve this problem by adding
+the name of the class in front of the attribute name:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;my class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__val</span> <span class="o">=</span> <span class="n">val</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;MyClass(val=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__val</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">an_obj</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">an_obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">[&#39;_MyClass__val&#39;]</span>
+</pre></div>
+</div>
+<p>Notice how the class name has been added in front of <code class="docutils literal notranslate"><span class="pre">__val</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">an_obj</span><span class="o">.</span><span class="n">_MyClass__val</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Pseudoprivate class attributes</a><ul>
+<li><a class="reference internal" href="#codesnippets-feature70"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature70</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature69.html"
+                        title="previous chapter">Operator overloading: final <code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> class</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature71.html"
+                        title="next chapter">Unbound and bound methods</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature70.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature71.html" title="Unbound and bound methods"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature69.html" title="Operator overloading: final MyContainer class"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Pseudoprivate class attributes</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

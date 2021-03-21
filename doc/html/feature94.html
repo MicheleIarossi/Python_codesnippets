@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generic attribute management &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Proxy pattern" href="feature95.html" />
+    <link rel="prev" title="Descriptors" href="feature93.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature95.html" title="Proxy pattern"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature93.html" title="Descriptors"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Generic attribute management</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature94"></span><div class="section" id="generic-attribute-management">
+<h1>Generic attribute management<a class="headerlink" href="#generic-attribute-management" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature94">
+<h2><a class="reference internal" href="#module-codesnippets.feature94" title="codesnippets.feature94"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature94</span></code></a><a class="headerlink" href="#codesnippets-feature94" title="Permalink to this headline">¶</a></h2>
+<p>By overloading the methods below access to any attribute can be controlled:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">)</span>        <span class="c1"># on undefined attribute fetch [obj.name]</span>
+<span class="k">def</span> <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">)</span>   <span class="c1"># on all attribute fetch [obj.name]</span>
+<span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">)</span>        <span class="c1"># on all attribute assignment [obj.name=value]</span>
+<span class="k">def</span> <span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">)</span>        <span class="c1"># on all attribute deletion [del obj.name]</span>
+</pre></div>
+</div>
+<p>Above notice that <code class="docutils literal notranslate"><span class="pre">__setattr__</span></code>  leads to infinite loops if
+instance attributes are assigned directly:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">val</span>
+</pre></div>
+</div>
+<p>Use</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+</pre></div>
+</div>
+<p>instead.
+This avoids loops because the dictionary key is assigned and not the
+attribute <code class="docutils literal notranslate"><span class="pre">__dict__</span></code> of the instance itself.</p>
+<p>The following class defines a car and intercepts the attributes
+<code class="docutils literal notranslate"><span class="pre">price</span></code>, <code class="docutils literal notranslate"><span class="pre">model</span></code>, <code class="docutils literal notranslate"><span class="pre">engine</span></code>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Car</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;a car class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">brand</span><span class="p">,</span><span class="n">model</span><span class="p">,</span><span class="n">engine</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;        -&gt; Car.__init__(</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">brand</span><span class="p">)</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_brand</span>  <span class="o">=</span> <span class="n">brand</span>    <span class="c1">#    triggers __setattr__!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span>  <span class="o">=</span> <span class="n">model</span>    <span class="c1">#    triggers __setattr__!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span> <span class="o">=</span> <span class="n">engine</span>   <span class="c1">#    triggers __setattr__!</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;overloads getattr operator&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;        -&gt; Car.__setattr__(</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_brand</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;bmw&quot;</span><span class="p">,</span><span class="s2">&quot;mercedes&quot;</span><span class="p">):</span>
+                <span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">*</span><span class="mi">30</span>
+            <span class="k">elif</span> <span class="n">instance</span><span class="o">.</span><span class="n">_brand</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;audi&#39;</span><span class="p">:</span>
+                <span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">*</span><span class="mi">25</span>
+            <span class="k">elif</span> <span class="n">instance</span><span class="o">.</span><span class="n">_brand</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;vw&#39;</span><span class="p">:</span>
+                <span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">*</span><span class="mi">20</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">*</span><span class="mi">15</span>
+            <span class="k">return</span> <span class="n">price</span>
+        <span class="k">elif</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span><span class="s2">&quot;engine&quot;</span><span class="p">):</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">attr</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>    <span class="c1"># avoids looping</span>
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">att</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;overloads setattr operator&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;        -&gt; Car.__setattr__(</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="s2">&quot;price&quot;&quot;:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;attribute cannot be set&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span><span class="s2">&quot;engine&quot;</span><span class="p">):</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">attr</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>   <span class="c1"># avoids looping</span>
+    <span class="k">def</span> <span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;overloads delete attribute operator&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;        -&gt; Car.__delattr__(</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span><span class="s2">&quot;engine&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;attribute cannot be set&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;_model&quot;</span><span class="p">]</span>   <span class="c1"># avoids looping</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Car(</span><span class="si">%r</span><span class="s1">,</span><span class="si">%r</span><span class="s1">,</span><span class="si">%r</span><span class="s1">,</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_brand</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Creating a BMW:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_bmw</span> <span class="o">=</span> <span class="n">Car</span><span class="p">(</span><span class="s1">&#39;BMW&#39;</span><span class="p">,</span><span class="s1">&#39;3 series&#39;</span><span class="p">,</span><span class="mi">2500</span><span class="p">)</span>
+<span class="go">        -&gt; Car.__init__(&#39;BMW&#39;,&#39;3 series&#39;,2500)</span>
+<span class="go">        -&gt; Car.__setattr__(&#39;_brand&#39;,&#39;BMW&#39;)</span>
+<span class="go">        -&gt; Car.__setattr__(&#39;_model&#39;,&#39;3 series&#39;)</span>
+<span class="go">        -&gt; Car.__setattr__(&#39;_engine&#39;,2500)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_bmw</span>
+<span class="go">Car(&#39;Car&#39;,&#39;BMW&#39;,&#39;3 series&#39;,2500)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">_bmw</span><span class="o">.</span><span class="n">price</span>
+<span class="go">        -&gt; Car.__getattr__(&#39;price&#39;)</span>
+<span class="go">75000</span>
+</pre></div>
+</div>
+<p>Trying to set the price attribute:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_bmw</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="mi">80000</span>
+<span class="go">        -&gt; Car.__setattr__(&#39;price&#39;,80000)</span>
+<span class="go">AttributeError: attribute cannot be set</span>
+</pre></div>
+</div>
+<p>Changing the engine:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_bmw</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="mi">3000</span>
+<span class="go">        -&gt; Car.__setattr__(&#39;engine&#39;,3000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_bmw</span>
+<span class="go">Car(&#39;Car&#39;,&#39;BMW&#39;,&#39;3 series&#39;,3000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_bmw</span><span class="o">.</span><span class="n">price</span>
+<span class="go">        -&gt; Car.__getattr__(&#39;price&#39;)</span>
+<span class="go">90000</span>
+</pre></div>
+</div>
+<p>Trying to delete the engine attribute:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">a_bmw</span><span class="o">.</span><span class="n">engine</span>
+<span class="go">        -&gt; Car.__delattr__(&#39;engine&#39;)</span>
+<span class="go">AttributeError: attribute cannot be set</span>
+</pre></div>
+</div>
+<p>Deleting and creating new model attribute:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">a_bmw</span><span class="o">.</span><span class="n">model</span>
+<span class="go">        -&gt; Car.__delattr__(&#39;model&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_bmw</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="s1">&#39;5 series&#39;</span>
+<span class="go">        -&gt; Car.__setattr__(&#39;model&#39;,&#39;5 series&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_bmw</span>
+<span class="go">Car(&#39;Car&#39;,&#39;BMW&#39;,&#39;5 series&#39;,3000)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">a_bmw</span><span class="p">)</span>
+<span class="go">[&#39;__class__&#39;, &#39;__delattr__&#39;, &#39;__dict__&#39;, &#39;__dir__&#39;, &#39;__doc__&#39;, &#39;__eq__&#39;, &#39;__format__&#39;,</span>
+<span class="go">&#39;__ge__&#39;, &#39;__getattr__&#39;, &#39;__getattribute__&#39;, &#39;__gt__&#39;, &#39;__hash__&#39;, &#39;__init__&#39;, &#39;__init_subclass__&#39;,</span>
+<span class="go">&#39;__le__&#39;, &#39;__lt__&#39;, &#39;__module__&#39;, &#39;__ne__&#39;, &#39;__new__&#39;, &#39;__reduce__&#39;, &#39;__reduce_ex__&#39;, &#39;__repr__&#39;,</span>
+<span class="go">&#39;__setattr__&#39;, &#39;__sizeof__&#39;, &#39;__str__&#39;, &#39;__subclasshook__&#39;, &#39;__weakref__&#39;, &#39;_brand&#39;,</span>
+<span class="go">&#39;_engine&#39;, &#39;_model&#39;]</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="feature73.html"><span class="doc">Usage of __getattr__ and __getattribute__</span></a></p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Generic attribute management</a><ul>
+<li><a class="reference internal" href="#codesnippets-feature94"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature94</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature93.html"
+                        title="previous chapter">Descriptors</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature95.html"
+                        title="next chapter">Proxy pattern</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature94.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature95.html" title="Proxy pattern"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature93.html" title="Descriptors"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Generic attribute management</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>
