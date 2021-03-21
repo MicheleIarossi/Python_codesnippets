@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>lambda functions &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="lambda functions, map() and list comprehension" href="feature46.html" />
+    <link rel="prev" title="Avoiding recursive calls by breadth-first scanning" href="feature44.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature46.html" title="lambda functions, map() and list comprehension"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature44.html" title="Avoiding recursive calls by breadth-first scanning"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature45"></span><div class="section" id="lambda-functions">
+<h1><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions<a class="headerlink" href="#lambda-functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature45">
+<h2><a class="reference internal" href="#module-codesnippets.feature45" title="codesnippets.feature45"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature45</span></code></a><a class="headerlink" href="#codesnippets-feature45" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions return a value which is a function.
+They are limited to one line expression and should be used only
+for coding simple expressions or logic.
+Default arguments can also be used.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions are expressions and not statements like <code class="docutils literal notranslate"><span class="pre">def</span></code>.</p>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">beta</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span> <span class="n">alpha</span><span class="o">+</span><span class="n">beta</span><span class="o">+</span><span class="n">gamma</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">12</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">()</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>if-then-else logic can also be coded:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lower</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">alpha</span><span class="p">,</span><span class="n">beta</span> <span class="p">:</span> <span class="n">alpha</span> <span class="k">if</span> <span class="n">alpha</span><span class="o">&gt;</span><span class="n">beta</span> <span class="k">else</span> <span class="n">beta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lower</span><span class="p">(</span><span class="s1">&#39;aa&#39;</span><span class="p">,</span><span class="s1">&#39;bb&#39;</span><span class="p">)</span>
+<span class="go">bb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lower</span><span class="p">(</span><span class="s1">&#39;bb&#39;</span><span class="p">,</span><span class="s1">&#39;aa&#39;</span><span class="p">)</span>
+<span class="go">bb</span>
+</pre></div>
+</div>
+<p>Loops can be coded by means of list comprehension:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">printall</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s_str</span><span class="p">:</span> <span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span> <span class="k">for</span> <span class="n">sigma</span> <span class="ow">in</span> <span class="n">s_str</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">printall</span><span class="p">([</span><span class="s1">&#39;Hello&#39;</span><span class="p">,</span><span class="s1">&#39;Pippo&#39;</span><span class="p">,</span><span class="s1">&#39;Bye&#39;</span><span class="p">]</span>
+<span class="go">Hello</span>
+<span class="go">Pippo</span>
+<span class="go">Bye</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lambda</span></code> can be nested as well and the same scope rules apply:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="k">lambda</span> <span class="n">alpha</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">beta</span><span class="p">:</span> <span class="n">alpha</span><span class="o">+</span><span class="n">beta</span><span class="p">))(</span><span class="mi">99</span><span class="p">)(</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">103</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions</a><ul>
+<li><a class="reference internal" href="#codesnippets-feature45"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature45</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature44.html"
+                        title="previous chapter">Avoiding recursive calls by breadth-first scanning</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature46.html"
+                        title="next chapter"><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions, <code class="docutils literal notranslate"><span class="pre">map()</span></code> and <code class="docutils literal notranslate"><span class="pre">list</span></code> comprehension</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature45.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature46.html" title="lambda functions, map() and list comprehension"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature44.html" title="Avoiding recursive calls by breadth-first scanning"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>

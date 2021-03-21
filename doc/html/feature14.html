@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shallow and deep copy &#8212; Python codesnippets 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Comparison and equality" href="feature15.html" />
+    <link rel="prev" title="Assignment unpacking" href="feature13.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature15.html" title="Comparison and equality"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature13.html" title="Assignment unpacking"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Shallow and deep copy</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-codesnippets.feature14"></span><div class="section" id="shallow-and-deep-copy">
+<h1>Shallow and deep copy<a class="headerlink" href="#shallow-and-deep-copy" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="codesnippets-feature14">
+<h2><a class="reference internal" href="#module-codesnippets.feature14" title="codesnippets.feature14"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature14</span></code></a><a class="headerlink" href="#codesnippets-feature14" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">copy</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lst1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="n">lst1</span><span class="p">]</span>           <span class="c1"># lst2 has a reference to lst1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst3</span> <span class="o">=</span> <span class="n">lst2</span>                 <span class="c1"># lst3 points to lst2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst4</span> <span class="o">=</span> <span class="n">lst2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>          <span class="c1"># lst4 is a shallow copy of lst2, still points to lst1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst5</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">lst2</span><span class="p">)</span>  <span class="c1"># lst5 is a deep copy of lst2, no more references</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lst1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9</span>                 <span class="c1"># modify lst1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7</span>                 <span class="c1"># modify lst2</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lst1</span>                        <span class="c1"># first element has changed</span>
+<span class="go">[9, 2, 3]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lst2</span>                        <span class="c1"># first element has changed, as well as lst1 reference</span>
+<span class="go">[7, 5, [9, 2, 3]]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lst3</span>                        <span class="c1"># points to lst2, no copy!</span>
+<span class="go">[7, 5, [9, 2, 3]]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">lst4</span></code> is a shallow copy of <code class="docutils literal notranslate"><span class="pre">lst2</span></code>, it includes a copy of the reference to <code class="docutils literal notranslate"><span class="pre">lst1</span></code> whose content has now changed</p>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lst4</span>                        <span class="c1"># shallow copy of the original lst2, includes copy of lst1 reference!</span>
+<span class="go">[4, 5, [9, 2, 3]]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lst5</span>                        <span class="c1"># deep copy of original lst2, includes original values of lst1!</span>
+<span class="go">[4, 5, [1, 2, 3]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Shallow and deep copy</a><ul>
+<li><a class="reference internal" href="#codesnippets-feature14"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature14</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature13.html"
+                        title="previous chapter">Assignment unpacking</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature15.html"
+                        title="next chapter">Comparison and equality</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature14.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature15.html" title="Comparison and equality"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature13.html" title="Assignment unpacking"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Shallow and deep copy</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Michele Iarossi (micheleiarossi@gmail.com).
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+    </div>
+  </body>
+</html>
