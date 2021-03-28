@@ -4,8 +4,8 @@ Add your own codesnippet
 Add a new feature module
 ------------------------
 
-The ``examples.py`` script does nothing else than collecting the available feature modules
-inside the ``codesnippets`` package and storing the list in its ``codesnippets`` database.
+The ``examples.py`` script does nothing else than collect the available feature modules
+inside the ``codesnippets`` package in a list and store this list in the ``codesnippets`` database.
 This happens either the very first time that the script is run when no database is available or 
 every time that the option ``u`` is entered.
 
@@ -13,8 +13,14 @@ You can add your own *codesnippet* by simply adding a new ``featureN.py`` module
 inside the package ``codesnippets``, where ``N`` is a new number: for sake
 of simplicity you can just copy an existing module and rename it with a new number.
 
-Inside the module, you need to define a ``featureN()`` function and you need to provide also
-a ``docstring`` because it is this docstring that is parsed by ``examples.py`` and added
+Use the option ``r`` for renumbering the Python feature files should you wish to insert a new
+feature between existing ones, i.e. if the ``featureN.py`` already exists. The option
+``r`` renumbers the existing feature files from ``N`` to ``N+1``, so that a new
+``featureN.py`` file can be added to the ``codesnippets``. It updates also automatically all
+the cross references and the index file ``index.rst`` (see below).
+
+Inside the module, you need to define a ``featureN()`` function whose
+``docstring`` is parsed by ``examples.py`` and added
 to the list with the number ``N`` provided.
 
 As an example, consider the module ``feature1.py`` which corresponds to the feature
@@ -83,7 +89,9 @@ Build the documentation
 
 Once the new feature module is properly documented, you need to add a new ``featureN.rst``
 file inside the  ``./sphinx/source`` folder, which is best done by simply copying an existing one
-and renaming it. Inside this file adapt then the feature module reference, in order
+and renaming it. If you have used the option ``r`` for inserting a new feature between existing ones,
+this step can be skipped, since this option takes care of keeping the ``rst`` files in sync.
+Inside this file adapt then the feature module reference, in order
 for the automodule plugin to parse the documentation from the module docstring::
 
     .. automodule:: codesnippets.featureN
@@ -92,12 +100,12 @@ where ``N`` is the new module number.
 
 As a last step, open the file ``index.rst`` located in the same
 ``./sphinx/source`` folder and add an entry for your new feature module, so that it appears
-in the table of the contents.
+in the table of contents.
 
 Now build the documentation from a terminal window inside the folder ``./sphinx``::
 
     % make clean && make html
 
 When you open the documentation in your browser ``./doc/html/index.html``, your new module should
-appear as selectable in the list.
+appear as selectable in the table of content. 
 

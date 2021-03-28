@@ -12,8 +12,8 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../..'))
-
+sys.path.insert(0, os.path.abspath('..' + os.path.sep + '..'))
+sys.path.insert(1, os.path.abspath('..'+ os.path.sep + '..' + os.path.sep + 'codesnippets'))
 
 # -- Project information -----------------------------------------------------
 
@@ -22,7 +22,7 @@ copyright = '2021, Michele Iarossi (micheleiarossi@gmail.com)'
 author = 'Michele Iarossi'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.0'
+release = '1.0.1'
 
 highlight_language = 'Python'
 pygments_style = 'sphinx'
