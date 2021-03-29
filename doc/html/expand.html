@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add your own codesnippet &#8212; Python codesnippets 1.0.0 documentation</title>
+    <title>Add your own codesnippet &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="examples.html" title="examples.py"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Add your own codesnippet</a></li> 
       </ul>
     </div>  
@@ -49,15 +49,20 @@
 <h1>Add your own codesnippet<a class="headerlink" href="#add-your-own-codesnippet" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="add-a-new-feature-module">
 <h2>Add a new feature module<a class="headerlink" href="#add-a-new-feature-module" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">examples.py</span></code> script does nothing else than collecting the available feature modules
-inside the <code class="docutils literal notranslate"><span class="pre">codesnippets</span></code> package and storing the list in its <code class="docutils literal notranslate"><span class="pre">codesnippets</span></code> database.
+<p>The <code class="docutils literal notranslate"><span class="pre">examples.py</span></code> script does nothing else than collect the available feature modules
+inside the <code class="docutils literal notranslate"><span class="pre">codesnippets</span></code> package in a list and store this list in the <code class="docutils literal notranslate"><span class="pre">codesnippets</span></code> database.
 This happens either the very first time that the script is run when no database is available or
 every time that the option <code class="docutils literal notranslate"><span class="pre">u</span></code> is entered.</p>
 <p>You can add your own <em>codesnippet</em> by simply adding a new <code class="docutils literal notranslate"><span class="pre">featureN.py</span></code> module
 inside the package <code class="docutils literal notranslate"><span class="pre">codesnippets</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is a new number: for sake
 of simplicity you can just copy an existing module and rename it with a new number.</p>
-<p>Inside the module, you need to define a <code class="docutils literal notranslate"><span class="pre">featureN()</span></code> function and you need to provide also
-a <code class="docutils literal notranslate"><span class="pre">docstring</span></code> because it is this docstring that is parsed by <code class="docutils literal notranslate"><span class="pre">examples.py</span></code> and added
+<p>Use the option <code class="docutils literal notranslate"><span class="pre">r</span></code> for renumbering the Python feature files should you wish to insert a new
+feature between existing ones, i.e. if the <code class="docutils literal notranslate"><span class="pre">featureN.py</span></code> already exists. The option
+<code class="docutils literal notranslate"><span class="pre">r</span></code> renumbers the existing feature files from <code class="docutils literal notranslate"><span class="pre">N</span></code> to <code class="docutils literal notranslate"><span class="pre">N+1</span></code>, so that a new
+<code class="docutils literal notranslate"><span class="pre">featureN.py</span></code> file can be added to the <code class="docutils literal notranslate"><span class="pre">codesnippets</span></code>. It updates also automatically all
+the cross references and the index file <code class="docutils literal notranslate"><span class="pre">index.rst</span></code> (see below).</p>
+<p>Inside the module, you need to define a <code class="docutils literal notranslate"><span class="pre">featureN()</span></code> function whose
+<code class="docutils literal notranslate"><span class="pre">docstring</span></code> is parsed by <code class="docutils literal notranslate"><span class="pre">examples.py</span></code> and added
 to the list with the number <code class="docutils literal notranslate"><span class="pre">N</span></code> provided.</p>
 <p>As an example, consider the module <code class="docutils literal notranslate"><span class="pre">feature1.py</span></code> which corresponds to the feature
 <a class="reference internal" href="feature1.html"><span class="doc">dir() on an integer variable</span></a>. The feature is defined by the function <code class="docutils literal notranslate"><span class="pre">feature1()</span></code>
@@ -121,7 +126,9 @@ is actually the output text generated by the feature function itself:</p>
 <h2>Build the documentation<a class="headerlink" href="#build-the-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Once the new feature module is properly documented, you need to add a new <code class="docutils literal notranslate"><span class="pre">featureN.rst</span></code>
 file inside the  <code class="docutils literal notranslate"><span class="pre">./sphinx/source</span></code> folder, which is best done by simply copying an existing one
-and renaming it. Inside this file adapt then the feature module reference, in order
+and renaming it. If you have used the option <code class="docutils literal notranslate"><span class="pre">r</span></code> for inserting a new feature between existing ones,
+this step can be skipped, since this option takes care of keeping the <code class="docutils literal notranslate"><span class="pre">rst</span></code> files in sync.
+Inside this file adapt then the feature module reference, in order
 for the automodule plugin to parse the documentation from the module docstring:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">automodule</span><span class="p">::</span> <span class="n">codesnippets</span><span class="o">.</span><span class="n">featureN</span>
 </pre></div>
@@ -129,13 +136,13 @@ for the automodule plugin to parse the documentation from the module docstring:<
 <p>where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the new module number.</p>
 <p>As a last step, open the file <code class="docutils literal notranslate"><span class="pre">index.rst</span></code> located in the same
 <code class="docutils literal notranslate"><span class="pre">./sphinx/source</span></code> folder and add an entry for your new feature module, so that it appears
-in the table of the contents.</p>
+in the table of contents.</p>
 <p>Now build the documentation from a terminal window inside the folder <code class="docutils literal notranslate"><span class="pre">./sphinx</span></code>:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">make</span> <span class="n">clean</span> <span class="o">&amp;&amp;</span> <span class="n">make</span> <span class="n">html</span>
 </pre></div>
 </div>
 <p>When you open the documentation in your browser <code class="docutils literal notranslate"><span class="pre">./doc/html/index.html</span></code>, your new module should
-appear as selectable in the list.</p>
+appear as selectable in the table of content.</p>
 </div>
 </div>
 
@@ -198,7 +205,7 @@ appear as selectable in the list.</p>
         <li class="right" >
           <a href="examples.html" title="examples.py"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Add your own codesnippet</a></li> 
       </ul>
     </div>
