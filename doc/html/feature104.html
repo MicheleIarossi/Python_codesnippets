@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Call tracer with a class descriptor used as decorator &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Call tracer with a function decorator &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Implementation of the singleton pattern via function attributes" href="feature105.html" />
-    <link rel="prev" title="Call tracer with a function decorator" href="feature103.html" /> 
+    <link rel="next" title="Call tracer with a class descriptor used as decorator" href="feature105.html" />
+    <link rel="prev" title="Decorator arguments" href="feature103.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature105.html" title="Implementation of the singleton pattern via function attributes"
+          <a href="feature105.html" title="Call tracer with a class descriptor used as decorator"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature103.html" title="Call tracer with a function decorator"
+          <a href="feature103.html" title="Decorator arguments"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Call tracer with a class descriptor used as decorator</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Call tracer with a function decorator</a></li> 
       </ul>
     </div>  
 
@@ -45,110 +45,64 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature104"></span><div class="section" id="call-tracer-with-a-class-descriptor-used-as-decorator">
-<h1>Call tracer with a class descriptor used as decorator<a class="headerlink" href="#call-tracer-with-a-class-descriptor-used-as-decorator" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature104"></span><div class="section" id="call-tracer-with-a-function-decorator">
+<h1>Call tracer with a function decorator<a class="headerlink" href="#call-tracer-with-a-function-decorator" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature104">
 <h2><a class="reference internal" href="#module-codesnippets.feature104" title="codesnippets.feature104"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature104</span></code></a><a class="headerlink" href="#codesnippets-feature104" title="Permalink to this headline">¶</a></h2>
-<p>This is a complex example combining more Python features:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DescTracer</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;a function or method descriptor tracer class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">func_or_method</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; DescTracer.__init__() run at decoration time&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">calls</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">func_or_method</span> <span class="o">=</span> <span class="n">func_or_method</span>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; DescTracer.__call__() run at function or method call&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">calls</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; total function calls of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">func_or_method</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">calls</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_or_method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">instance</span><span class="p">,</span><span class="n">owner</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; DescTracer.__get__() run on method attribute fetch of instance of class&quot;</span>
-              <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">instance</span><span class="p">)</span>
-
-<span class="k">class</span> <span class="nc">Wrapper</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Wrapper class needed for storing the instance whose method call must be counted</span>
-<span class="sd">       and for routing back the call to the descriptor tracer</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">desc_tracer</span><span class="p">,</span><span class="n">instance</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; Wrapper.__init__() run at wrapper creation&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">desc_tracer</span> <span class="o">=</span> <span class="n">desc_tracer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">instance</span>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; Wrapper.__call__() run at wrapper call&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">desc_tracer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">wrapper()</span></code> is the actual function that gets called after decoration:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func_tracer</span><span class="p">(</span><span class="n">a_func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;decorator for tracing the number of calls&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        -&gt; decorating </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">a_func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">calls</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;the real function that gets called&quot;&quot;&quot;</span>
+        <span class="k">nonlocal</span> <span class="n">calls</span>
+        <span class="n">calls</span> <span class="o">=+</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;total function calls of </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">a_func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">calls</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">a_func</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
 </pre></div>
 </div>
-<p>Example of function decoration:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@DescTracer</span>
-<span class="go">    def my_func(param_a,param_b)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@func_tracer</span>
+<span class="go">    def my_func(param_a,param_b):</span>
 <span class="go">        &quot;&quot;&quot;my decorated function&quot;&quot;&quot;</span>
-<span class="go">        print(f&quot;        -&gt; inside my_func({param_a},{param_b})...&quot;)</span>
-<span class="go">        -&gt; DescTracer.__init__() run at decoration time</span>
+<span class="go">        print(&quot; -&gt; inside my function...&quot;)</span>
+<span class="go">        -&gt; decorating &#39;my_func&#39;</span>
 </pre></div>
 </div>
-<p>When <code class="docutils literal notranslate"><span class="pre">my_func(param_a,param_b)</span></code> is decorated, it gets an instance of the <code class="docutils literal notranslate"><span class="pre">DescTracer</span></code> class.
-Later on when the function is called, it is the <code class="docutils literal notranslate"><span class="pre">__call__()</span></code> method of the descriptor tracer
-class that is actually called, and the counter is incremented.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">my_func(param_a,param_b)</span></code> is called, it is the <code class="docutils literal notranslate"><span class="pre">wrapper()</span></code> that is actually called,
+because the wrapper is returned by the <code class="docutils literal notranslate"><span class="pre">func_tracer()</span></code> decoration:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_func</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="go">        -&gt; DescTracer.__call__() run at function or method call</span>
-<span class="go">        -&gt; total function calls of my_func: 1</span>
-<span class="go">        -&gt; inside my_func(2,3)...</span>
+<span class="go">total function calls of &#39;my_func&#39;: 1</span>
+<span class="go">        -&gt; inside myfunc(2,3)...</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_func</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
-<span class="go">        -&gt; DescTracer.__call__() run at function or method call</span>
-<span class="go">        -&gt; total function calls of my_func: 2</span>
-<span class="go">        -&gt; inside my_func(6,7)...</span>
+<span class="go">total function calls of &#39;my_func&#39;: 2</span>
+<span class="go">        -&gt; inside myfunc(6,7)...</span>
 </pre></div>
 </div>
-<p>Example of class method decoration:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
-<span class="go">        &quot;&quot;&quot;a class&quot;&quot;&quot;</span>
-<span class="go">        def __init__(self,name):</span>
-<span class="go">            print(f&quot;    -&gt; inside MyClass.__init__()&quot;)</span>
-<span class="go">            self._name = name</span>
-<span class="go">        @DescTracer</span>
-<span class="go">        def my_method(self):</span>
-<span class="go">            &quot;&quot;&quot;my decorated method&quot;&quot;&quot;</span>
-<span class="go">            print(f&quot;    -&gt; inside MyClass.my_method()&quot;)</span>
-<span class="go">        -&gt; DescTracer.__init__() run at decoration time</span>
+<p>Works for different functions too:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@func_tracer</span>
+<span class="go">    def your_func(a,b):</span>
+<span class="go">        &quot;&quot;&quot;your decorated function&quot;&quot;&quot;</span>
+<span class="go">        print(f&quot;        -&gt; inside your_func({a},{b})&quot;)</span>
+<span class="go">        -&gt; decorating &#39;your_func&#39;</span>
 </pre></div>
 </div>
-<p>When <code class="docutils literal notranslate"><span class="pre">my_method()</span></code> is decorated, it is bound to the descriptor class.
-Later on when the method is invoked on the instance, an attribute fetch
-happens and the <code class="docutils literal notranslate"><span class="pre">__get__()</span></code> method of the descriptor class is triggered.
-The <code class="docutils literal notranslate"><span class="pre">__get__()</span></code> method returns an instance of the <code class="docutils literal notranslate"><span class="pre">Wrapper</span></code> class
-storing a pointer to the instance of the descriptor class and
-to the instance of <code class="docutils literal notranslate"><span class="pre">MyClass</span></code>.</p>
-<p>Next is the function call, but now it is actually a function
-call done on the instance of the <code class="docutils literal notranslate"><span class="pre">Wrapper</span></code> class, and the
-<code class="docutils literal notranslate"><span class="pre">__call__()</span></code> method of the <code class="docutils literal notranslate"><span class="pre">Wrapper</span></code> class is called.</p>
-<p>The latter method reroutes the call to the instance of the descriptor class
-by doing a function call, which triggers the method <code class="docutils literal notranslate"><span class="pre">__call__()</span></code>
-of the descriptor class which finally calls the original method
-applied on the instance of <code class="docutils literal notranslate"><span class="pre">MyClass</span></code>.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj_1</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="s1">&#39;Star&#39;</span><span class="p">)</span>
-<span class="go">        -&gt; inside MyClass.__init__()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">your_func</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">total function calls of &#39;your_func&#39;: 1</span>
+<span class="go">        -&gt; inside your_func(1,2)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj_1</span><span class="o">.</span><span class="n">my_method</span><span class="p">()</span>
-<span class="go">        -&gt; DescTracer.__get__() run on method attribute fetch of instance of class MyClass</span>
-<span class="go">        -&gt; Wrapper.__init__() run at wrapper creation</span>
-<span class="go">        -&gt; Wrapper.__call__() run at wrapper call</span>
-<span class="go">        -&gt; DescTracer.__call__() run at function or method call</span>
-<span class="go">        -&gt; total function calls of my_method: 1</span>
-<span class="go">        -&gt; inside MyClass.my_method()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">your_func</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">total function calls of &#39;your_func&#39;: 2</span>
+<span class="go">        -&gt; inside your_func(1,2)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj_1</span><span class="o">.</span><span class="n">my_method</span><span class="p">()</span>
-<span class="go">        -&gt; DescTracer.__get__() run on method attribute fetch of instance of class MyClass</span>
-<span class="go">        -&gt; Wrapper.__init__() run at wrapper creation</span>
-<span class="go">        -&gt; Wrapper.__call__() run at wrapper call</span>
-<span class="go">        -&gt; DescTracer.__call__() run at function or method call</span>
-<span class="go">        -&gt; total function calls of my_method: 2</span>
-<span class="go">        -&gt; inside MyClass.my_method()</span>
-</pre></div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="feature98.html"><span class="doc">Wrapper/proxy pattern with function decorator</span></a></p>
 </div>
 </div>
 </div>
@@ -162,7 +116,7 @@ applied on the instance of <code class="docutils literal notranslate"><span clas
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Call tracer with a class descriptor used as decorator</a><ul>
+<li><a class="reference internal" href="#">Call tracer with a function decorator</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature104"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature104</span></code></a></li>
 </ul>
 </li>
@@ -170,10 +124,10 @@ applied on the instance of <code class="docutils literal notranslate"><span clas
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature103.html"
-                        title="previous chapter">Call tracer with a function decorator</a></p>
+                        title="previous chapter">Decorator arguments</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature105.html"
-                        title="next chapter">Implementation of the singleton pattern via function attributes</a></p>
+                        title="next chapter">Call tracer with a class descriptor used as decorator</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -205,13 +159,13 @@ applied on the instance of <code class="docutils literal notranslate"><span clas
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature105.html" title="Implementation of the singleton pattern via function attributes"
+          <a href="feature105.html" title="Call tracer with a class descriptor used as decorator"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature103.html" title="Call tracer with a function decorator"
+          <a href="feature103.html" title="Decorator arguments"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Call tracer with a class descriptor used as decorator</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Call tracer with a function decorator</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

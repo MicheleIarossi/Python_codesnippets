@@ -22,7 +22,7 @@ copyright = '2021, Michele Iarossi (micheleiarossi@gmail.com)'
 author = 'Michele Iarossi'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.1'
+release = '1.0.2'
 
 highlight_language = 'Python'
 pygments_style = 'sphinx'

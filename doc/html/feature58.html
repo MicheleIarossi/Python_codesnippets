@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>First classes &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Module imports with importlib &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Built-in class attributes for introspection" href="feature59.html" />
-    <link rel="prev" title="Module imports with importlib" href="feature57.html" /> 
+    <link rel="next" title="First classes" href="feature59.html" />
+    <link rel="prev" title="Module attribute access" href="feature57.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature59.html" title="Built-in class attributes for introspection"
+          <a href="feature59.html" title="First classes"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature57.html" title="Module imports with importlib"
+          <a href="feature57.html" title="Module attribute access"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">First classes</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Module imports with <code class="docutils literal notranslate"><span class="pre">importlib</span></code></a></li> 
       </ul>
     </div>  
 
@@ -45,76 +45,22 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature58"></span><div class="section" id="first-classes">
-<h1>First classes<a class="headerlink" href="#first-classes" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature58"></span><div class="section" id="module-imports-with-importlib">
+<h1>Module imports with <code class="docutils literal notranslate"><span class="pre">importlib</span></code><a class="headerlink" href="#module-imports-with-importlib" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature58">
 <h2><a class="reference internal" href="#module-codesnippets.feature58" title="codesnippets.feature58"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature58</span></code></a><a class="headerlink" href="#codesnippets-feature58" title="Permalink to this headline">¶</a></h2>
-<p>This is a basic class modeling an animal:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Animal</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Base class for describing an animal.&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">species</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">rank</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Animal constructor.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span>    <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="n">species</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span>    <span class="o">=</span> <span class="n">rank</span>
-    <span class="k">def</span> <span class="nf">elevate_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">delta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method for changing the rank.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">+=</span> <span class="n">delta</span>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overloaded repr operator.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;Animal(name=</span><span class="si">%r</span><span class="s1">,species=</span><span class="si">%r</span><span class="s1">, rank=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">)</span>
+<p>The library <code class="docutils literal notranslate"><span class="pre">importlib</span></code> lets us import modules via its function <code class="docutils literal notranslate"><span class="pre">import_module</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">importlib</span>
 </pre></div>
 </div>
-<p>In the class definition above:</p>
-<ul class="simple">
-<li><p>the special method <code class="docutils literal notranslate"><span class="pre">__init__</span></code> is the <em>constructor</em>. It attaches the attributes <code class="docutils literal notranslate"><span class="pre">name</span></code>,
-<code class="docutils literal notranslate"><span class="pre">species</span></code> and <code class="docutils literal notranslate"><span class="pre">rank</span></code> to a newly created instance,</p></li>
-<li><p>the method <code class="docutils literal notranslate"><span class="pre">elevate_rank</span></code> changes the <code class="docutils literal notranslate"><span class="pre">rank</span></code> value,</p></li>
-<li><p>the special method <code class="docutils literal notranslate"><span class="pre">__repr__</span></code> returns a string representation of the instance, called for
-example when printing an instance from the interactive prompt.</p></li>
-</ul>
-<p>The following is a subclass modeling mammals derived from <code class="docutils literal notranslate"><span class="pre">Animal</span></code> above:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Mammal</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Specialized class for describing a mammal.&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">rank</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">weight</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">height</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Mammal constructor.&quot;&quot;&quot;</span>
-        <span class="n">Animal</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="s1">&#39;mammal&#39;</span><span class="p">,</span><span class="n">rank</span><span class="p">)</span> <span class="c1"># Base class constructor is called</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>
-    <span class="k">def</span> <span class="nf">elevate_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">delta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Customized method for changing the rank for mammals.&quot;&quot;&quot;</span>
-        <span class="n">Animal</span><span class="o">.</span><span class="n">elevate_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">delta</span><span class="p">)</span>        <span class="c1"># Reuses the method from the base class</span>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overloaded repr operator.&quot;&quot;&quot;</span>
-        <span class="c1"># Customizes representation of the base class</span>
-        <span class="k">return</span> <span class="s1">&#39;Mammal(name=</span><span class="si">%r</span><span class="s1">,rank=</span><span class="si">%r</span><span class="s1">,weight=</span><span class="si">%r</span><span class="s1">,height=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span>
-                                                                <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">modname</span> <span class="o">=</span> <span class="s1">&#39;module1&#39;</span>
 </pre></div>
 </div>
-<p>The class <code class="docutils literal notranslate"><span class="pre">Mammal</span></code> reuses methods of its base class</p>
-<ul class="simple">
-<li><p>in the constructor and</p></li>
-<li><p>in the overridden method <code class="docutils literal notranslate"><span class="pre">elevate_rank</span></code>.</p></li>
-</ul>
-<p>Given the classes above, the creation of instances of <code class="docutils literal notranslate"><span class="pre">Animal</span></code> and <code class="docutils literal notranslate"><span class="pre">Mammal</span></code> is done as:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">snake</span> <span class="o">=</span> <span class="n">Animal</span><span class="p">(</span><span class="s1">&#39;snake&#39;</span><span class="p">,</span><span class="s1">&#39;reptile&#39;</span><span class="p">,</span><span class="mi">23</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">snake</span>
-<span class="go">Animal(name=&#39;snake&#39;,species=&#39;reptile&#39;, rank=23)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">modname</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">snake</span><span class="o">.</span><span class="n">elevate_rank</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">snake</span>
-<span class="go">Animal(name=&#39;snake&#39;,species=&#39;reptile&#39;, rank=26)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span> <span class="o">=</span> <span class="n">Mammal</span><span class="p">(</span><span class="s1">&#39;tiger&#39;</span><span class="p">,</span><span class="mi">143</span><span class="p">,</span><span class="mi">132</span><span class="p">,</span><span class="mi">110</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span>
-<span class="go">Mammal(name=&#39;Tiger&#39;,rank=143,weight=132,height=110)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span><span class="o">.</span><span class="n">elevate_rank</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span>
-<span class="go">Mammal(name=&#39;Tiger&#39;,rank=149,weight=132,height=110)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="n">A_LIST</span>
+<span class="go">[4, 5, 6]</span>
 </pre></div>
 </div>
 </div>
@@ -129,7 +75,7 @@ example when printing an instance from the interactive prompt.</p></li>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">First classes</a><ul>
+<li><a class="reference internal" href="#">Module imports with <code class="docutils literal notranslate"><span class="pre">importlib</span></code></a><ul>
 <li><a class="reference internal" href="#codesnippets-feature58"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature58</span></code></a></li>
 </ul>
 </li>
@@ -137,10 +83,10 @@ example when printing an instance from the interactive prompt.</p></li>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature57.html"
-                        title="previous chapter">Module imports with <code class="docutils literal notranslate"><span class="pre">importlib</span></code></a></p>
+                        title="previous chapter">Module attribute access</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature59.html"
-                        title="next chapter">Built-in <code class="docutils literal notranslate"><span class="pre">class</span></code> attributes for introspection</a></p>
+                        title="next chapter">First classes</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -172,13 +118,13 @@ example when printing an instance from the interactive prompt.</p></li>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature59.html" title="Built-in class attributes for introspection"
+          <a href="feature59.html" title="First classes"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature57.html" title="Module imports with importlib"
+          <a href="feature57.html" title="Module attribute access"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">First classes</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Module imports with <code class="docutils literal notranslate"><span class="pre">importlib</span></code></a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

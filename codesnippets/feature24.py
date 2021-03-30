@@ -1,4 +1,4 @@
-##    Python codesnippets - Loop with enumerate()
+##    Python codesnippets - Dictionary construction with zip()
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,51 +19,45 @@
 #
 
 """
-Loop with ``enumerate()``
-=========================
+Dictionary construction with ``zip()``
+======================================
 
 :py:mod:`codesnippets.feature24`
 --------------------------------
 
-The built-in ``enumerate()`` gives the offset and the item to use:
+Uses dictionary comprehension:
 
->>> a_lst = ['abc','def','ghi']
+>>> key_lst   = ['abc','def','ghi']
+>>> value_lst = [2,5,9]
 
->>> for (i_idx,s_str) in enumerate(a_lst):
-        print(i_idx,s_str)
-0 abc
-1 def
-2 ghi
+>>> a_dict = {a_key:a_value for (a_key,a_value) in zip(key_lst,value_lst)}
+>>> a_dict
+{'abc': 2, 'def': 5, 'ghi': 9}
 
-A start value can be also given, e.g. starting from 1 instead of 0:
+This is the same as:
 
->>> a_lst = ['abc','def','ghi']
-
->>> for (i_idx,s_str) in enumerate(a_lst,1):
-        print(i_idx,s_str)
-1 abc
-2 def
-3 ghi
+>>> a_dict = dict(zip(key_lst,value_lst))
+>>> a_dict
+{'abc': 2, 'def': 5, 'ghi': 9}
 """
 
 def feature24():
-    """Loop with enumerate()"""
-    print('Loop with ``enumerate()``')
-    print('=========================\n')
+    """Dictionary construction with zip()"""
+    print('Dictionary construction with ``zip()``')
+    print('======================================\n')
     print(':py:mod:`codesnippets.feature24`')
     print('--------------------------------\n')
-    print("The built-in ``enumerate()`` gives the offset and the item to use:\n")
-    print(">>> a_lst = ['abc','def','ghi']\n")
-    print(">>> for (i_idx,s_str) in enumerate(a_lst):")
-    print("        print(i_idx,s_str)")
-    a_lst = ['abc','def','ghi']
-    for (i_idx,s_str) in enumerate(a_lst):
-        print(i_idx,s_str)
-    print("\nA start value can be also given, e.g. starting from 1 instead of 0:\n")
-    print(">>> a_lst = ['abc','def','ghi']\n")
-    print(">>> for (i_idx,s_str) in enumerate(a_lst,1):")
-    print("        print(i_idx,s_str)")
-    a_lst = ['abc','def','ghi']
-    for (i_idx,s_str) in enumerate(a_lst,1):
-        print(i_idx,s_str)
+    print("Uses dictionary comprehension:\n")
+    print(">>> key_lst   = ['abc','def','ghi']")
+    print(">>> value_lst = [2,5,9]\n")
+    key_lst   = ['abc','def','ghi']
+    value_lst = [2,5,9]
+    print(">>> a_dict = {a_key:a_value for (a_key,a_value) in zip(key_lst,value_lst)}")
+    a_dict = {a_key:a_value for (a_key,a_value) in zip(key_lst,value_lst)}
+    print(">>> a_dict")
+    print(a_dict)
+    print("\nThis is the same as:\n")
+    print(">>> a_dict = dict(zip(key_lst,value_lst))")
+    print(">>> a_dict")
+    print(a_dict)
     print(80*'-')

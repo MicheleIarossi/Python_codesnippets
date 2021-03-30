@@ -1,4 +1,4 @@
-##    Python codesnippets - Basic function decorator
+##    Python codesnippets - Proxy pattern
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,65 +19,63 @@
 #
 
 """
-Basic function decorator
-========================
+Proxy pattern
+=============
 
 :py:mod:`codesnippets.feature96`
 --------------------------------
 
-A function decorator is a metafunction that manages another function.
-Decoration happens only once at the end of the function definition:
+An object is embedded in a wrapper class that delegates all accesses
+to its embedded opbject:
 
 .. code-block:: Python
 
-    def decorator(func):
-        \"""very basic function decorator\"""
-        print(f"	-> inside decorator function...")
-        return func
+    class Wrapper:
+        \"""a wrapper class\"""
+        def __init__(self,obj):
+            self.embedded_obj = obj
+        def __getattr__(self,attr):
+            print("__getattr__: " + attr)
+            return getattr(self.embedded_obj,attr)
 
-    @decorator
-    def myfunction(param_a,param_b):
-        \"""decorated function\"""
-        print(f"	-> inside myfunction({param_a},{param_b})")
+>>> a_wrapper = Wrapper([1,2,3])
 
-Decoration rebinds the function name and it's equivalent to:
+>>> a_wrapper.append(4)
+__getattr__: append
 
->>> myfunction = decorator(myfunction)
-	-> inside decorator function...
-
->>> myfunction(4,5)
-	-> inside myfunction(4,5)
+>>> print(a_wrapper.embedded_obj)
+[1, 2, 3, 4]
 """
 
 def feature96():
-    """Basic function decorator"""
-    print('Basic function decorator')
-    print('========================\n')
+    """Proxy pattern"""
+    print('Proxy pattern')
+    print('=============\n')
     print(':py:mod:`codesnippets.feature96`')
     print('--------------------------------\n')
-    print('A function decorator is a metafunction that manages another function.')
-    print('Decoration happens only once at the end of the function definition:\n')
+    print('An object is embedded in a wrapper class that delegates all accesses')
+    print('to its embedded opbject:\n')
+    class Wrapper:
+        """a wrapper class"""
+        def __init__(self,obj):
+            self.embedded_obj = obj
+        def __getattr__(self,attr):
+            """overloads getattr operator"""
+            print("__getattr__: " + attr)
+            return getattr(self.embedded_obj,attr)
     print('.. code-block:: Python\n')
-    print("""    def decorator(func):
-        \\\"""very basic function decorator\\\"""
-        print(f"\t-> inside decorator function...")
-        return func
+    print("""    class Wrapper:
+        \\\"""a wrapper class\\\"""
+        def __init__(self,obj):
+            self.embedded_obj = obj
+        def __getattr__(self,attr):
+            print("__getattr__: " + attr)
+            return getattr(self.embedded_obj,attr)
         """)
-    print("""    @decorator
-    def myfunction(param_a,param_b):
-        \\\"""decorated function\\\"""
-        print(f"\t-> inside myfunction({param_a},{param_b})")
-        """)
-    print("Decoration rebinds the function name and it's equivalent to:\n")
-    print(">>> myfunction = decorator(myfunction)")
-    def decorator(func):
-        """very basic function decorator"""
-        print(f"\t-> inside decorator function...")
-        return func
-    @decorator
-    def myfunction(param_a,param_b):
-        """decorated function"""
-        print(f"\t-> inside myfunction({param_a},{param_b})")
-    print("\n>>> myfunction(4,5)")
-    myfunction(4,5)
+    print(">>> a_wrapper = Wrapper([1,2,3])")
+    a_wrapper = Wrapper([1,2,3])
+    print("\n>>> a_wrapper.append(4)")
+    a_wrapper.append(4)
+    print("\n>>> print(a_wrapper.embedded_obj)")
+    print(a_wrapper.embedded_obj)
     print(80*'-')

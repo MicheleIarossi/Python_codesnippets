@@ -1,4 +1,4 @@
-##    Python codesnippets - Implementation of the singleton pattern via function attributes
+##    Python codesnippets - Call tracer with a class descriptor used as decorator
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,142 +19,240 @@
 #
 
 """
-Implementation of the singleton pattern via function attributes
-===============================================================
+Call tracer with a class descriptor used as decorator
+=====================================================
 
 :py:mod:`codesnippets.feature105`
 ---------------------------------
 
-In the singleton pattern only one instance of a class is allowed.
-
-The following decorator stores the single instance as a function attribute:
+This is a complex example combining more Python features:
 
 .. code-block:: Python
 
-    def singleton(a_class):
-        \"""singleton decorator\"""
-        def singleton_wrapper(*args,**kwargs):
-            \"""creates an instance and throws exception\"""
-            print(f"	-> Decorating class {a_class.__name__}")
-            if singleton_wrapper.instance == None:
-                print(f"	-> Creating single instance of class {a_class.__name__}")
-                singleton_wrapper.instance = a_class(*args,**kwargs)
-            else:
-                exc_str = f"Class {a_class.__name__} is a singleton class"
-                raise RuntimeError(exc_str)
-            return singleton_wrapper.instance
-        singleton_wrapper.instance = None
-        return singleton_wrapper
+    class DescTracer:
+        \"""a function or method descriptor tracer class\"""
+        def __init__(self,func_or_method):
+            print(f"	-> DescTracer.__init__() run at decoration time")
+            self.calls = 0
+            self.func_or_method = func_or_method
+        def __call__(self,*args,**kwargs):
+            print(f"	-> DescTracer.__call__() run at function or method call")
+            self.calls += 1
+            print(f"	-> total function calls of {self.func_or_method.__name__}: {self.calls}")
+            return self.func_or_method(*args,**kwargs)
+        def __get__(self,instance,owner):
+            print(f"	-> DescTracer.__get__() run on method attribute fetch of instance of class"
+                  f" {instance.__class__.__name__}")
+            return Wrapper(self,instance)
 
-Example of a decorated class
+    class Wrapper:
+        \"""Wrapper class needed for storing the instance whose method call must be counted
+           and for routing back the call to the descriptor tracer
+        \"""
+        def __init__(self,desc_tracer,instance):
+            print(f"	-> Wrapper.__init__() run at wrapper creation")
+            self.desc_tracer = desc_tracer
+            self.instance = instance
+        def __call__(self,*args,**kwargs):
+            print(f"	-> Wrapper.__call__() run at wrapper call")
+            return self.desc_tracer(self.instance,*args,**kwargs
 
->>> @singleton
-    class Car():
-        \"""a car class\"""
+Example of function decoration:
+
+>>> @DescTracer
+    def my_func(param_a,param_b)
+        \"""my decorated function\"""
+        print(f"	-> inside my_func({param_a},{param_b})...")
+	-> DescTracer.__init__() run at decoration time
+
+When ``my_func(param_a,param_b)`` is decorated, it gets an instance of the ``DescTracer`` class.
+Later on when the function is called, it is the ``__call__()`` method of the descriptor tracer
+class that is actually called, and the counter is incremented.
+
+>>> my_func(2,3)
+	-> DescTracer.__call__() run at function or method call
+	-> total function calls of my_func: 1
+	-> inside my_func(2,3)...
+
+>>> my_func(6,7)
+	-> DescTracer.__call__() run at function or method call
+	-> total function calls of my_func: 2
+	-> inside my_func(6,7)...
+
+Example of class method decoration:
+
+>>> class MyClass:
+        \"""a class\"""
         def __init__(self,name):
-            print("	-> Creating an instance of Car({repr(name)})")
+            print(f"	-> inside MyClass.__init__()")
             self._name = name
-        def __repr__(self):
-            return f"Car(name={repr(self._name)})"
-	-> Decorating class Car
+        @DescTracer
+        def my_method(self):
+            \"""my decorated method\"""
+            print(f"	-> inside MyClass.my_method()")
+	-> DescTracer.__init__() run at decoration time
 
-Creation of a single instance is allowed:
+When ``my_method()`` is decorated, it is bound to the descriptor class.
+Later on when the method is invoked on the instance, an attribute fetch
+happens and the ``__get__()`` method of the descriptor class is triggered.
+The ``__get__()`` method returns an instance of the ``Wrapper`` class
+storing a pointer to the instance of the descriptor class and
+to the instance of ``MyClass``.
 
->>> try:
-        bmw_5_limo = Car("BMW 5 Limousine")
-    except RuntimeError as exc:
-        print(exc.__class__.__name__ + ': ' + str(exc))
-	-> Creating single instance of class Car
-	-> Creating an instance of Car('BMW 5 Limousine')
+Next is the function call, but now it is actually a function
+call done on the instance of the ``Wrapper`` class, and the
+``__call__()`` method of the ``Wrapper`` class is called.
 
->>> bmw_5_limo
-Car(name='BMW 5 Limousine')
+The latter method reroutes the call to the instance of the descriptor class
+by doing a function call, which triggers the method ``__call__()``
+of the descriptor class which finally calls the original method
+applied on the instance of ``MyClass``.
 
-Creation of a second instance is NOT allowed:
+>>> my_obj_1 = MyClass('Star')
+	-> inside MyClass.__init__()
 
->>> try:
-        audi_a6_limo = Car("AUDI A6 Limousine")
-    except RuntimeError as exc:
-        print(exc.__class__.__name__ + ': ' + str(exc))
-RuntimeError: Class Car is a singleton class
+>>> my_obj_1.my_method()
+	-> DescTracer.__get__() run on method attribute fetch of instance of class MyClass
+	-> Wrapper.__init__() run at wrapper creation
+	-> Wrapper.__call__() run at wrapper call
+	-> DescTracer.__call__() run at function or method call
+	-> total function calls of my_method: 1
+	-> inside MyClass.my_method()
+
+>>> my_obj_1.my_method()
+	-> DescTracer.__get__() run on method attribute fetch of instance of class MyClass
+	-> Wrapper.__init__() run at wrapper creation
+	-> Wrapper.__call__() run at wrapper call
+	-> DescTracer.__call__() run at function or method call
+	-> total function calls of my_method: 2
+	-> inside MyClass.my_method()
 """
 
 def feature105():
-    """Implementation of the singleton pattern via function attributes"""
-    print('Implementation of the singleton pattern via function attributes')
-    print('===============================================================\n')
+    """Call tracer with a class descriptor used as decorator"""
+    print('Call tracer with a class descriptor used as decorator')
+    print('=====================================================\n')
     print(':py:mod:`codesnippets.feature105`')
     print('---------------------------------\n')
-    print('In the singleton pattern only one instance of a class is allowed.\n')
-    print("The following decorator stores the single instance as a function attribute:\n")
+    print('This is a complex example combining more Python features:\n')
     print('.. code-block:: Python\n')
-    print("""    def singleton(a_class):
-        \\\"""singleton decorator\\\"""
-        def singleton_wrapper(*args,**kwargs):
-            \\\"""creates an instance and throws exception\\\"""
-            print(f"\t-> Decorating class {a_class.__name__}")
-            if singleton_wrapper.instance == None:
-                print(f"\t-> Creating single instance of class {a_class.__name__}")
-                singleton_wrapper.instance = a_class(*args,**kwargs)
-            else:
-                exc_str = f"Class {a_class.__name__} is a singleton class"
-                raise RuntimeError(exc_str)
-            return singleton_wrapper.instance
-        singleton_wrapper.instance = None
-        return singleton_wrapper
+    print("""    class DescTracer:
+        \\\"""a function or method descriptor tracer class\\\"""
+        def __init__(self,func_or_method):
+            print(f"\t-> DescTracer.__init__() run at decoration time")
+            self.calls = 0
+            self.func_or_method = func_or_method
+        def __call__(self,*args,**kwargs):
+            print(f"\t-> DescTracer.__call__() run at function or method call")
+            self.calls += 1
+            print(f"\t-> total function calls of {self.func_or_method.__name__}: {self.calls}")
+            return self.func_or_method(*args,**kwargs)
+        def __get__(self,instance,owner):
+            print(f"\t-> DescTracer.__get__() run on method attribute fetch of instance of class"
+                  f" {instance.__class__.__name__}")
+            return Wrapper(self,instance)
         """)
-    def singleton(a_class):
-        """singleton decorator"""
-        print(f"\t-> Decorating class {a_class.__name__}")
-        def singleton_wrapper(*args,**kwargs):
-            """creates an instance and throws exception"""
-            if singleton_wrapper.instance is None:
-                print(f"\t-> Creating single instance of class {a_class.__name__}")
-                singleton_wrapper.instance = a_class(*args,**kwargs)
-            else:
-                exc_str = f"Class {a_class.__name__} is a singleton class"
-                raise RuntimeError(exc_str)
-            return singleton_wrapper.instance
-        singleton_wrapper.instance = None
-        return singleton_wrapper
-    print("Example of a decorated class\n")
-    print(""">>> @singleton
-    class Car():
-        \\\"""a car class\\\"""
+    print("""    class Wrapper:
+        \\\"""Wrapper class needed for storing the instance whose method call must be counted
+           and for routing back the call to the descriptor tracer
+        \\\"""
+        def __init__(self,desc_tracer,instance):
+            print(f"\t-> Wrapper.__init__() run at wrapper creation")
+            self.desc_tracer = desc_tracer
+            self.instance = instance
+        def __call__(self,*args,**kwargs):
+            print(f"\t-> Wrapper.__call__() run at wrapper call")
+            return self.desc_tracer(self.instance,*args,**kwargs
+        """)
+    class DescTracer:
+        """a function or method descriptor tracer class"""
+        def __init__(self,func_or_method):
+            print(f"\t-> DescTracer.__init__() run at decoration time")
+            self.calls = 0
+            self.func_or_method = func_or_method
+        def __call__(self,*args,**kwargs):
+            print(f"\t-> DescTracer.__call__() run at function or method call")
+            self.calls += 1
+            print(f"\t-> total function calls of {self.func_or_method.__name__}: {self.calls}")
+            return self.func_or_method(*args,**kwargs)
+        def __get__(self,instance,owner):
+            print(f"\t-> DescTracer.__get__() run on method attribute fetch of instance of class"
+                  f" {instance.__class__.__name__}")
+            return Wrapper(self,instance)
+    class Wrapper:
+        """Wrapper class needed for storing the instance whose method call must be counted
+           and for routing back the call to the descriptor tracer
+        """
+        def __init__(self,desc_tracer,instance):
+            print(f"\t-> Wrapper.__init__() run at wrapper creation")
+            self.desc_tracer = desc_tracer
+            self.instance = instance
+        def __call__(self,*args,**kwargs):
+            print(f"\t-> Wrapper.__call__() run at wrapper call")
+            return self.desc_tracer(self.instance,*args,**kwargs)
+
+    print("Example of function decoration:\n")
+    print(""">>> @DescTracer
+    def my_func(param_a,param_b):
+        \\\"""my decorated function\\\"""
+        print(f"\t-> inside my_func({param_a},{param_b})...")""")
+    @DescTracer
+    def my_func(param_a,param_b):
+        """my decorated function"""
+        print(f"\t-> inside my_func({param_a},{param_b})...")
+    print()
+    print("When ``my_func(param_a,param_b)`` is decorated, it gets an instance of"
+          " the ``DescTracer`` class.")
+    print("Later on when the function is called, it is the ``__call__()``"
+          " method of the descriptor tracer")
+    print("class that is actually called, and the counter is incremented.")
+    print()
+    print(">>> my_func(2,3)")
+    my_func(2,3)
+    print()
+    print(">>> my_func(6,7)")
+    my_func(6,7)
+    print()
+    print("Example of class method decoration:\n")
+    print(""">>> class MyClass:
+        \\\"""a class\\\"""
         def __init__(self,name):
-            print("\t-> Creating an instance of Car({repr(name)})")
+            print(f"\t-> inside MyClass.__init__()")
             self._name = name
-        def __repr__(self):
-            return f"Car(name={repr(self._name)})" """)
-    @singleton
-    class Car():
-        """a car class"""
+        @DescTracer
+        def my_method(self):
+            \\\"""my decorated method\\\"""
+            print(f"\t-> inside MyClass.my_method()")""")
+    class MyClass:
+        """a class"""
         def __init__(self,name):
-            print(f"\t-> Creating an instance of Car({repr(name)})")
+            print(f"\t-> inside MyClass.__init__()")
             self._name = name
-        def __repr__(self):
-            return f"Car(name={repr(self._name)})"
-    print("\nCreation of a single instance is allowed:")
+        @DescTracer
+        def my_method(self):
+            """my decorated method"""
+            print(f"\t-> inside MyClass.my_method()")
     print()
-    print(""">>> try:
-        bmw_5_limo = Car("BMW 5 Limousine")
-    except RuntimeError as exc:
-        print(exc.__class__.__name__ + ': ' + str(exc))""")
-    try:
-        bmw_5_limo = Car("BMW 5 Limousine")
-    except RuntimeError as exc:
-        print(exc.__class__.__name__ + ': ' + str(exc))
-    print("\n>>> bmw_5_limo")
-    print(bmw_5_limo)
+    print("When ``my_method()`` is decorated, it is bound to the descriptor class.")
+    print("Later on when the method is invoked on the instance, an attribute fetch")
+    print("happens and the ``__get__()`` method of the descriptor class is triggered.")
+    print("The ``__get__()`` method returns an instance of the ``Wrapper`` class")
+    print("storing a pointer to the instance of the descriptor class and")
+    print("to the instance of ``MyClass``.\n")
+    print("Next is the function call, but now it is actually a function")
+    print("call done on the instance of the ``Wrapper`` class, and the")
+    print("``__call__()`` method of the ``Wrapper`` class is called.\n")
+    print("The latter method reroutes the call to the instance of the descriptor class")
+    print("by doing a function call, which triggers the method ``__call__()``")
+    print("of the descriptor class which finally calls the original method")
+    print("applied on the instance of ``MyClass``.")
     print()
-    print("Creation of a second instance is NOT allowed:")
+    print(">>> my_obj_1 = MyClass('Star')")
+    my_obj_1 = MyClass('Star')
     print()
-    print(""">>> try:
-        audi_a6_limo = Car("AUDI A6 Limousine")
-    except RuntimeError as exc:
-        print(exc.__class__.__name__ + ': ' + str(exc))""")
-    try:
-        audi_a6_limo = Car("AUDI A6 Limousine")
-    except RuntimeError as exc:
-        print(exc.__class__.__name__ + ': ' + str(exc))
+    print(">>> my_obj_1.my_method()")
+    my_obj_1.my_method()
+    print()
+    print(">>> my_obj_1.my_method()")
+    my_obj_1.my_method()
     print(80*'-')

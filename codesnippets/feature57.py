@@ -1,4 +1,4 @@
-##    Python codesnippets - Module imports with importlib
+##    Python codesnippets - Module attribute access
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,38 +19,63 @@
 #
 
 """
-Module imports with ``importlib``
-=================================
+Module attribute access
+========================
 
 :py:mod:`codesnippets.feature57`
 --------------------------------
 
-The library ``importlib`` lets us import modules via its function ``import_module``:
+There are several ways to access module attibutes.
 
->>> import importlib
+>>> import module1
 
->>> modname = 'module1'
-
->>> module1 = importlib.import_module(modname)
+Via direct module attribute:
 
 >>> module1.A_LIST
 [4, 5, 6]
+
+Via module dictionary attribute:
+
+>>> module1.__dict__['A_LIST']
+[4, 5, 6]
+
+Via ``sys.modules``:
+
+>>> import sys
+>>> sys.modules['module1'].A_LIST
+[4, 5, 6]
+
+Via the ``getattr`` built-in function:
+
+>>> getattr(module1, 'A_LIST')
+[4, 5, 6]
+
+.. seealso:: :doc:`Module import information<feature50>`
 """
 
-import importlib
+import sys
+import module1
 
 def feature57():
-    """Module imports with importlib"""
-    print('Module imports with ``importlib``')
-    print('=================================\n')
+    """Module attribute access"""
+    print('Module attribute access')
+    print('========================\n')
     print(':py:mod:`codesnippets.feature57`')
     print('--------------------------------\n')
-    print('The library ``importlib`` lets us import modules via its function ``import_module``:\n')
-    print(">>> import importlib\n")
-    print(">>> modname = 'module1'\n")
-    modname = 'module1'
-    print(">>> module1 = importlib.import_module(modname)\n")
-    module1 = importlib.import_module(modname)
+    print('There are several ways to access module attibutes.\n')
+    print(">>> import module1")
+    print('\nVia direct module attribute:\n')
     print(">>> module1.A_LIST")
     print(module1.A_LIST)
+    print('\nVia module dictionary attribute:\n')
+    print(">>> module1.__dict__['A_LIST']")
+    print(module1.__dict__['A_LIST'])
+    print('\nVia ``sys.modules``:\n')
+    print(">>> import sys")
+    print(">>> sys.modules['module1'].A_LIST")
+    print(sys.modules['module1'].A_LIST)
+    print('\nVia the ``getattr`` built-in function:\n')
+    print(">>> getattr(module1, 'A_LIST')")
+    print(getattr(module1, 'A_LIST'))
+    print('\n.. seealso:: :doc:`Module import information<feature50>`')
     print(80*'-')

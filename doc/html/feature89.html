@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Unicode text &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>ASCII text &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="String and byte literals" href="feature90.html" />
-    <link rel="prev" title="ASCII text" href="feature88.html" /> 
+    <link rel="next" title="Unicode text" href="feature90.html" />
+    <link rel="prev" title="String type conversions" href="feature88.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature90.html" title="String and byte literals"
+          <a href="feature90.html" title="Unicode text"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature88.html" title="ASCII text"
+          <a href="feature88.html" title="String type conversions"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Unicode text</a></li> 
+        <li class="nav-item nav-item-this"><a href="">ASCII text</a></li> 
       </ul>
     </div>  
 
@@ -45,45 +45,28 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature89"></span><div class="section" id="unicode-text">
-<h1>Unicode text<a class="headerlink" href="#unicode-text" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature89"></span><div class="section" id="ascii-text">
+<h1>ASCII text<a class="headerlink" href="#ascii-text" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature89">
 <h2><a class="reference internal" href="#module-codesnippets.feature89" title="codesnippets.feature89"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature89</span></code></a><a class="headerlink" href="#codesnippets-feature89" title="Permalink to this headline">¶</a></h2>
-<p>Unicode escapes can be used.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>ASCII encoding works only if 7 bit representation is possible!</p>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_str</span> <span class="o">=</span> <span class="s1">&#39;Óè&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a_str</span>
-<span class="go">Óè</span>
+<p>ASCII uses only 7 bits for the encoding.
+ASCII is supported by Latin-1 and UTF-8.
+Latin-1 uses 8 bits, and UTF-8/16/32 uses 8, 16 or 32 bits.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_str</span> <span class="o">=</span> <span class="s1">&#39;ABC&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">a_str</span><span class="p">)</span>
+<span class="go">3</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">a_str</span><span class="p">)</span>
-<span class="go">2</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_str_enc</span> <span class="o">=</span> <span class="n">a_str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">a_str_enc</span><span class="p">)</span>
-<span class="go">[195, 147, 195, 168]</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">a_str_enc</span><span class="p">)</span>
-<span class="go">4</span>
-</pre></div>
-</div>
-<p>ASCII encoding fails in this case because 7 bits are not enough!</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">a_str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">))</span>
-<span class="go">UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters in position 0-1: ordinal not in range(128)</span>
+<span class="go">[65, 66, 67]</span>
 </pre></div>
 </div>
-<p>Decoding provides the original string:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_str_enc</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-<span class="go">Óè</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a_str</span> <span class="o">==</span> <span class="n">a_str_enc</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-<span class="go">True</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">a_str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;latin-1&#39;</span><span class="p">))</span>
+<span class="go">[65, 66, 67]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">a_str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+<span class="go">[65, 66, 67]</span>
 </pre></div>
 </div>
 </div>
@@ -98,7 +81,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Unicode text</a><ul>
+<li><a class="reference internal" href="#">ASCII text</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature89"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature89</span></code></a></li>
 </ul>
 </li>
@@ -106,10 +89,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature88.html"
-                        title="previous chapter">ASCII text</a></p>
+                        title="previous chapter">String type conversions</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature90.html"
-                        title="next chapter">String and byte literals</a></p>
+                        title="next chapter">Unicode text</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -141,13 +124,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature90.html" title="String and byte literals"
+          <a href="feature90.html" title="Unicode text"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature88.html" title="ASCII text"
+          <a href="feature88.html" title="String type conversions"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Unicode text</a></li> 
+        <li class="nav-item nav-item-this"><a href="">ASCII text</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

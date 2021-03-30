@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Loop with enumerate() &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Dictionary construction with zip() &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Side effects in loops" href="feature25.html" />
-    <link rel="prev" title="Dictionary construction with zip()" href="feature23.html" /> 
+    <link rel="next" title="Loop with enumerate()" href="feature25.html" />
+    <link rel="prev" title="Parallel traversals with zip()" href="feature23.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature25.html" title="Side effects in loops"
+          <a href="feature25.html" title="Loop with enumerate()"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature23.html" title="Dictionary construction with zip()"
+          <a href="feature23.html" title="Parallel traversals with zip()"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Loop with <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code></a></li> 
+        <li class="nav-item nav-item-this"><a href="">Dictionary construction with <code class="docutils literal notranslate"><span class="pre">zip()</span></code></a></li> 
       </ul>
     </div>  
 
@@ -45,30 +45,24 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature24"></span><div class="section" id="loop-with-enumerate">
-<h1>Loop with <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code><a class="headerlink" href="#loop-with-enumerate" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature24"></span><div class="section" id="dictionary-construction-with-zip">
+<h1>Dictionary construction with <code class="docutils literal notranslate"><span class="pre">zip()</span></code><a class="headerlink" href="#dictionary-construction-with-zip" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature24">
 <h2><a class="reference internal" href="#module-codesnippets.feature24" title="codesnippets.feature24"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature24</span></code></a><a class="headerlink" href="#codesnippets-feature24" title="Permalink to this headline">¶</a></h2>
-<p>The built-in <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code> gives the offset and the item to use:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span><span class="s1">&#39;def&#39;</span><span class="p">,</span><span class="s1">&#39;ghi&#39;</span><span class="p">]</span>
+<p>Uses dictionary comprehension:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">key_lst</span>   <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span><span class="s1">&#39;def&#39;</span><span class="p">,</span><span class="s1">&#39;ghi&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">value_lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="p">(</span><span class="n">i_idx</span><span class="p">,</span><span class="n">s_str</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a_lst</span><span class="p">):</span>
-<span class="go">        print(i_idx,s_str)</span>
-<span class="go">0 abc</span>
-<span class="go">1 def</span>
-<span class="go">2 ghi</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">a_key</span><span class="p">:</span><span class="n">a_value</span> <span class="k">for</span> <span class="p">(</span><span class="n">a_key</span><span class="p">,</span><span class="n">a_value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">key_lst</span><span class="p">,</span><span class="n">value_lst</span><span class="p">)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_dict</span>
+<span class="go">{&#39;abc&#39;: 2, &#39;def&#39;: 5, &#39;ghi&#39;: 9}</span>
 </pre></div>
 </div>
-<p>A start value can be also given, e.g. starting from 1 instead of 0:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span><span class="s1">&#39;def&#39;</span><span class="p">,</span><span class="s1">&#39;ghi&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="p">(</span><span class="n">i_idx</span><span class="p">,</span><span class="n">s_str</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a_lst</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span>
-<span class="go">        print(i_idx,s_str)</span>
-<span class="go">1 abc</span>
-<span class="go">2 def</span>
-<span class="go">3 ghi</span>
+<p>This is the same as:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">key_lst</span><span class="p">,</span><span class="n">value_lst</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_dict</span>
+<span class="go">{&#39;abc&#39;: 2, &#39;def&#39;: 5, &#39;ghi&#39;: 9}</span>
 </pre></div>
 </div>
 </div>
@@ -83,7 +77,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Loop with <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code></a><ul>
+<li><a class="reference internal" href="#">Dictionary construction with <code class="docutils literal notranslate"><span class="pre">zip()</span></code></a><ul>
 <li><a class="reference internal" href="#codesnippets-feature24"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature24</span></code></a></li>
 </ul>
 </li>
@@ -91,10 +85,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature23.html"
-                        title="previous chapter">Dictionary construction with <code class="docutils literal notranslate"><span class="pre">zip()</span></code></a></p>
+                        title="previous chapter">Parallel traversals with <code class="docutils literal notranslate"><span class="pre">zip()</span></code></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature25.html"
-                        title="next chapter">Side effects in loops</a></p>
+                        title="next chapter">Loop with <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code></a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -126,13 +120,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature25.html" title="Side effects in loops"
+          <a href="feature25.html" title="Loop with enumerate()"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature23.html" title="Dictionary construction with zip()"
+          <a href="feature23.html" title="Parallel traversals with zip()"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Loop with <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code></a></li> 
+        <li class="nav-item nav-item-this"><a href="">Dictionary construction with <code class="docutils literal notranslate"><span class="pre">zip()</span></code></a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

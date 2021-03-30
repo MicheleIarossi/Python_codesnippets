@@ -1,4 +1,4 @@
-##    Python codesnippets - Constructor calls with multiple inheritance
+##    Python codesnippets - Usage of super() in diamond class trees
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,14 +19,16 @@
 #
 
 """
-Constructor calls with multiple inheritance
-===========================================
+Usage of super() in diamond class trees
+=======================================
 
 :py:mod:`codesnippets.feature83`
 --------------------------------
 
-If no constructor is provided, Python calls the lowest and leftmost
-constructor that is present in the inheritance hierarchy!
+Each ``super()`` call selects the method from a next class that implements the
+requested method following it in the MRO ordering of the class of the
+``self`` subject of the method call. This selection process chooses
+the first class following the calling class having the requested method.
 
 Given the following hierarchy of classes:
 
@@ -43,6 +45,7 @@ Given the following hierarchy of classes:
         \"""a derived class\"""
         def __init__(self):
             print('	-> ClassB.__init__')
+            super().__init__()
         def __repr__(self):
             return 'ClassB()'
 
@@ -50,37 +53,63 @@ Given the following hierarchy of classes:
         \"""another derived class\"""
         def __init__(self):
             print('	-> ClassC.__init__')
+            super().__init__()
         def __repr__(self):
             return 'ClassC()'
 
-    class ClassD(ClassB):
-        \"""yet another derived class\"""
+    class ClassD(ClassB,ClassC):
+        \"""multiple inheritance class\"""
         def __init__(self):
             print('	-> ClassD.__init__')
+            super().__init__()
         def __repr__(self):
             return 'ClassD()'
 
-    class ClassE(ClassC,ClassD):
-        \"""multiple inheritance class\"""
-        def __repr__(self):
-            return 'ClassE()'
+and an instance of ``ClassD``:
 
-and an instance of ``ClassE``:
-
->>> obj_e = ClassE()
+>>> obj_d = ClassD()
+	-> ClassD.__init__
+	-> ClassB.__init__
 	-> ClassC.__init__
+	-> ClassA.__init__
 
-Notice that only the construtor of the ``ClassC`` is called!
+>>> ClassD.__mro__
+(<class 'codesnippets.feature83.feature83.<locals>.ClassD'>,
+<class 'codesnippets.feature83.feature83.<locals>.ClassB'>,
+<class 'codesnippets.feature83.feature83.<locals>.ClassC'>,
+<class 'codesnippets.feature83.feature83.<locals>.ClassA'>,
+<class 'object'>)
+
+When the constructor of ``classD`` is called, ``self`` is an instance of the ``classD``, so
+the MRO of the ``classD`` is considered as printed above, in all the calls.
+
+When the constructor of ``classD`` calls ``super().__init__()`` then the next class in
+the MRO following the ``classD`` that has an ``__init__`` function is called.
+In this case it is the ``classB``.
+
+When the constructor of the ``classB`` calls ``super().__init__()`` then the next class in
+the MRO following the ``classB`` that has an ``__init__`` function is called.
+In this case it is the ``classC``.
+
+When the constructor of the ``classC`` calls ``super().__init__()`` then the next class in
+the MRO following the ``classC`` that has an ``__init__`` function is called.
+In this case it is the ``classA``.
+
+The constructor of the ``classA`` has no ``super`` call and so the chain stops.
+
+.. seealso:: :doc:`Method resolution order (MRO)<feature78>`
 """
 
 def feature83():
-    """Constructor calls with multiple inheritance"""
-    print('Constructor calls with multiple inheritance')
-    print('===========================================\n')
+    """Usage of super() in diamond class trees"""
+    print('Usage of super() in diamond class trees')
+    print('=======================================\n')
     print(':py:mod:`codesnippets.feature83`')
     print('--------------------------------\n')
-    print("If no constructor is provided, Python calls the lowest and leftmost")
-    print("constructor that is present in the inheritance hierarchy!\n")
+    print("Each ``super()`` call selects the method from a next class that implements the")
+    print("requested method following it in the MRO ordering of the class of the")
+    print("``self`` subject of the method call. This selection process chooses")
+    print("the first class following the calling class having the requested method.\n")
     print('Given the following hierarchy of classes:\n')
     print('.. code-block:: Python\n')
     print("""    class ClassA:
@@ -101,6 +130,7 @@ def feature83():
         \\\"""a derived class\\\"""
         def __init__(self):
             print('\t-> ClassB.__init__')
+            super().__init__()
         def __repr__(self):
             return 'ClassB()'
         """)
@@ -108,6 +138,7 @@ def feature83():
         """a derived class"""
         def __init__(self):
             print('\t-> ClassB.__init__')
+            super().__init__()
         def __repr__(self):
             """overloads repr operator"""
             return 'ClassB()'
@@ -115,6 +146,7 @@ def feature83():
         \\\"""another derived class\\\"""
         def __init__(self):
             print('\t-> ClassC.__init__')
+            super().__init__()
         def __repr__(self):
             return 'ClassC()'
         """)
@@ -122,35 +154,47 @@ def feature83():
         """another derived class"""
         def __init__(self):
             print('\t-> ClassC.__init__')
+            super().__init__()
         def __repr__(self):
             """overloads repr operator"""
             return 'ClassC()'
-    print("""    class ClassD(ClassB):
-        \\\"""yet another derived class\\\"""
-        def __init__(self):
-            print('\t-> ClassD.__init__')
-        def __repr__(self):
-            return 'ClassD()'
-        """)
-    class ClassD(ClassB):
-        """yet another derived class"""
-        def __init__(self):
-            print('\t-> ClassD.__init__')
-        def __repr__(self):
-            """overloads repr operator"""
-            return 'ClassD()'
-    print("""    class ClassE(ClassC,ClassD):
+    print("""    class ClassD(ClassB,ClassC):
         \\\"""multiple inheritance class\\\"""
+        def __init__(self):
+            print('\t-> ClassD.__init__')
+            super().__init__()
         def __repr__(self):
-            return 'ClassE()'
+            return 'ClassD()'
         """)
-    class ClassE(ClassC,ClassD):
+    class ClassD(ClassB,ClassC):
         """multiple inheritance class"""
+        def __init__(self):
+            print('\t-> ClassD.__init__')
+            super().__init__()
         def __repr__(self):
             """overloads repr operator"""
-            return 'ClassE()'
-    print('and an instance of ``ClassE``:\n')
-    print('>>> obj_e = ClassE()')
-    obj_e = ClassE()
-    print('\nNotice that only the construtor of the ``ClassC`` is called!')
+            return 'ClassD()'
+    print('and an instance of ``ClassD``:\n')
+    print('>>> obj_d = ClassD()')
+    obj_d = ClassD()
+    print('\n>>> ClassD.__mro__')
+    print(ClassD.__mro__)
+    print("\nWhen the constructor of ``classD`` is called, ``self`` is "
+          "an instance of the ``classD``, so")
+    print("the MRO of the ``classD`` is considered as printed above, in all the calls.\n")
+    print("When the constructor of ``classD`` calls ``super().__init__()`` then "
+          "the next class in")
+    print("the MRO following the ``classD`` that has an ``__init__`` function"
+          " is called.")
+    print("In this case it is the ``classB``.\n")
+    print("When the constructor of the ``classB`` calls ``super().__init__()`` then"
+          "the next class in")
+    print("the MRO following the ``classB`` that has an ``__init__`` function is called.")
+    print("In this case it is the ``classC``.\n")
+    print("When the constructor of the ``classC`` calls ``super().__init__()`` then"
+          " the next class in")
+    print("the MRO following the ``classC`` that has an ``__init__`` function is called.")
+    print("In this case it is the ``classA``.\n")
+    print("The constructor of the ``classA`` has no ``super`` call and so the chain stops.")
+    print('\n.. seealso:: :doc:`Method resolution order (MRO)<feature78>`')
     print(80*'-')

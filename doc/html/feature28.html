@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Function definitions &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>List comprehension on a file &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Accessing global variables" href="feature29.html" />
-    <link rel="prev" title="List comprehension on a file" href="feature27.html" /> 
+    <link rel="next" title="Function definitions" href="feature29.html" />
+    <link rel="prev" title="The iteration protocol" href="feature27.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature29.html" title="Accessing global variables"
+          <a href="feature29.html" title="Function definitions"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature27.html" title="List comprehension on a file"
+          <a href="feature27.html" title="The iteration protocol"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Function definitions</a></li> 
+        <li class="nav-item nav-item-this"><a href="">List comprehension on a file</a></li> 
       </ul>
     </div>  
 
@@ -45,25 +45,27 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature28"></span><div class="section" id="function-definitions">
-<h1>Function definitions<a class="headerlink" href="#function-definitions" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature28"></span><div class="section" id="list-comprehension-on-a-file">
+<h1>List comprehension on a file<a class="headerlink" href="#list-comprehension-on-a-file" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature28">
 <h2><a class="reference internal" href="#module-codesnippets.feature28" title="codesnippets.feature28"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature28</span></code></a><a class="headerlink" href="#codesnippets-feature28" title="Permalink to this headline">¶</a></h2>
-<p>Functions are assigned at runtime when the definition header is run!</p>
-<p>The following is valid code:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cond</span> <span class="o">=</span> <span class="kc">False</span>
+<p>Opens, reads the file line by line and
+closes it too (garbage collected because the stream is not assigned):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">a_line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a_line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;examples.py&#39;</span><span class="p">)]</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">cond</span><span class="p">:</span>
-<span class="go">        def func():</span>
-<span class="go">               print(&#39;Function for True&#39;)</span>
-<span class="go">    else:</span>
-<span class="go">        def func():</span>
-<span class="go">               print(&#39;Function for False&#39;)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">()</span>
-<span class="go">Function for False</span>
+<p>First lines read from the file <code class="docutils literal notranslate"><span class="pre">examples.py</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+<span class="go">##    Python codesnippets runner</span>
+<span class="go">##    Copyright (C) 2021  Michele Iarossi</span>
+<span class="go">##</span>
+<span class="go">##    This program is free software: you can redistribute it and/or modify</span>
+<span class="go">##    it under the terms of the GNU General Public License as published by</span>
+<span class="go">##    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="go">##    (at your option) any later version.</span>
+<span class="go">##</span>
+<span class="go">##    This program is distributed in the hope that it will be useful,</span>
+<span class="go">##    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
 </pre></div>
 </div>
 </div>
@@ -78,7 +80,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Function definitions</a><ul>
+<li><a class="reference internal" href="#">List comprehension on a file</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature28"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature28</span></code></a></li>
 </ul>
 </li>
@@ -86,10 +88,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature27.html"
-                        title="previous chapter">List comprehension on a file</a></p>
+                        title="previous chapter">The iteration protocol</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature29.html"
-                        title="next chapter">Accessing global variables</a></p>
+                        title="next chapter">Function definitions</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -121,13 +123,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature29.html" title="Accessing global variables"
+          <a href="feature29.html" title="Function definitions"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature27.html" title="List comprehension on a file"
+          <a href="feature27.html" title="The iteration protocol"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Function definitions</a></li> 
+        <li class="nav-item nav-item-this"><a href="">List comprehension on a file</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -1,4 +1,4 @@
-##    Python codesnippets - Module attribute access
+##    Python codesnippets - Relative import from a module package
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,63 +19,69 @@
 #
 
 """
-Module attribute access
-========================
+Relative import from a module package
+=====================================
 
 :py:mod:`codesnippets.feature56`
 --------------------------------
 
-There are several ways to access module attibutes.
+Intrapackage imports work if the relative import syntax is used.
 
->>> import module1
+In the following the ``.`` is the current working directory (CWD):
 
-Via direct module attribute:
+``./tools.py`` is the ``tools`` module in the CWD; defines ``MY_X = 1``
 
->>> module1.A_LIST
-[4, 5, 6]
+``./pkg/tools.py`` is the ``tools`` module in the ``./pkg`` folder; defines ``MY_X = 2``
 
-Via module dictionary attribute:
+``./pkg/utilr.py`` is the ``utilr``  module in the ``./pkg`` folder importing ``tools``
+with relative syntax
 
->>> module1.__dict__['A_LIST']
-[4, 5, 6]
+The question is which ``tools`` module gets imported when the next import statement is run:
 
-Via ``sys.modules``:
+>>> import pkg.utilr
 
->>> import sys
->>> sys.modules['module1'].A_LIST
-[4, 5, 6]
+	This is the ``utilr`` module inside ``./pkg`` .
 
-Via the ``getattr`` built-in function:
+	In the following code the ``tools`` module is imported, but
+	**relative** import takes place here:
+	the ``tools`` module from the ``./pkg`` directory is imported,
+	not the one in the CWD ``./tool.py`` !
 
->>> getattr(module1, 'A_LIST')
-[4, 5, 6]
+		.. code-block:: Python
 
-.. seealso:: :doc:`Module import information<feature49>`
+			from . import tools    # relative import syntax
+
+		This is the ``tools`` module inside ``./pkg``
+
+		.. code-block:: Python
+
+			MY_X = 2
+
+>>> pkg.utilr.tools.MY_X
+2
+
+.. seealso:: :doc:`Absolute import from a module package<feature55>`
 """
 
-import sys
-import module1
+import importlib
 
 def feature56():
-    """Module attribute access"""
-    print('Module attribute access')
-    print('========================\n')
+    """Relative import from a module package"""
+    print('Relative import from a module package')
+    print('=====================================\n')
     print(':py:mod:`codesnippets.feature56`')
     print('--------------------------------\n')
-    print('There are several ways to access module attibutes.\n')
-    print(">>> import module1")
-    print('\nVia direct module attribute:\n')
-    print(">>> module1.A_LIST")
-    print(module1.A_LIST)
-    print('\nVia module dictionary attribute:\n')
-    print(">>> module1.__dict__['A_LIST']")
-    print(module1.__dict__['A_LIST'])
-    print('\nVia ``sys.modules``:\n')
-    print(">>> import sys")
-    print(">>> sys.modules['module1'].A_LIST")
-    print(sys.modules['module1'].A_LIST)
-    print('\nVia the ``getattr`` built-in function:\n')
-    print(">>> getattr(module1, 'A_LIST')")
-    print(getattr(module1, 'A_LIST'))
-    print('\n.. seealso:: :doc:`Module import information<feature49>`')
+    print('Intrapackage imports work if the relative import syntax is used.\n')
+    print('In the following the ``.`` is the current working directory (CWD):\n')
+    print('``./tools.py`` is the ``tools`` module in the CWD; defines ``MY_X = 1``\n')
+    print('``./pkg/tools.py`` is the ``tools`` module in the ``./pkg`` folder; defines ``MY_X = 2``\n')
+    print('``./pkg/utilr.py`` is the ``utilr``  module in the ``./pkg`` folder importing ``tools``'
+          '\nwith relative syntax\n')
+    print('The question is which ``tools`` module gets imported when the next '
+          'import statement is run:\n')
+    print('>>> import pkg.utilr\n')
+    utilr = importlib.import_module('.utilr','codesnippets.pkg')
+    print(">>> pkg.utilr.tools.MY_X")
+    print(utilr.tools.MY_X)
+    print('\n.. seealso:: :doc:`Absolute import from a module package<feature55>`')
     print(80*'-')

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Metaclass &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Class statement protocol &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Metaclass of a metaclass and __call__ overloading" href="feature110.html" />
-    <link rel="prev" title="Class statement protocol" href="feature108.html" /> 
+    <link rel="next" title="Metaclass" href="feature110.html" />
+    <link rel="prev" title="Type" href="feature108.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature110.html" title="Metaclass of a metaclass and __call__ overloading"
+          <a href="feature110.html" title="Metaclass"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature108.html" title="Class statement protocol"
+          <a href="feature108.html" title="Type"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Metaclass</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Class statement protocol</a></li> 
       </ul>
     </div>  
 
@@ -45,90 +45,52 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature109"></span><div class="section" id="metaclass">
-<h1>Metaclass<a class="headerlink" href="#metaclass" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature109"></span><div class="section" id="class-statement-protocol">
+<h1>Class statement protocol<a class="headerlink" href="#class-statement-protocol" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature109">
 <h2><a class="reference internal" href="#module-codesnippets.feature109" title="codesnippets.feature109"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature109</span></code></a><a class="headerlink" href="#codesnippets-feature109" title="Permalink to this headline">¶</a></h2>
-<p>Metaclasses are used for generating classes.</p>
-<p>A Metaclass inherits from the <code class="docutils literal notranslate"><span class="pre">type</span></code> class:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MetaClass</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;a metaclass&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="n">classname</span><span class="p">,</span><span class="n">superclass</span><span class="p">,</span><span class="n">classdict</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; Inside MetaClass.__new__:&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; cls        -&gt; </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; classname  -&gt; </span><span class="si">{</span><span class="n">classname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; superclass -&gt; </span><span class="si">{</span><span class="n">superclass</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; classdict  -&gt; </span><span class="si">{</span><span class="n">classdict</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">type</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="n">classname</span><span class="p">,</span><span class="n">superclass</span><span class="p">,</span><span class="n">classdict</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="n">classname</span><span class="p">,</span><span class="n">superclass</span><span class="p">,</span><span class="n">classdict</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; Inside MetaClass.__init__:&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; cls        -&gt; </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; classname  -&gt; </span><span class="si">{</span><span class="n">classname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; superclass -&gt; </span><span class="si">{</span><span class="n">superclass</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; classdict  -&gt; </span><span class="si">{</span><span class="n">classdict</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<p>Class objects are created by calling the <code class="docutils literal notranslate"><span class="pre">type</span></code> object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MyClass</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">classname</span><span class="p">,</span><span class="n">superclasses</span><span class="p">,</span><span class="n">attributedict</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Base classes can be also combined with metaclasses:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BaseClass</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;a base class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">param</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; Inside BaseClass.__init__: param = </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">var_base</span> <span class="o">=</span> <span class="n">param</span>
-    <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">param</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;a method&quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; Inside BaseClass.method: param = </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">var_base</span> <span class="o">+=</span> <span class="n">param</span>
+<p>at the end of a class definition.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> object overloads the <code class="docutils literal notranslate"><span class="pre">__call__</span></code> operator and calls
+<code class="docutils literal notranslate"><span class="pre">type.__new__</span></code> for creating the class object, and <code class="docutils literal notranslate"><span class="pre">type.__init__</span></code>
+for initializing it.</p>
+<p>Given the method function definition below:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">a_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        -&gt; Inside </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> -&gt; a_method()...&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        -&gt; Attribute self.name = </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>A normal class managed by a metaclass:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">NormalClass</span><span class="p">(</span><span class="n">BaseClass</span><span class="p">,</span><span class="n">metaclass</span><span class="o">=</span><span class="n">MetaClass</span><span class="p">):</span>
-<span class="go">        &quot;&quot;&quot;a normal class&quot;&quot;&quot;</span>
-<span class="go">        def __init__(self,param=0):</span>
-<span class="go">            print(f&quot;    -&gt; Inside NormalClass.__init__: param = {param}&quot;)</span>
-<span class="go">            self.var = param</span>
-<span class="go">        def method(self,param=0):</span>
-<span class="go">            &quot;&quot;&quot;a method&quot;&quot;&quot;</span>
-<span class="go">            print(f&quot;    -&gt; Inside NormalClass.method: param = {param}&quot;)</span>
-<span class="go">            self.var += self.var_base + param</span>
-<span class="go">        -&gt; Inside MetaClass.__new__:</span>
-<span class="go">        -&gt; cls        -&gt; &lt;class &#39;codesnippets.feature109.feature109.&lt;locals&gt;.MetaClass&#39;&gt;</span>
-<span class="go">        -&gt; classname  -&gt; NormalClass</span>
-<span class="go">        -&gt; superclass -&gt; (&lt;class &#39;codesnippets.feature109.feature109.&lt;locals&gt;.BaseClass&#39;&gt;,)</span>
-<span class="go">        -&gt; classdict  -&gt; {&#39;__module__&#39;: &#39;codesnippets.feature109&#39;,</span>
-<span class="go">                          &#39;__qualname__&#39;: &#39;feature109.&lt;locals&gt;.NormalClass&#39;,</span>
-<span class="go">                          &#39;__init__&#39;: &lt;function feature109.&lt;locals&gt;.NormalClass.__init__ at 0x7f8d794d2af0&gt;,</span>
-<span class="go">                          &#39;method&#39;: &lt;function feature109.&lt;locals&gt;.NormalClass.method at 0x7f8d7949e4c0&gt;}</span>
-<span class="go">        -&gt; Inside MetaClass.__init__:</span>
-<span class="go">        -&gt; cls        -&gt; &lt;class &#39;codesnippets.feature109.feature109.&lt;locals&gt;.NormalClass&#39;&gt;</span>
-<span class="go">        -&gt; classname  -&gt; NormalClass</span>
-<span class="go">        -&gt; superclass -&gt; (&lt;class &#39;codesnippets.feature109.feature109.&lt;locals&gt;.BaseClass&#39;&gt;,)</span>
-<span class="go">        -&gt; classdict  -&gt; {&#39;__module__&#39;: &#39;codesnippets.feature109&#39;,</span>
-<span class="go">                          &#39;__qualname__&#39;: &#39;feature109.&lt;locals&gt;.NormalClass&#39;,</span>
-<span class="go">                          &#39;__init__&#39;: &lt;function feature109.&lt;locals&gt;.NormalClass.__init__ at 0x7f8d794d2af0&gt;,</span>
-<span class="go">                          &#39;method&#39;: &lt;function feature109.&lt;locals&gt;.NormalClass.method at 0x7f8d7949e4c0&gt;}</span>
+<p>a <code class="docutils literal notranslate"><span class="pre">class</span></code> can be created dynamically like this:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MyClass</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s1">&#39;MyClass&#39;</span><span class="p">,(</span><span class="nb">object</span><span class="p">,),{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;My class&#39;</span><span class="p">,</span><span class="s1">&#39;a_method&#39;</span><span class="p">:</span><span class="n">a_method</span><span class="p">},</span>
+<span class="go">                   &#39;__module__&#39;:&#39;codesnippets.feature109.feature109.&lt;locals&gt;&#39;)</span>
 </pre></div>
 </div>
-<p>Creating an instance of <code class="docutils literal notranslate"><span class="pre">NormalClass</span></code>:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">NormalClass</span><span class="p">()</span>
-<span class="go">        -&gt; Inside NormalClass.__init__: param = 2</span>
-<span class="go">        -&gt; Inside BaseClass.__init__: param = 0</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">an_obj</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">var</span>
-<span class="go">2</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">an_obj</span><span class="o">.</span><span class="n">a_method</span><span class="p">()</span>
+<span class="go">        -&gt; Inside MyClass -&gt; a_method()...</span>
+<span class="go">        -&gt; Attribute self.name = &#39;My class&#39;</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="go">        -&gt; Inside NormalClass.method: param = 3</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MyClass</span><span class="o">.</span><span class="vm">__module__</span>
+<span class="go">codesnippets.feature109.feature109.&lt;locals&gt;</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">var</span>
-<span class="go">5</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">MyClass</span><span class="p">)</span>
+<span class="go">[&#39;__class__&#39;, &#39;__delattr__&#39;, &#39;__dict__&#39;, &#39;__dir__&#39;, &#39;__doc__&#39;, &#39;__eq__&#39;,</span>
+<span class="go">&#39;__format__&#39;, &#39;__ge__&#39;, &#39;__getattribute__&#39;, &#39;__gt__&#39;, &#39;__hash__&#39;, &#39;__init__&#39;,</span>
+<span class="go">&#39;__init_subclass__&#39;, &#39;__le__&#39;, &#39;__lt__&#39;, &#39;__module__&#39;, &#39;__ne__&#39;, &#39;__new__&#39;, &#39;__reduce__&#39;,</span>
+<span class="go">&#39;__reduce_ex__&#39;, &#39;__repr__&#39;, &#39;__setattr__&#39;, &#39;__sizeof__&#39;, &#39;__str__&#39;, &#39;__subclasshook__&#39;,</span>
+<span class="go">&#39;__weakref__&#39;, &#39;a_method&#39;, &#39;name&#39;]</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature108.html"><span class="doc">Class statement protocol</span></a></p>
+<p><a class="reference internal" href="feature108.html"><span class="doc">Type</span></a></p>
 </div>
 </div>
 </div>
@@ -142,7 +104,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Metaclass</a><ul>
+<li><a class="reference internal" href="#">Class statement protocol</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature109"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature109</span></code></a></li>
 </ul>
 </li>
@@ -150,10 +112,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature108.html"
-                        title="previous chapter">Class statement protocol</a></p>
+                        title="previous chapter">Type</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature110.html"
-                        title="next chapter">Metaclass of a metaclass and <code class="docutils literal notranslate"><span class="pre">__call__</span></code> overloading</a></p>
+                        title="next chapter">Metaclass</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -185,13 +147,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature110.html" title="Metaclass of a metaclass and __call__ overloading"
+          <a href="feature110.html" title="Metaclass"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature108.html" title="Class statement protocol"
+          <a href="feature108.html" title="Type"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Metaclass</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Class statement protocol</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

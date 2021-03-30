@@ -1,4 +1,4 @@
-##    Python codesnippets - Byte and string types
+##    Python codesnippets - Exception hierarchies
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,66 +19,154 @@
 #
 
 """
-Byte and string types
+Exception hierarchies
 =====================
 
 :py:mod:`codesnippets.feature86`
 --------------------------------
 
-The type ``byte`` is used for representing binary data.
-And the type ``str`` is used for representing strings, whose
-binary representation depends on the encoding chosen.
+Exception hierarchies can be created by inheriting from
+the ``Exception`` base class, and in turn by inheriting from
+specialized exception classes:
 
-.. note:: The two types cannot be mixed.
+.. code-block:: Python
 
->>> bin_array = bytes([100,234,98,23,67,180,201])
+    class MotorError(Exception):
+        \"""a motor exception class\"""
+        def __str__(self):
+            exc_str = Exception.__str__(self)
+            return "Exception -> MotorError. " + exc_str
 
->>> type(bin_array)
-<class 'bytes'>
+    class IgnitionError(MotorError):
+        \"""an ignition motor exception class\"""
+        def __str__(self):
+            exc_str = Exception.__str__(self)
+            return "Exception -> IgnitionError. " + exc_str
 
->>> bin_array
-b'd\\xeab\\x17C\\xb4\\xc9'
+    class TransmissionError(MotorError):
+        \"""a transmission motor exception class\"""
+        def __str__(self):
+            exc_str = Exception.__str__(self)
+            return "Exception -> TransmissionError. " + exc_str
 
->>> len(bin_array)
-7
+With the base exception, a family of exceptions can be caught.
+The call to ``sys.exc_info()`` returns a list of the exception class,
+the exception instance itself, and the traceback:
 
->>> text_str = 'The sky is blue.'
+>>> import sys
+>>> try:
+        raise TransmissionError('Error transmitting data!') # Needs an istance!
+    except MotorError as exc:
+        print(sys.exc_info())
+        print(exc)
+    finally:
+        print("End of the try block...")
+(<class 'codesnippets.feature86.feature86.<locals>.TransmissionError'>,
+TransmissionError('Error transmitting data!'),
+<traceback object at 0x7fcead50f200>)
+Exception -> TransmissionError. Error transmitting data!
+End of the try block...
 
->>> type(text_str)
-<class 'str'>
+With the specialized exceptions, specific error causes are cought.
+They have to precede the base exception in the exception list:
 
->>> text_str.encode('UTF-16')
-b'\\xff\\xfeT\\x00h\\x00e\\x00 \\x00s\\x00k\\x00y\\x00 \\x00i\\x00s\\x00 \\x00b\\x00l\\x00u\\x00e\\x00.\\x00'
-
->>> len(text_str)
-16
+>>> import sys
+>>> try:
+        raise IgnitionError('Error motor ignition!') # Needs an istance!
+    except IgnitionError as exc:
+        print(exc)
+    except MotorError as exc:
+        print(sys.exc_info())
+        print(exc)
+    finally:
+        print("End of the try block...")
+Exception -> IgnitionError. Error motor ignition!
+End of the try block...
 """
 
+import sys
+
 def feature86():
-    """Byte and string types"""
-    print('Byte and string types')
+    """Exception hierarchies"""
+    print('Exception hierarchies')
     print('=====================\n')
     print(':py:mod:`codesnippets.feature86`')
     print('--------------------------------\n')
-    print("The type ``byte`` is used for representing binary data.")
-    print("And the type ``str`` is used for representing strings, whose")
-    print("binary representation depends on the encoding chosen.\n")
-    print(".. note: The two types cannot be mixed.\n")
-    print(">>> bin_array = bytes([100,234,98,23,67,180,201])")
-    bin_array = bytes([100,234,98,23,67,180,201])
-    print("\n>>> type(bin_array)")
-    print(type(bin_array))
-    print("\n>>> bin_array")
-    print(bin_array)
-    print("\n>>> len(bin_array)")
-    print(len(bin_array))
+    print("Exception hierarchies can be created by inheriting from")
+    print("the ``Exception`` base class, and in turn by inheriting from")
+    print("specialized exception classes:\n")
+    print('.. code-block:: Python\n')
+    print("""    class MotorError(Exception):
+        \\\"""a motor exception class\\\"""
+        def __str__(self):
+            exc_str = Exception.__str__(self)
+            return "Exception -> MotorError. " + exc_str
+          """)
+    class MotorError(Exception):
+        """a motor exception class"""
+        def __str__(self):
+            exc_str = Exception.__str__(self)
+            return "Exception -> MotorError. " + exc_str
+    print("""    class IgnitionError(MotorError):
+        \\\"""an ignition motor exception class\\\"""
+        def __str__(self):
+            exc_str = Exception.__str__(self)
+            return "Exception -> IgnitionError. " + exc_str
+          """)
+    class IgnitionError(MotorError):
+        """an ignition motor exception class"""
+        def __str__(self):
+            exc_str = Exception.__str__(self)
+            return "Exception -> IgnitionError. " + exc_str
+    print("""    class TransmissionError(MotorError):
+        \\\"""a transmission motor exception class\\\"""
+        def __str__(self):
+            exc_str = Exception.__str__(self)
+            return "Exception -> TransmissionError. " + exc_str
+          """)
+    class TransmissionError(MotorError):
+        """a transmission motor exception class"""
+        def __str__(self):
+            exc_str = Exception.__str__(self)
+            return "Exception -> TransmissionError. " + exc_str
+    print("With the base exception, a family of exceptions can be caught.")
+    print("The call to ``sys.exc_info()`` returns a list of the exception class,")
+    print("the exception instance itself, and the traceback:\n")
+    print(">>> import sys")
+    print(""">>> try:
+        raise TransmissionError('Error transmitting data!') # Needs an istance!
+    except MotorError as exc:
+        print(sys.exc_info())
+        print(exc)
+    finally:
+        print("End of the try block...")""")
+    try:
+        raise TransmissionError('Error transmitting data!') # Needs an istance!
+    except MotorError as exc:
+        print(sys.exc_info())
+        print(exc)
+    finally:
+        print("End of the try block...")
     print()
-    print(">>> text_str = 'The sky is blue.'")
-    text_str = 'The sky is blue.'
-    print("\n>>> type(text_str)")
-    print(type(text_str))
-    print("\n>>> text_str.encode('UTF-16')")
-    print(text_str.encode('UTF-16'))
-    print("\n>>> len(text_str)")
-    print(len(text_str))
+    print("With the specialized exceptions, specific error causes are cought.")
+    print("They have to precede the base exception in the exception list:\n")
+    print(">>> import sys")
+    print(""">>> try:
+        raise IgnitionError('Error motor ignition!') # Needs an istance!
+    except IgnitionError as exc:
+        print(exc)
+    except MotorError as exc:
+        print(sys.exc_info())
+        print(exc)
+    finally:
+        print("End of the try block...")""")
+    try:
+        raise IgnitionError('Error motor ignition!') # Needs an istance!
+    except IgnitionError as exc:
+        print(exc)
+    except MotorError as exc:
+        print(sys.exc_info())
+        print(exc)
+    finally:
+        print("End of the try block...")
     print(80*'-')

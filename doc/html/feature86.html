@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Byte and string types &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Exception hierarchies &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="String type conversions" href="feature87.html" />
-    <link rel="prev" title="Exception hierarchies" href="feature85.html" /> 
+    <link rel="next" title="Byte and string types" href="feature87.html" />
+    <link rel="prev" title="Exception handling" href="feature85.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature87.html" title="String type conversions"
+          <a href="feature87.html" title="Byte and string types"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature85.html" title="Exception hierarchies"
+          <a href="feature85.html" title="Exception handling"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Byte and string types</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Exception hierarchies</a></li> 
       </ul>
     </div>  
 
@@ -45,45 +45,64 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature86"></span><div class="section" id="byte-and-string-types">
-<h1>Byte and string types<a class="headerlink" href="#byte-and-string-types" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature86"></span><div class="section" id="exception-hierarchies">
+<h1>Exception hierarchies<a class="headerlink" href="#exception-hierarchies" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature86">
 <h2><a class="reference internal" href="#module-codesnippets.feature86" title="codesnippets.feature86"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature86</span></code></a><a class="headerlink" href="#codesnippets-feature86" title="Permalink to this headline">¶</a></h2>
-<p>The type <code class="docutils literal notranslate"><span class="pre">byte</span></code> is used for representing binary data.
-And the type <code class="docutils literal notranslate"><span class="pre">str</span></code> is used for representing strings, whose
-binary representation depends on the encoding chosen.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The two types cannot be mixed.</p>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bin_array</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span><span class="mi">234</span><span class="p">,</span><span class="mi">98</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">67</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">201</span><span class="p">])</span>
+<p>Exception hierarchies can be created by inheriting from
+the <code class="docutils literal notranslate"><span class="pre">Exception</span></code> base class, and in turn by inheriting from
+specialized exception classes:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MotorError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;a motor exception class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">exc_str</span> <span class="o">=</span> <span class="ne">Exception</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;Exception -&gt; MotorError. &quot;</span> <span class="o">+</span> <span class="n">exc_str</span>
+
+<span class="k">class</span> <span class="nc">IgnitionError</span><span class="p">(</span><span class="n">MotorError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;an ignition motor exception class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">exc_str</span> <span class="o">=</span> <span class="ne">Exception</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;Exception -&gt; IgnitionError. &quot;</span> <span class="o">+</span> <span class="n">exc_str</span>
+
+<span class="k">class</span> <span class="nc">TransmissionError</span><span class="p">(</span><span class="n">MotorError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;a transmission motor exception class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">exc_str</span> <span class="o">=</span> <span class="ne">Exception</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;Exception -&gt; TransmissionError. &quot;</span> <span class="o">+</span> <span class="n">exc_str</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">bin_array</span><span class="p">)</span>
-<span class="go">&lt;class &#39;bytes&#39;&gt;</span>
+<p>With the base exception, a family of exceptions can be caught.
+The call to <code class="docutils literal notranslate"><span class="pre">sys.exc_info()</span></code> returns a list of the exception class,
+the exception instance itself, and the traceback:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="go">        raise TransmissionError(&#39;Error transmitting data!&#39;) # Needs an istance!</span>
+<span class="go">    except MotorError as exc:</span>
+<span class="go">        print(sys.exc_info())</span>
+<span class="go">        print(exc)</span>
+<span class="go">    finally:</span>
+<span class="go">        print(&quot;End of the try block...&quot;)</span>
+<span class="go">(&lt;class &#39;codesnippets.feature86.feature86.&lt;locals&gt;.TransmissionError&#39;&gt;,</span>
+<span class="go">TransmissionError(&#39;Error transmitting data!&#39;),</span>
+<span class="go">&lt;traceback object at 0x7fcead50f200&gt;)</span>
+<span class="go">Exception -&gt; TransmissionError. Error transmitting data!</span>
+<span class="go">End of the try block...</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bin_array</span>
-<span class="go">b&#39;d\xeab\x17C\xb4\xc9&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">bin_array</span><span class="p">)</span>
-<span class="go">7</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">text_str</span> <span class="o">=</span> <span class="s1">&#39;The sky is blue.&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">text_str</span><span class="p">)</span>
-<span class="go">&lt;class &#39;str&#39;&gt;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">text_str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;UTF-16&#39;</span><span class="p">)</span>
-<span class="go">b&#39;\xff\xfeT\x00h\x00e\x00 \x00s\x00k\x00y\x00 \x00i\x00s\x00 \x00b\x00l\x00u\x00e\x00.\x00&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">text_str</span><span class="p">)</span>
-<span class="go">16</span>
+<p>With the specialized exceptions, specific error causes are cought.
+They have to precede the base exception in the exception list:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="go">        raise IgnitionError(&#39;Error motor ignition!&#39;) # Needs an istance!</span>
+<span class="go">    except IgnitionError as exc:</span>
+<span class="go">        print(exc)</span>
+<span class="go">    except MotorError as exc:</span>
+<span class="go">        print(sys.exc_info())</span>
+<span class="go">        print(exc)</span>
+<span class="go">    finally:</span>
+<span class="go">        print(&quot;End of the try block...&quot;)</span>
+<span class="go">Exception -&gt; IgnitionError. Error motor ignition!</span>
+<span class="go">End of the try block...</span>
 </pre></div>
 </div>
 </div>
@@ -98,7 +117,7 @@ binary representation depends on the encoding chosen.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Byte and string types</a><ul>
+<li><a class="reference internal" href="#">Exception hierarchies</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature86"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature86</span></code></a></li>
 </ul>
 </li>
@@ -106,10 +125,10 @@ binary representation depends on the encoding chosen.</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature85.html"
-                        title="previous chapter">Exception hierarchies</a></p>
+                        title="previous chapter">Exception handling</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature87.html"
-                        title="next chapter">String type conversions</a></p>
+                        title="next chapter">Byte and string types</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -141,13 +160,13 @@ binary representation depends on the encoding chosen.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature87.html" title="String type conversions"
+          <a href="feature87.html" title="Byte and string types"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature85.html" title="Exception hierarchies"
+          <a href="feature85.html" title="Exception handling"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Byte and string types</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Exception hierarchies</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

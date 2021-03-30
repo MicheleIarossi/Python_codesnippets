@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Static methods via built-in function staticmethod() &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Slots &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Static methods via function decorator @staticmethod" href="feature81.html" />
-    <link rel="prev" title="Slots" href="feature79.html" /> 
+    <link rel="next" title="Static methods via built-in function staticmethod()" href="feature81.html" />
+    <link rel="prev" title="Tracing instance attributes" href="feature79.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature81.html" title="Static methods via function decorator @staticmethod"
+          <a href="feature81.html" title="Static methods via built-in function staticmethod()"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature79.html" title="Slots"
+          <a href="feature79.html" title="Tracing instance attributes"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Static methods via built-in function staticmethod()</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Slots</a></li> 
       </ul>
     </div>  
 
@@ -45,53 +45,149 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature80"></span><div class="section" id="static-methods-via-built-in-function-staticmethod">
-<h1>Static methods via built-in function staticmethod()<a class="headerlink" href="#static-methods-via-built-in-function-staticmethod" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature80"></span><div class="section" id="slots">
+<h1>Slots<a class="headerlink" href="#slots" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature80">
 <h2><a class="reference internal" href="#module-codesnippets.feature80" title="codesnippets.feature80"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature80</span></code></a><a class="headerlink" href="#codesnippets-feature80" title="Permalink to this headline">¶</a></h2>
-<p>By qualifying a method as static with <code class="docutils literal notranslate"><span class="pre">staticmethod()</span></code>, it can be called either
-via the class or via the instance and without the required <code class="docutils literal notranslate"><span class="pre">self</span></code> parameter.</p>
-<p>The following class counts the instances of Cars:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Car</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;a car class&quot;&quot;&quot;</span>
-    <span class="n">n_val</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="n">Car</span><span class="o">.</span><span class="n">n_val</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&lt;Car: </span><span class="si">%s</span><span class="s1"> created&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">))</span>
-    <span class="k">def</span> <span class="nf">num_of_instances</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot;returns the total number of instances&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Car</span><span class="o">.</span><span class="n">n_val</span>
+<p>When <code class="docutils literal notranslate"><span class="pre">__slots__</span></code> are used, an instance of a class has no <code class="docutils literal notranslate"><span class="pre">__dict__</span></code> attribute,
+therefore saving memory. The attributes are not physically saved in the
+namespace of the instance dictionary.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Multiple inheritance doesn’t work with slots.</p>
+</div>
+<p>The same tracer function from <a class="reference internal" href="feature81.html"><span class="doc">Tracing instance attributes</span></a> is used here
+again where the class attribute <code class="docutils literal notranslate"><span class="pre">__mro__</span></code> is used for tracing the attributes of an instance:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">trace_attributes</span><span class="p">(</span><span class="n">an_obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;prints all the attributes of an instance&quot;&quot;&quot;</span>
+    <span class="n">allattr</span>  <span class="o">=</span> <span class="nb">dir</span><span class="p">(</span><span class="n">an_obj</span><span class="p">)</span>
+    <span class="n">attrtree</span> <span class="o">=</span> <span class="p">(</span><span class="n">an_obj</span><span class="p">,)</span> <span class="o">+</span> <span class="n">an_obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__mro__</span>
+    <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">allattr</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">attrtree</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="s1">&#39;__dict__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="s1">&#39;__dict__&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">attr</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">attr</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="s1">&#39;__&#39;</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%20s</span><span class="s1"> : </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span><span class="n">obj</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%20s</span><span class="s1"> : </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span><span class="n">obj</span><span class="p">,</span><span class="nb">getattr</span><span class="p">(</span><span class="n">an_obj</span><span class="p">,</span><span class="n">attr</span><span class="p">)))</span>
+                <span class="k">break</span>
+</pre></div>
+</div>
+<p>Given the following hierarchy of classes:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ClassA</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;a class&quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;b_val&#39;</span><span class="p">,</span><span class="s1">&#39;c_val&#39;</span><span class="p">,</span><span class="s1">&#39;d_val&#39;</span><span class="p">]</span>
+    <span class="n">a_val</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b_val</span>  <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c_val</span>  <span class="o">=</span> <span class="mi">3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_val</span>  <span class="o">=</span> <span class="mi">4</span>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;Car(</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="n">num_of_instances</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">num_of_instances</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;ClassA()&#39;</span>
+
+<span class="k">class</span> <span class="nc">ClassB</span><span class="p">(</span><span class="n">ClassA</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;a derived class&quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;f_val&#39;</span><span class="p">,</span><span class="s1">&#39;g_val&#39;</span><span class="p">]</span>
+    <span class="n">e_val</span>  <span class="o">=</span> <span class="mi">5</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ClassA</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_val</span>  <span class="o">=</span> <span class="mi">6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g_val</span>  <span class="o">=</span> <span class="mi">7</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;ClassB()&#39;</span>
+
+<span class="k">class</span> <span class="nc">ClassC</span><span class="p">(</span><span class="n">ClassB</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;another derived class&quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;i_val&#39;</span><span class="p">,</span><span class="s1">&#39;j_val&#39;</span><span class="p">]</span>
+    <span class="n">h_val</span>  <span class="o">=</span> <span class="mi">8</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ClassB</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i_val</span>  <span class="o">=</span> <span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">j_val</span>  <span class="o">=</span> <span class="mi">10</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;ClassC()&#39;</span>
+
+<span class="k">class</span> <span class="nc">ClassD</span><span class="p">(</span><span class="n">ClassC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;multiple inheritance class&quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;l_val&#39;</span><span class="p">,</span><span class="s1">&#39;m_val&#39;</span><span class="p">]</span>
+    <span class="n">k_val</span>  <span class="o">=</span> <span class="mi">11</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ClassC</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l_val</span>  <span class="o">=</span> <span class="mi">12</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_val</span>  <span class="o">=</span> <span class="mi">13</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;ClassD()&#39;</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bmw</span> <span class="o">=</span> <span class="n">Car</span><span class="p">(</span><span class="s1">&#39;BMW 3er&#39;</span><span class="p">)</span>
-<span class="go">&lt;Car: BMW 3er created&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bmw</span>
-<span class="go">Car(&#39;BMW 3er&#39;)</span>
+<p>and an instance of <code class="docutils literal notranslate"><span class="pre">ClassD</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_d</span> <span class="o">=</span> <span class="n">ClassD</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">audi</span> <span class="o">=</span> <span class="n">Car</span><span class="p">(</span><span class="s1">&#39;Audi A6&#39;</span><span class="p">)</span>
-<span class="go">&lt;Car: Audi A6 created&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">audi</span>
-<span class="go">Car(&#39;Audi A6&#39;)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">obj_d</span><span class="p">)</span>
+<span class="go">[&#39;__class__&#39;, &#39;__delattr__&#39;, &#39;__dir__&#39;, &#39;__doc__&#39;, &#39;__eq__&#39;, &#39;__format__&#39;, &#39;__ge__&#39;,</span>
+<span class="go">&#39;__getattribute__&#39;, &#39;__gt__&#39;, &#39;__hash__&#39;, &#39;__init__&#39;, &#39;__init_subclass__&#39;, &#39;__le__&#39;,</span>
+<span class="go">&#39;__lt__&#39;, &#39;__module__&#39;, &#39;__ne__&#39;, &#39;__new__&#39;, &#39;__reduce__&#39;, &#39;__reduce_ex__&#39;, &#39;__repr__&#39;,</span>
+<span class="go">&#39;__setattr__&#39;, &#39;__sizeof__&#39;, &#39;__slots__&#39;, &#39;__str__&#39;, &#39;__subclasshook__&#39;, &#39;a_val&#39;, &#39;b_val&#39;,</span>
+<span class="go">&#39;c_val&#39;, &#39;d_val&#39;, &#39;e_val&#39;, &#39;f_val&#39;, &#39;g_val&#39;, &#39;h_val&#39;, &#39;i_val&#39;, &#39;j_val&#39;, &#39;k_val&#39;, &#39;l_val&#39;, &#39;m_val&#39;]</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vwag</span> <span class="o">=</span> <span class="n">Car</span><span class="p">(</span><span class="s1">&#39;VW Golf&#39;</span><span class="p">)</span>
-<span class="go">&lt;Car: VW Golf created&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">vwag</span>
-<span class="go">Car(&#39;VW Golf&#39;)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_d</span><span class="o">.</span><span class="vm">__slots__</span>
+<span class="go">[&#39;l_val&#39;, &#39;m_val&#39;]</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Car</span><span class="o">.</span><span class="n">num_of_instances</span><span class="p">()</span>
-<span class="go">3</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_d</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__mro__</span>
+<span class="go">(&lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassD&#39;&gt;,</span>
+<span class="go">&lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassC&#39;&gt;,</span>
+<span class="go">&lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassB&#39;&gt;,</span>
+<span class="go">&lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassA&#39;&gt;,</span>
+<span class="go">&lt;class &#39;object&#39;&gt;)</span>
 </pre></div>
 </div>
+<p>its attributes are traced by invoking the function <code class="docutils literal notranslate"><span class="pre">trace_attributes</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">trace_attributes</span><span class="p">(</span><span class="n">obj_d</span><span class="p">)</span>
+<span class="go">           __class__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">         __delattr__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">             __dir__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">             __doc__ : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassD&#39;&gt;</span>
+<span class="go">              __eq__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">          __format__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">              __ge__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">    __getattribute__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">              __gt__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">            __hash__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">            __init__ : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassD&#39;&gt;</span>
+<span class="go">   __init_subclass__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">              __le__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">              __lt__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">          __module__ : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassD&#39;&gt;</span>
+<span class="go">              __ne__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">             __new__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">          __reduce__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">       __reduce_ex__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">            __repr__ : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassD&#39;&gt;</span>
+<span class="go">         __setattr__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">          __sizeof__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">           __slots__ : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassD&#39;&gt;</span>
+<span class="go">             __str__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">    __subclasshook__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">               a_val : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassA&#39;&gt; (1)</span>
+<span class="go">               b_val : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassA&#39;&gt; (2)</span>
+<span class="go">               c_val : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassA&#39;&gt; (3)</span>
+<span class="go">               d_val : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassA&#39;&gt; (4)</span>
+<span class="go">               e_val : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassB&#39;&gt; (5)</span>
+<span class="go">               f_val : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassB&#39;&gt; (6)</span>
+<span class="go">               g_val : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassB&#39;&gt; (7)</span>
+<span class="go">               h_val : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassC&#39;&gt; (8)</span>
+<span class="go">               i_val : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassC&#39;&gt; (9)</span>
+<span class="go">               j_val : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassC&#39;&gt; (10)</span>
+<span class="go">               k_val : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassD&#39;&gt; (11)</span>
+<span class="go">               l_val : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassD&#39;&gt; (12)</span>
+<span class="go">               m_val : &lt;class &#39;codesnippets.feature80.feature80.&lt;locals&gt;.ClassD&#39;&gt; (13)</span>
+</pre></div>
+</div>
+<p>Notice how the slot attributes belong to the class.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature81.html"><span class="doc">Static methods via function decorator &#64;staticmethod</span></a></p>
+<p><a class="reference internal" href="feature79.html"><span class="doc">Tracing instance attributes</span></a></p>
 </div>
 </div>
 </div>
@@ -105,7 +201,7 @@ via the class or via the instance and without the required <code class="docutils
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Static methods via built-in function staticmethod()</a><ul>
+<li><a class="reference internal" href="#">Slots</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature80"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature80</span></code></a></li>
 </ul>
 </li>
@@ -113,10 +209,10 @@ via the class or via the instance and without the required <code class="docutils
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature79.html"
-                        title="previous chapter">Slots</a></p>
+                        title="previous chapter">Tracing instance attributes</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature81.html"
-                        title="next chapter">Static methods via function decorator &#64;staticmethod</a></p>
+                        title="next chapter">Static methods via built-in function staticmethod()</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -148,13 +244,13 @@ via the class or via the instance and without the required <code class="docutils
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature81.html" title="Static methods via function decorator @staticmethod"
+          <a href="feature81.html" title="Static methods via built-in function staticmethod()"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature79.html" title="Slots"
+          <a href="feature79.html" title="Tracing instance attributes"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Static methods via built-in function staticmethod()</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Slots</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

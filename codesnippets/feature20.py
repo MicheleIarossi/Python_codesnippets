@@ -1,4 +1,4 @@
-##    Python codesnippets - Boolean and/or operators
+##    Python codesnippets - Dictionary-based C-type switch
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,36 +19,66 @@
 #
 
 """
-Boolean and/or operators
-========================
+Dictionary-based C-type switch
+==============================
 
 :py:mod:`codesnippets.feature20`
 --------------------------------
 
-Boolean operators ``and`` and ``or`` return true or false objects not values!
+A dictionary can be used for emulating a simple switch.
 
-``or`` returns the left operand if true:
+Below different values are selected for different names:
 
->>> 2 or 3, 3 or 2
-(2, 3)
+>>> dict_switch = {'mike': 0.23, 'maria': 2.12, 'carl': 1.45}
 
-``and`` returns the right operand if true:
+>>> input_name  = 'maria'
 
->>> 2 and 3, 3 and 2
-(3, 2)
+>>> if input_name in dict_switch:
+        print(f'{dict_switch[input_name]}')
+else:
+        print('default case')
+2.12
+
+Now the default case is triggered:
+
+>>> input_name  = 'bob'
+
+>>> if input_name in dict_switch:
+        print(f'{dict_switch[input_name]}')
+else:
+        print('default case')
+default case
 """
 
 def feature20():
-    """Boolean and/or operators"""
-    print("Boolean and/or operators")
-    print('========================\n')
+    """Dictionary-based C-type switch"""
+    print('Dictionary-based C-type switch')
+    print('==============================\n')
     print(':py:mod:`codesnippets.feature20`')
     print('--------------------------------\n')
-    print("Boolean operators 'and' and 'or' return true or false objects not values!\n")
-    print("'or' returns left operand if true:\n")
-    print(">>> 2 or 3, 3 or 2")
-    print((2 or 3, 3 or 2))
-    print("\n'and' returns right operand if true:\n")
-    print(">>> 2 and 3, 3 and 2")
-    print((2 and 3, 3 and 2))
+    print('A dictionary can be used for emulating a simple switch.\n')
+    print('Below different values are selected for different names:\n')
+    print(">>> dict_switch = {'mike': 0.23, 'maria': 2.12, 'carl': 1.45}")
+    print("\n>>> input_name  = 'maria'")
+    print("\n>>> if input_name in dict_switch:")
+    print("        print(f'{dict_switch[input_name]}')")
+    print("else:")
+    print("        print('default case')")
+    dict_switch = {'mike': 0.23, 'maria': 2.12, 'carl': 1.45}
+    input_name  = 'maria'
+    if input_name in dict_switch:
+        print(f'{dict_switch[input_name]}')
+    else:
+        print('default case')
+    print('\nNow the default case is triggered:\n')
+    print(">>> input_name  = 'bob'")
+    print("\n>>> if input_name in dict_switch:")
+    print("        print(f'{dict_switch[input_name]}')")
+    print("else:")
+    print("        print('default case')")
+    input_name  = 'bob'
+    if input_name in dict_switch:
+        print(f'{dict_switch[input_name]}')
+    else:
+        print('default case')
     print(80*'-')

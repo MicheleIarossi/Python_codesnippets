@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>State retention using mutable list &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Accessing non-local variables &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Simulating output parameters in a function call" href="feature37.html" />
-    <link rel="prev" title="Accessing non-local variables" href="feature35.html" /> 
+    <link rel="next" title="State retention using mutable list" href="feature37.html" />
+    <link rel="prev" title="Factory function with lambda and defaults" href="feature35.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature37.html" title="Simulating output parameters in a function call"
+          <a href="feature37.html" title="State retention using mutable list"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature35.html" title="Accessing non-local variables"
+          <a href="feature35.html" title="Factory function with lambda and defaults"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">State retention using mutable list</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Accessing non-local variables</a></li> 
       </ul>
     </div>  
 
@@ -45,46 +45,48 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature36"></span><div class="section" id="state-retention-using-mutable-list">
-<h1>State retention using mutable list<a class="headerlink" href="#state-retention-using-mutable-list" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature36"></span><div class="section" id="accessing-non-local-variables">
+<h1>Accessing non-local variables<a class="headerlink" href="#accessing-non-local-variables" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature36">
 <h2><a class="reference internal" href="#module-codesnippets.feature36" title="codesnippets.feature36"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature36</span></code></a><a class="headerlink" href="#codesnippets-feature36" title="Permalink to this headline">¶</a></h2>
-<p>The function below calls methods of a <code class="docutils literal notranslate"><span class="pre">list</span></code> to perform in-place changes.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>In-place object changes do not classify as local.</p>
-</div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func_factory</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">nested_func</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="c1"># hack: in-place object changes do not classify as local</span>
-        <span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="c1"># defines a mutable list</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">nested_func</span>
+<p>With <code class="docutils literal notranslate"><span class="pre">nonlocal</span></code> a nested function can get write access to variables
+of enclosing scopes.
+Such variables must be already existing variables: it is not possible
+to create a local variable as <code class="docutils literal notranslate"><span class="pre">global</span></code> does for module scope variables!</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">enclosing_func</span><span class="p">(</span><span class="n">n_value</span><span class="p">,</span><span class="n">s_str</span><span class="p">):</span>
+    <span class="n">c_value</span> <span class="o">=</span> <span class="n">n_value</span> <span class="c1"># local variable initilized here</span>
+    <span class="k">def</span> <span class="nf">enclosed_func1</span><span class="p">(</span><span class="n">s1_str</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">enclosed_func2</span><span class="p">(</span><span class="n">s2_str</span><span class="p">):</span>
+            <span class="k">nonlocal</span> <span class="n">c_value</span> <span class="c1"># refers to the nonlocal &#39;c_value&#39; variable</span>
+            <span class="n">c_value</span> <span class="o">+=</span> <span class="mi">1</span> <span class="c1"># write access!</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">s1_str</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">s2_str</span><span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c_value</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">enclosed_func2</span>
+    <span class="k">return</span> <span class="n">enclosed_func1</span><span class="p">(</span><span class="n">s_str</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="n">func_factory</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hello_func</span> <span class="o">=</span> <span class="n">enclosing_func</span><span class="p">(</span><span class="mi">33</span><span class="p">,</span><span class="s1">&#39;Hello&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bye_func</span> <span class="o">=</span> <span class="n">enclosing_func</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="s1">&#39;Bye&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="s1">&#39;one&#39;</span><span class="p">)</span>
-<span class="go">one 23</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="s1">&#39;two&#39;</span><span class="p">)</span>
-<span class="go">two 24</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hello_func</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="go">Hello:a 34</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hello_func</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="go">Hello:b 35</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hello_func</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">)</span>
+<span class="go">Hello:c 36</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_func</span> <span class="o">=</span> <span class="n">func_factory</span><span class="p">(</span><span class="mi">46</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_func</span><span class="p">(</span><span class="s1">&#39;three&#39;</span><span class="p">)</span>
-<span class="go">three 46</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_func</span><span class="p">(</span><span class="s1">&#39;four&#39;</span><span class="p">)</span>
-<span class="go">four 47</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bye_func</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>
+<span class="go">Bye:e 101</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bye_func</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="go">Bye:f 102</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bye_func</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="go">Bye:g 103</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature35.html"><span class="doc">Accessing non-local variables</span></a></p>
+<p><a class="reference internal" href="feature30.html"><span class="doc">Accessing global variables</span></a></p>
 </div>
 </div>
 </div>
@@ -98,7 +100,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">State retention using mutable list</a><ul>
+<li><a class="reference internal" href="#">Accessing non-local variables</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature36"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature36</span></code></a></li>
 </ul>
 </li>
@@ -106,10 +108,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature35.html"
-                        title="previous chapter">Accessing non-local variables</a></p>
+                        title="previous chapter">Factory function with <code class="docutils literal notranslate"><span class="pre">lambda</span></code> and defaults</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature37.html"
-                        title="next chapter">Simulating output parameters in a function call</a></p>
+                        title="next chapter">State retention using mutable list</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -141,13 +143,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature37.html" title="Simulating output parameters in a function call"
+          <a href="feature37.html" title="State retention using mutable list"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature35.html" title="Accessing non-local variables"
+          <a href="feature35.html" title="Factory function with lambda and defaults"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">State retention using mutable list</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Accessing non-local variables</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simulating output parameters in a function call &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>State retention using mutable list &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Arguments matched by default values, by position and by name" href="feature38.html" />
-    <link rel="prev" title="State retention using mutable list" href="feature36.html" /> 
+    <link rel="next" title="Simulating output parameters in a function call" href="feature38.html" />
+    <link rel="prev" title="Accessing non-local variables" href="feature36.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature38.html" title="Arguments matched by default values, by position and by name"
+          <a href="feature38.html" title="Simulating output parameters in a function call"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature36.html" title="State retention using mutable list"
+          <a href="feature36.html" title="Accessing non-local variables"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Simulating output parameters in a function call</a></li> 
+        <li class="nav-item nav-item-this"><a href="">State retention using mutable list</a></li> 
       </ul>
     </div>  
 
@@ -45,27 +45,46 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature37"></span><div class="section" id="simulating-output-parameters-in-a-function-call">
-<h1>Simulating output parameters in a function call<a class="headerlink" href="#simulating-output-parameters-in-a-function-call" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature37"></span><div class="section" id="state-retention-using-mutable-list">
+<h1>State retention using mutable list<a class="headerlink" href="#state-retention-using-mutable-list" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature37">
 <h2><a class="reference internal" href="#module-codesnippets.feature37" title="codesnippets.feature37"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature37</span></code></a><a class="headerlink" href="#codesnippets-feature37" title="Permalink to this headline">¶</a></h2>
-<p>Input parameters are always passed by assignment. Immutable objects
-cannot be changed inside the function, but multiple new values
-can be returned by the <code class="docutils literal notranslate"><span class="pre">return</span></code> statement.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">assign_new_values</span><span class="p">(</span><span class="n">a_value</span><span class="p">,</span><span class="n">b_value</span><span class="p">,</span><span class="n">c_value</span><span class="p">):</span>
-    <span class="n">a_value</span><span class="p">,</span> <span class="n">b_value</span><span class="p">,</span> <span class="n">c_value</span> <span class="o">=</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">33</span>
-    <span class="k">return</span> <span class="n">a_value</span><span class="p">,</span> <span class="n">b_value</span><span class="p">,</span> <span class="n">c_value</span>
+<p>The function below calls methods of a <code class="docutils literal notranslate"><span class="pre">list</span></code> to perform in-place changes.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In-place object changes do not classify as local.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func_factory</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">nested_func</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1"># hack: in-place object changes do not classify as local</span>
+        <span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="c1"># defines a mutable list</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">nested_func</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_value</span><span class="p">,</span> <span class="n">b_value</span><span class="p">,</span> <span class="n">c_value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="n">func_factory</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_value</span><span class="p">,</span> <span class="n">b_value</span><span class="p">,</span> <span class="n">c_value</span> <span class="o">=</span> <span class="n">assign_new_values</span><span class="p">(</span><span class="n">a_value</span><span class="p">,</span><span class="n">b_value</span><span class="p">,</span><span class="n">c_value</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="s1">&#39;one&#39;</span><span class="p">)</span>
+<span class="go">one 23</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="s1">&#39;two&#39;</span><span class="p">)</span>
+<span class="go">two 24</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_value</span><span class="p">,</span><span class="n">b_value</span><span class="p">,</span><span class="n">c_value</span>
-<span class="go">(11, 22, 33)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_func</span> <span class="o">=</span> <span class="n">func_factory</span><span class="p">(</span><span class="mi">46</span><span class="p">)</span>
 </pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_func</span><span class="p">(</span><span class="s1">&#39;three&#39;</span><span class="p">)</span>
+<span class="go">three 46</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_func</span><span class="p">(</span><span class="s1">&#39;four&#39;</span><span class="p">)</span>
+<span class="go">four 47</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="feature36.html"><span class="doc">Accessing non-local variables</span></a></p>
 </div>
 </div>
 </div>
@@ -79,7 +98,7 @@ can be returned by the <code class="docutils literal notranslate"><span class="p
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Simulating output parameters in a function call</a><ul>
+<li><a class="reference internal" href="#">State retention using mutable list</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature37"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature37</span></code></a></li>
 </ul>
 </li>
@@ -87,10 +106,10 @@ can be returned by the <code class="docutils literal notranslate"><span class="p
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature36.html"
-                        title="previous chapter">State retention using mutable list</a></p>
+                        title="previous chapter">Accessing non-local variables</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature38.html"
-                        title="next chapter">Arguments matched by default values, by position and by name</a></p>
+                        title="next chapter">Simulating output parameters in a function call</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -122,13 +141,13 @@ can be returned by the <code class="docutils literal notranslate"><span class="p
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature38.html" title="Arguments matched by default values, by position and by name"
+          <a href="feature38.html" title="Simulating output parameters in a function call"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature36.html" title="State retention using mutable list"
+          <a href="feature36.html" title="Accessing non-local variables"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Simulating output parameters in a function call</a></li> 
+        <li class="nav-item nav-item-this"><a href="">State retention using mutable list</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

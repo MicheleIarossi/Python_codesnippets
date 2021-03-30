@@ -1,5 +1,5 @@
-##    Python codesnippets - Dictionary construction with zip()
-##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
+##    Python codesnippets - Parallel traversals with zip()
+##    Copyright (C) 2021  Michele Iarossi  (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
 ##    it under the terms of the GNU General Public License as published by
@@ -19,45 +19,57 @@
 #
 
 """
-Dictionary construction with ``zip()``
-======================================
+Parallel traversals with ``zip()``
+==================================
 
 :py:mod:`codesnippets.feature23`
 --------------------------------
 
-Uses dictionary comprehension:
+Three lists can be traversed in parallel with ``zip()``:
 
->>> key_lst   = ['abc','def','ghi']
->>> value_lst = [2,5,9]
+>>> lst1, lst2, lst3 = (1,2,3), (4,5,6), (7,8,9)
 
->>> a_dict = {a_key:a_value for (a_key,a_value) in zip(key_lst,value_lst)}
->>> a_dict
-{'abc': 2, 'def': 5, 'ghi': 9}
+>>> for (a_value,b_value,c_value) in zip(lst1,lst2,lst3):
+        print(a_value,b_value,c_value)
+1 4 7
+2 5 8
+3 6 9
 
-This is the same as:
+If the lists have different length, use ``itertools.zip_longest()``:
 
->>> a_dict = dict(zip(key_lst,value_lst))
->>> a_dict
-{'abc': 2, 'def': 5, 'ghi': 9}
+>>> lst1, lst2, lst3 = (1,2), (3,4,5), (6,7,8,9)
+
+>>> for (a_value,b_value,c_value) in itertools.zip_longest(lst1,lst2,lst3,fillvalue=0):
+        print(a_value,b_value,c_value)
+1 3 6
+2 4 7
+0 5 8
+0 0 9
 """
 
+import itertools
+
 def feature23():
-    """Dictionary construction with zip()"""
-    print('Dictionary construction with ``zip()``')
-    print('======================================\n')
+    """Parallel traversals with zip()"""
+    print('Parallel traversals with ``zip()``')
+    print('==================================\n')
     print(':py:mod:`codesnippets.feature23`')
     print('--------------------------------\n')
-    print("Uses dictionary comprehension:\n")
-    print(">>> key_lst   = ['abc','def','ghi']")
-    print(">>> value_lst = [2,5,9]\n")
-    key_lst   = ['abc','def','ghi']
-    value_lst = [2,5,9]
-    print(">>> a_dict = {a_key:a_value for (a_key,a_value) in zip(key_lst,value_lst)}")
-    a_dict = {a_key:a_value for (a_key,a_value) in zip(key_lst,value_lst)}
-    print(">>> a_dict")
-    print(a_dict)
-    print("\nThis is the same as:\n")
-    print(">>> a_dict = dict(zip(key_lst,value_lst))")
-    print(">>> a_dict")
-    print(a_dict)
+    print('Three lists can be traversed in parallel with ``zip()``:\n')
+    print('>>> lst1, lst2, lst3 = (1,2,3), (4,5,6), (7,8,9)')
+    print('\n>>> for (a_value,b_value,c_value) in zip(lst1,lst2,lst3):')
+    print('        print(a_value,b_value,c_value)')
+    lst1, lst2, lst3 = (1,2,3), (4,5,6), (7,8,9)
+    for (a_value,b_value,c_value) in zip(lst1,lst2,lst3):
+        print(a_value,b_value,c_value)
+    print()
+    print('If the lists have different length, use ``itertools.zip_longest()``:')
+    print()
+    print('>>> lst1, lst2, lst3 = (1,2), (3,4,5), (6,7,8,9)')
+    print('\n>>> for (a_value,b_value,c_value) in '
+          'itertools.zip_longest(lst1,lst2,lst3,fillvalue=0):')
+    print('        print(a_value,b_value,c_value)')
+    lst1, lst2, lst3 = (1,2), (3,4,5), (6,7,8,9)
+    for (a_value,b_value,c_value) in itertools.zip_longest(lst1,lst2,lst3,fillvalue=0):
+        print(a_value,b_value,c_value)
     print(80*'-')

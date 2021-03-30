@@ -1,4 +1,4 @@
-##    Python codesnippets - Decorator implementation via classes
+##    Python codesnippets - Wrapper/proxy pattern with function decorator
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,148 +19,128 @@
 #
 
 """
-Decorator implementation via classes
-====================================
+Wrapper/proxy pattern with function decorator
+=============================================
 
 :py:mod:`codesnippets.feature98`
 --------------------------------
 
-The following class implements a decorator by means of the ``__call__`` operator:
+The decorator adds a wrapper around the real function call which happens inside the wrapper itself:
 
 .. code-block:: Python
 
-    class Decorator:
-        \"""implements a decorator\"""
-        def __init__(self,a_func):
-            print(f"	-> inside Decorator.__init__() called on function {a_func.__name__}")
-            self.func  = a_func
-            self.calls = 0
-        def __call__(self,*args):
-            self.calls += 1
-            print(f"	-> inside Decorator.__call__() calling {self.func.__name__}"
-                  f" for the {self.calls} time")
-            return self.func(*args)
+    def decorator(func):
+        \"""decorator function\"""
+        print(f"	-> inside decorator function...")
+        calls = 0
+        print(f"	-> inside decorator of function {a_func.__name__}()")
+        def wrapper(*args):
+            \"""wrapper function inside the decorator\"""
+            nonlocal calls
+            calls += 1
+            print(f"	-> inside the wrapper function calling {a_func.__name__}()"
+                  f" for the {calls} time")
+            a_func(*args)
+        return wrapper
 
-This is the function to be decorated:
-
->>> @Decorator
+>>> @decorator
     def my_func(param_a,param_b):
-        \"""function to be decorated\"""
-        print(f"	-> inside my_func({param_a},{param_b})...")
-	-> inside Decorator.__init__() called on function my_func
+        \"""my decorated function\"""
+        print(f"	-> inside my function...")
+	-> inside decorator of function my_func()
 
-When the decorator runs, the following happens:
+When ``my_func(a,b)`` is called, it is the ``wrapper()`` that is actually called!
 
->>> my_func = Decorator()
+>>> my_func(1,2)
+	-> inside the wrapper function calling my_func() for the 1 time
+	-> inside my function...
 
-The function ``my_func`` gets assigned an instance of the class Decorator.
+>>> my_func(1,2)
+	-> inside the wrapper function calling my_func() for the 2 time
+	-> inside my function...
 
-Now the function is called:
+Works for different functions too:
 
->>> my_func(6,4)
-	-> inside Decorator.__call__() calling my_func for the 1 time
-	-> inside my_func(6,4)...
-
->>> my_func(6,4)
-	-> inside Decorator.__call__() calling my_func for the 2 time
-	-> inside my_func(6,4)...
-
-The function call triggers the ``__call__`` method of the instance bound to ``my_func()``
-
-It works also for different functions because the decorator
-runs again on any new function definition:
-
->>> @Decorator
+>>> @decorator
     def your_func(param_a,param_b):
-        print(f"	-> inside your_func({param_a},{param_b})...")
-	-> inside Decorator.__init__() called on function your_func
+        \"""my decorated function\"""
+        print(f"	-> inside your function...")
+	-> inside decorator of function your_func()
 
->>> your_func(7,5)
-	-> inside Decorator.__call__() calling your_func for the 1 time
-	-> inside your_func(7,5)...
+>>> your_func(1,2)
+	-> inside the wrapper function calling your_func() for the 1 time
+	-> inside your function...
 
->>> my_func(6,4)
-	-> inside Decorator.__call__() calling my_func for the 3 time
-	-> inside my_func(6,4)...
-
->>> your_func(7,5)
-	-> inside Decorator.__call__() calling your_func for the 2 time
-	-> inside your_func(7,5)...
-
-.. seealso:: :doc:`Operator overloading: __call__ , __len__ , __bool__<feature68>`
+>>> your_func(1,2)
+	-> inside the wrapper function calling your_func() for the 2 time
+	-> inside your function...
 """
 
 def feature98():
-    """Decorator implementation via classes"""
-    print('Decorator implementation via classes')
-    print('====================================\n')
+    """Wrapper/proxy pattern with function decorator"""
+    print('Wrapper/proxy pattern with function decorator')
+    print('=============================================\n')
     print(':py:mod:`codesnippets.feature98`')
     print('--------------------------------\n')
-    print("The following class implements a decorator by means of the ``__call__`` operator:\n")
+    print("The decorator adds a wrapper around the real function call which happens inside"
+          " the wrapper itself:\n")
     print('.. code-block:: Python\n')
-    print("""    class Decorator:
-        \\\"""implements a decorator\\\"""
-        def __init__(self,a_func):
-            print(f"\t-> inside Decorator.__init__() called on function {a_func.__name__}")
-            self.func  = a_func
-            self.calls = 0
-        def __call__(self,*args):
-            self.calls += 1
-            print(f"\t-> inside Decorator.__call__() calling {self.func.__name__}"
-                  f" for the {self.calls} time")
-            return self.func(*args)
-        """)
-    class Decorator:
-        """implements a decorator"""
-        def __init__(self,a_func):
-            print(f"\t-> inside Decorator.__init__() called on function {a_func.__name__}")
-            self.func = a_func
-            self.calls = 0
-        def __call__(self,*args):
-            self.calls += 1
-            print(f"\t-> inside Decorator.__call__() calling {self.func.__name__}"
-                  f" for the {self.calls} time")
-            return self.func(*args)
-    print("This is the function to be decorated:\n")
-    print(""">>> @Decorator
+    print("""    def decorator(func):
+        \\\"""decorator function\\\"""
+        print(f"\t-> inside decorator function...")
+        calls = 0
+        print(f"\t-> inside decorator of function {a_func.__name__}()")
+        def wrapper(*args):
+            \\\"""wrapper function inside the decorator\\\"""
+            nonlocal calls
+            calls += 1
+            print(f"\t-> inside the wrapper function calling {a_func.__name__}()"
+                  f" for the {calls} time")
+            a_func(*args)
+        return wrapper
+          """)
+    def decorator(a_func):
+        """decorator function"""
+        calls = 0
+        print(f"\t-> inside decorator of function {a_func.__name__}()")
+        def wrapper(*args):
+            """wrapper function inside the decorator"""
+            nonlocal calls
+            calls += 1
+            print(f"\t-> inside the wrapper function calling {a_func.__name__}()"
+                  f" for the {calls} time")
+            a_func(*args)
+        return wrapper
+    print(""">>> @decorator
     def my_func(param_a,param_b):
-        \\\"""function to be decorated\\\"""
-        print(f"\t-> inside my_func({param_a},{param_b})...")""")
-    @Decorator
+        \\\"""my decorated function\\\"""
+        print(f"\t-> inside my function...")""")
+    @decorator
     def my_func(param_a,param_b):
-        """function to be decorated"""
-        print(f"\t-> inside my_func({param_a},{param_b})...")
+        """my decorated function"""
+        print(f"\t-> inside my function...")
     print()
-    print("When the decorator runs, the following happens:\n")
-    print(">>> my_func = Decorator()\n")
-    print("The function ``my_func`` gets assigned an instance of the class Decorator.\n")
-    print("Now the function is called:\n")
-    print(">>> my_func(6,4)")
-    my_func(6,4)
+    print("When ``my_func(a,b)`` is called, it is the ``wrapper()`` that is actually called!")
     print()
-    print(">>> my_func(6,4)")
-    my_func(6,4)
+    print(">>> my_func(1,2)")
+    my_func(1,2)
     print()
-    print("The function call triggers the ``__call__`` method of the"
-          " instance bound to ``my_func()``")
+    print(">>> my_func(1,2)")
+    my_func(1,2)
     print()
-    print("It works also for different functions because the decorator")
-    print("runs again on any new function definition:\n")
-    print(""">>> @Decorator
+    print("Works for different functions too:\n")
+    print(""">>> @decorator
     def your_func(param_a,param_b):
-        print(f"\t-> inside your_func({param_a},{param_b})...")""")
-    @Decorator
+        \\\"""my decorated function\\\"""
+        print(f"\t-> inside your function...")""")
+    @decorator
     def your_func(param_a,param_b):
-        """function to be decorated"""
-        print(f"\t-> inside your_func({param_a},{param_b})...")
+        """my decorated function"""
+        print(f"\t-> inside your function...")
     print()
-    print(">>> your_func(7,5)")
-    your_func(7,5)
+    print(">>> your_func(1,2)")
+    your_func(1,2)
     print()
-    print(">>> my_func(6,4)")
-    my_func(6,4)
-    print()
-    print(">>> your_func(7,5)")
-    your_func(7,5)
-    print('\n.. seealso:: :doc:`Operator overloading: __call__ , __len__ , __bool__<feature68>`')
+    print(">>> your_func(1,2)")
+    your_func(1,2)
     print(80*'-')

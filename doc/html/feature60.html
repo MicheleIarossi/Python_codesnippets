@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Adding features via inheritance &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Built-in class attributes for introspection &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Class and per-instance attributes" href="feature61.html" />
-    <link rel="prev" title="Built-in class attributes for introspection" href="feature59.html" /> 
+    <link rel="next" title="Adding features via inheritance" href="feature61.html" />
+    <link rel="prev" title="First classes" href="feature59.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature61.html" title="Class and per-instance attributes"
+          <a href="feature61.html" title="Adding features via inheritance"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature59.html" title="Built-in class attributes for introspection"
+          <a href="feature59.html" title="First classes"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Adding features via inheritance</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Built-in <code class="docutils literal notranslate"><span class="pre">class</span></code> attributes for introspection</a></li> 
       </ul>
     </div>  
 
@@ -45,89 +45,48 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature60"></span><div class="section" id="adding-features-via-inheritance">
-<h1>Adding features via inheritance<a class="headerlink" href="#adding-features-via-inheritance" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature60"></span><div class="section" id="built-in-class-attributes-for-introspection">
+<h1>Built-in <code class="docutils literal notranslate"><span class="pre">class</span></code> attributes for introspection<a class="headerlink" href="#built-in-class-attributes-for-introspection" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature60">
 <h2><a class="reference internal" href="#module-codesnippets.feature60" title="codesnippets.feature60"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature60</span></code></a><a class="headerlink" href="#codesnippets-feature60" title="Permalink to this headline">¶</a></h2>
-<p>New features can be added to an existing class via inheritance.</p>
-<p>The following <code class="docutils literal notranslate"><span class="pre">class</span></code> provides a representation method that prints out the
-instance class name and attributes:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Attributes</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Class for printing attributes of inherited classes.&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overloaded repr operator.&quot;&quot;&quot;</span>
-        <span class="n">class_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="n">class_keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-        <span class="n">attr_list</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=</span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">class_keys</span><span class="p">]</span>
-        <span class="n">attr_str</span>   <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attr_list</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">class_name</span><span class="p">,</span><span class="n">attr_str</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The classes <code class="docutils literal notranslate"><span class="pre">Animal</span></code> and <code class="docutils literal notranslate"><span class="pre">Mammal</span></code> from <a class="reference internal" href="feature58.html"><span class="doc">First classes</span></a> are now adapted for
-taking advantage of the usage of the <code class="docutils literal notranslate"><span class="pre">Attributes</span></code> class:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Animal</span><span class="p">(</span><span class="n">Attributes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for describing an animal.&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">species</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">rank</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Animal constructor.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span>    <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="n">species</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span>    <span class="o">=</span> <span class="n">rank</span>
-    <span class="k">def</span> <span class="nf">elevate_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">delta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method for changing the rank.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">+=</span> <span class="n">delta</span>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overloaded repr operator.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Attributes</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>In the class definition above:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Animal</span></code> is derived now from <code class="docutils literal notranslate"><span class="pre">Attributes</span></code>,</p></li>
-<li><p>the special method <code class="docutils literal notranslate"><span class="pre">__repr__</span></code> uses the <code class="docutils literal notranslate"><span class="pre">Attributes.__repr__</span></code> method, instead of
-its own implementation.</p></li>
-</ul>
-<p>The following is the subclass modeling mammals derived from <code class="docutils literal notranslate"><span class="pre">Animal</span></code> above:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Mammal</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Specialized class for describing a mammal.&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">rank</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">weight</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">height</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Mammal constructor.&quot;&quot;&quot;</span>
-        <span class="n">Animal</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="s1">&#39;mammal&#39;</span><span class="p">,</span><span class="n">rank</span><span class="p">)</span> <span class="c1"># Base class constructor is called</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>
-    <span class="k">def</span> <span class="nf">elevate_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">delta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Customized method for changing the rank for mammals.&quot;&quot;&quot;</span>
-        <span class="n">Animal</span><span class="o">.</span><span class="n">elevate_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">delta</span><span class="p">)</span>        <span class="c1"># Reuses the method from the base class</span>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overloaded repr operator.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Animal</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The class <code class="docutils literal notranslate"><span class="pre">Mammal</span></code> now still reuses methods of its base class <code class="docutils literal notranslate"><span class="pre">Animal</span></code> as before, but
-<code class="docutils literal notranslate"><span class="pre">__repr__</span></code> uses the <code class="docutils literal notranslate"><span class="pre">Attributes.__repr__</span></code> method as well, via <code class="docutils literal notranslate"><span class="pre">Animal.__repr__</span></code>.</p>
-<p>Given the classes above, the creation of instances of <code class="docutils literal notranslate"><span class="pre">Animal</span></code> and <code class="docutils literal notranslate"><span class="pre">Mammal</span></code> is done as:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">snake</span> <span class="o">=</span> <span class="n">Animal</span><span class="p">(</span><span class="s1">&#39;snake&#39;</span><span class="p">,</span><span class="s1">&#39;reptile&#39;</span><span class="p">,</span><span class="mi">23</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">snake</span>
-<span class="go">Animal(name=&#39;snake&#39;,species=&#39;reptile&#39;,rank=23)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">snake</span><span class="o">.</span><span class="n">elevate_rank</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">snake</span>
-<span class="go">Animal(name=&#39;snake&#39;,species=&#39;reptile&#39;,rank=26)</span>
-</pre></div>
-</div>
+<p>Instances of classes have built-in attributes that are available for introspection.</p>
+<p>Given the <code class="docutils literal notranslate"><span class="pre">Mammal</span></code> class in <a class="reference internal" href="feature59.html"><span class="doc">First classes</span></a>, a <code class="docutils literal notranslate"><span class="pre">tiger</span></code> is instanced as:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span> <span class="o">=</span> <span class="n">Mammal</span><span class="p">(</span><span class="s1">&#39;tiger&#39;</span><span class="p">,</span><span class="mi">143</span><span class="p">,</span><span class="mi">132</span><span class="p">,</span><span class="mi">110</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span>
-<span class="go">Mammal(name=&#39;Tiger&#39;,species=&#39;mammal&#39;,rank=143,weight=132,height=110)</span>
+<span class="go">Mammal(name=&#39;Tiger&#39;,rank=143,weight=132,height=110)</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span><span class="o">.</span><span class="n">elevate_rank</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span>
-<span class="go">Mammal(name=&#39;Tiger&#39;,species=&#39;mammal&#39;,rank=149,weight=132,height=110)</span>
+<span class="go">Mammal(name=&#39;Tiger&#39;,rank=149,weight=132,height=110)</span>
+</pre></div>
+</div>
+<p>The following are some of the built-in attributes available for introspection:</p>
+<ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">__class__</span></code> attribute points to the class object</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span><span class="o">.</span><span class="vm">__class__</span>
+<span class="go">&lt;class &#39;codesnippets.feature60.feature60.&lt;locals&gt;.Mammal&#39;&gt;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">__class__.__name__</span></code> attribute is a string of the name of the class</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tiger</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+<span class="go">Mammal</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">__dict__</span></code> attribute is a dictionary of the instance attributes</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">tiger</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;name&#39;, &#39;species&#39;, &#39;rank&#39;, &#39;weight&#39;, &#39;height&#39;]</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature58.html"><span class="doc">First classes</span></a></p>
+<p><a class="reference internal" href="feature59.html"><span class="doc">First classes</span></a>, <a class="reference internal" href="feature63.html"><span class="doc">More on class introspection tools: __class__,
+__bases__, __dict__</span></a></p>
 </div>
 </div>
 </div>
@@ -141,7 +100,7 @@ its own implementation.</p></li>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Adding features via inheritance</a><ul>
+<li><a class="reference internal" href="#">Built-in <code class="docutils literal notranslate"><span class="pre">class</span></code> attributes for introspection</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature60"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature60</span></code></a></li>
 </ul>
 </li>
@@ -149,10 +108,10 @@ its own implementation.</p></li>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature59.html"
-                        title="previous chapter">Built-in <code class="docutils literal notranslate"><span class="pre">class</span></code> attributes for introspection</a></p>
+                        title="previous chapter">First classes</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature61.html"
-                        title="next chapter">Class and per-instance attributes</a></p>
+                        title="next chapter">Adding features via inheritance</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -184,13 +143,13 @@ its own implementation.</p></li>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature61.html" title="Class and per-instance attributes"
+          <a href="feature61.html" title="Adding features via inheritance"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature59.html" title="Built-in class attributes for introspection"
+          <a href="feature59.html" title="First classes"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Adding features via inheritance</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Built-in <code class="docutils literal notranslate"><span class="pre">class</span></code> attributes for introspection</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

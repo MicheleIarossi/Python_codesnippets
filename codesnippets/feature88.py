@@ -1,4 +1,4 @@
-##    Python codesnippets - ASCII text
+##    Python codesnippets - String type conversions
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,47 +19,106 @@
 #
 
 """
-ASCII text
-==========
+String type conversions
+=======================
 
 :py:mod:`codesnippets.feature88`
 --------------------------------
 
-ASCII uses only 7 bits for the encoding.
-ASCII is supported by Latin-1 and UTF-8.
-Latin-1 uses 8 bits, and UTF-8/16/32 uses 8, 16 or 32 bits.
+From ``str`` to ``bytes``: ``str.encode(encoding)`` and ``bytes(str, encoding)``
 
->>> a_str = 'ABC'
->>> len(a_str)
-3
+From ``bytes`` to ``str``  : ``bytes.decode(encoding)`` and ``str(bytes, encoding)``
 
->>> list(a_str.encode('ascii'))
-[65, 66, 67]
+>>> import sys, locale
 
->>> list(a_str.encode('latin-1'))
-[65, 66, 67]
+Get the platform name:
 
->>> list(a_str.encode('utf-8'))
-[65, 66, 67]
+>>> sys.platform
+darwin
+
+Get the default encoding on this platform:
+
+>>> encoding = sys.getdefaultencoding()
+>>> encoding
+utf-8
+
+A simple string:
+
+>>> a_str = 'hello, world'
+
+From ``str`` to ``bytes`` with ``str.encode()`` which uses
+the default encoding if no parameter is given:
+
+>>> b_bytes = a_str.encode()
+>>> b_bytes
+b'hello, world'
+
+or
+
+>>> b_bytes = bytes(a_str,encoding) # requires the encoding type!
+>>> b_bytes
+b'hello, world'
+
+From ``bytes`` to ``str`` with ``bytes.decode()`` which uses
+the default encoding if no parameter is given:
+
+>>> b_bytes.decode()
+hello, world
+>>> b_bytes.decode() == a_str
+True
+
+or
+
+>>> str(b_bytes,encoding) # requires the encoding type!
+hello, world
+>>> str(b_bytes,encoding) == a_str
+True
 """
 
+import sys
+
 def feature88():
-    """ASCII text"""
-    print('ASCII text')
-    print('==========\n')
+    """String type conversions"""
+    print('String type conversions')
+    print('=======================\n')
     print(':py:mod:`codesnippets.feature88`')
     print('--------------------------------\n')
-    print("ASCII uses only 7 bits for the encoding.")
-    print("ASCII is supported by Latin-1 and UTF-8.")
-    print("Latin-1 uses 8 bits, and UTF-8/16/32 uses 8, 16 or 32 bits.\n")
-    print(">>> a_str = 'ABC'")
-    a_str = 'ABC'
-    print(">>> len(a_str)")
-    print(len(a_str))
-    print("\n>>> list(a_str.encode('ascii'))")
-    print(list(a_str.encode('ascii')))
-    print("\n>>> list(a_str.encode('latin-1'))")
-    print(list(a_str.encode('latin-1')))
-    print("\n>>> list(a_str.encode('utf-8'))")
-    print(list(a_str.encode('utf-8')))
+    print("From ``str`` to ``bytes``: ``str.encode(encoding)`` and ``bytes(str, encoding)``\n")
+    print("From ``bytes`` to ``str``  : ``bytes.decode(encoding)`` and ``str(bytes, encoding)``\n")
+    print(">>> import sys, locale")
+    print("\nGet the platform name:")
+    print("\n>>> sys.platform")
+    print(sys.platform)
+    print("\nGet the default encoding on this platform:")
+    print("\n>>> encoding = sys.getdefaultencoding()")
+    encoding = sys.getdefaultencoding()
+    print(">>> encoding")
+    print(encoding)
+    print('\nA simple string:')
+    print("\n>>> a_str = 'hello, world'")
+    a_str = 'hello, world'
+    print("\nFrom ``str`` to ``bytes`` with ``str.encode()`` which uses\nthe default"
+          " encoding if no parameter "
+          "is given:")
+    print("\n>>> b_bytes = a_str.encode()")
+    b_bytes = a_str.encode()
+    print(">>> b_bytes")
+    print(b_bytes)
+    print('\nor')
+    print("\n>>> b_bytes = bytes(a_str,encoding) # requires the encoding type!")
+    b_bytes = bytes(a_str,encoding)
+    print(">>> b_bytes")
+    print(b_bytes)
+    print("\nFrom ``bytes`` to ``str`` with ``bytes.decode()`` which uses\nthe default"
+          " encoding if no parameter "
+          "is given:")
+    print("\n>>> b_bytes.decode()")
+    print(b_bytes.decode())
+    print(">>> b_bytes.decode() == a_str")
+    print(b_bytes.decode() == a_str)
+    print('\nor')
+    print("\n>>> str(b_bytes,encoding) # requires the encoding type!")
+    print(str(b_bytes,encoding))
+    print(">>> str(b_bytes,encoding) == a_str")
+    print(str(b_bytes,encoding) == a_str)
     print(80*'-')

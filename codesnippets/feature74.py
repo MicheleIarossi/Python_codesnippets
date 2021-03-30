@@ -1,4 +1,4 @@
-##    Python codesnippets - Type built-in function applied to classes and instances
+##    Python codesnippets - Usage of __getattr__ and __getattribute__
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,75 +19,128 @@
 #
 
 """
-Type built-in function applied to classes and instances
-=======================================================
+Usage of ``__getattr__`` and ``__getattribute__``
+=================================================
 
 :py:mod:`codesnippets.feature74`
 --------------------------------
 
-The ``type`` built-in function returns an object decribing the type of the instance provided:
+In the delegation pattern, ``__getattr__`` is used for forwarding
+undefined attribute fetches to encapsulated objects:
 
-* when applied to an instance of a class, it provides a reference to the class
-* when applied to a class, it provides a reference to a ``type`` object.
+* ``__getattr__`` is called when the requested attribute is not defined for the current instance
+* ``__getattribute__`` is always called on every attribute fetch, irrespective of the requested
+  attribute being defined or not for the current instance
 
-Consider the following class:
+Consider the following classes:
 
 .. code-block:: Python
 
-    class MyClass:
-        pass
+    class ClassA:
+        \"""a class\"""
+        def __init__(self,val):
+            self.data_a = val
 
->>> my_obj = MyClass()
+    class ClassB:
+        \"""another class\"""
+        def __init__(self,val):
+            self.data_b = val
+            self.obj_a  = ClassA(val*10)
+        def __getattr__(self,attrstr):
+            print('	-> ClassB.__getattr__(self,%s)' % (attrstr))
+            return getattr(self.obj_a, attrstr)
+        def __getattribute__(self,attrstr):
+            print('	-> ClassB.__getattribute__(self,%s)' % (attrstr))
+            return object.__getattribute__(self,attrstr)
 
-``type`` applied to an instance of a class provides a reference to that class:
+Given an object of ``ClassB``:
 
->>> type(my_obj)
-<class 'codesnippets.feature76.feature76.<locals>.MyClass'>
+>>> obj_b = ClassB(8)
 
-The referenced class object is the same:
+the following attribute fetch of ``data_b`` is defined for ``obj_b`` and only
+``__getattribute__`` is called:
 
->>> id(type(my_obj))
-0x7fa558a27650
+>>> obj_b.data_b
+	-> ClassB.__getattribute__(self,data_b)
+8
 
->>> id(MyClass)
-0x7fa558a27650
+But the following attribute fetch of ``data_a`` is undefined for ``obj_b``:
 
-``type`` applied to a class object class provides a reference to a ``type`` object:
+>>> obj_b.data_a # instance obj_b has no attribute data_a!
+	-> ClassB.__getattribute__(self,data_a)
+	-> ClassB.__getattr__(self,data_a)
+	-> ClassB.__getattribute__(self,obj_a)
+80
 
->>> type(MyClass)
-<class 'type'>
+From the calls above notice that:
+
+* ``__getattribute__`` is called irrespective of ``data_a`` being defined or undefined for ``obj_b``
+* ``__getattr__`` is called because ``data_a`` is undefined for ``obj_b``
+* ``__getattribute__`` is called again because of the attribute fetch ``self.obj_a``
+  inside ``ClassB.__getattr__``
 """
 
 def feature74():
-    """Type built-in function applied to classes and instances"""
-    print('Type built-in function applied to classes and instances')
-    print('=======================================================\n')
+    """Usage of __getattr__ and __getattribute__"""
+    print('Usage of ``__getattr__`` and ``__getattribute__``')
+    print('=================================================\n')
     print(':py:mod:`codesnippets.feature74`')
     print('--------------------------------\n')
-
-    print("The ``type`` built-in function returns an object decribing "
-        "the type of the instance provided:\n")
-    print('* when applied to an instance of a class, it provides a reference to the class')
-    print('* when applied to a class, it provides a reference to a ``type`` object.\n')
-    print('Consider the following class:\n')
+    print('In the delegation pattern, ``__getattr__`` is used for forwarding')
+    print('undefined attribute fetches to encapsulated objects:\n')
+    print('* ``__getattr__`` is called when the requested attribute is not defined '
+          'for the current instance')
+    print('* ``__getattribute__`` is always called on every attribute fetch, irrespective '
+          'of the requested\n  attribute being defined or not for the current instance\n')
+    print('Consider the following classes:\n')
+    class ClassA:
+        """a class"""
+        def __init__(self,val):
+            self.data_a = val
     print('.. code-block:: Python\n')
-    print("""    class MyClass:
-        pass
+    print("""    class ClassA:
+        \\\"""a class\\\"""
+        def __init__(self,val):
+            self.data_a = val
         """)
-    class MyClass:
-        """my class"""
-        pass
-    print(">>> my_obj = MyClass()")
-    my_obj = MyClass()
-    print('\n``type`` applied to an instance of a class provides a reference to that class:\n')
-    print(">>> type(my_obj)")
-    print(type(my_obj))
-    print('\nThe referenced class object is the same:\n')
-    print(">>> id(type(my_obj))")
-    print(f'0x{id(type(my_obj)):x}')
-    print("\n>>> id(MyClass)")
-    print(f'0x{id(MyClass):x}')
-    print('\n``type`` applied to a class object class provides a reference to a ``type`` object:\n')
-    print(">>> type(MyClass)")
-    print(type(MyClass))
+    class ClassB:
+        """another class"""
+        def __init__(self,val):
+            self.data_b = val
+            self.obj_a  = ClassA(val*10)
+        def __getattr__(self,attrstr):
+            print('\t-> ClassB.__getattr__(self,%s)' % (attrstr))
+            return getattr(self.obj_a, attrstr)
+        def __getattribute__(self,attrstr):
+            print('\t-> ClassB.__getattribute__(self,%s)' % (attrstr))
+            return object.__getattribute__(self,attrstr)
+    print("""    class ClassB:
+        \\\"""another class\\\"""
+        def __init__(self,val):
+            self.data_b = val
+            self.obj_a  = ClassA(val*10)
+        def __getattr__(self,attrstr):
+            print('\t-> ClassB.__getattr__(self,%s)' % (attrstr))
+            return getattr(self.obj_a, attrstr)
+        def __getattribute__(self,attrstr):
+            print('\t-> ClassB.__getattribute__(self,%s)' % (attrstr))
+            return object.__getattribute__(self,attrstr)
+        """)
+    print('Given an object of ``ClassB``:\n')
+    print('>>> obj_b = ClassB(8)')
+    obj_b = ClassB(8)
+    print('\nthe following attribute fetch of ``data_b`` is defined for ``obj_b`` and '
+          'only\n``__getattribute__`` is called:\n')
+    print('>>> obj_b.data_b')
+    print(obj_b.data_b)
+    print('\nBut the following attribute fetch of ``data_a`` is undefined for ``obj_b``:\n')
+    print('>>> obj_b.data_a # instance obj_b has no attribute data_a!')
+    print(obj_b.data_a)
+    print('\nFrom the calls above notice that:\n')
+    print('* ``__getattribute__`` is called irrespective of ``data_a`` being defined '
+          'or undefined for ``obj_b``')
+    print('* ``__getattr__`` is called because ``data_a`` is undefined '
+          'for ``obj_b``')
+    print('* ``__getattribute__`` is called again because of the attribute '
+          'fetch ``self.obj_a``\n  inside ``ClassB.__getattr__``')
     print(80*'-')

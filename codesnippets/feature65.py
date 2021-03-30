@@ -1,4 +1,4 @@
-##    Python codesnippets - Operator overloading: iteration protocol
+##    Python codesnippets - Operator overloading: add, sub, and basic indexing
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,21 +19,18 @@
 #
 
 """
-Operator overloading: iteration protocol
-========================================
+Operator overloading: add, sub, and basic indexing
+==================================================
 
 :py:mod:`codesnippets.feature65`
 --------------------------------
 
-In order to support the iteration protocol in a given class, the:
+This is an example of a container class that implements also the:
 
-* ``__iter__`` operator needs to be implemented and it must return an iterator class
-* ``__next__`` operator needs to be implemented in the iterator class
-
-
-In the following, the ``MyContainerClass`` from :doc:`Operator overloading: add, sub, and basic
-indexing<feature64>` is adapted for supporting the iteration protocol. By implementing the
-``__iter__`` operator instead of ``__getitem__`` , the class can return an iterator class instance:
+* ``__add__`` operator, which is called when class instances are added ``+``
+* ``__sub__`` operator, which is called when class instances are subtracted ``-``
+* ``__getitem__``, ``__setitem__`` operators, which are called when class
+  instances are indexed ``[]``
 
 .. code-block:: Python
 
@@ -53,39 +50,12 @@ indexing<feature64>` is adapted for supporting the iteration protocol. By implem
             print('	-> MyContainer.__sub__')
             data = [x_val-y_val for (x_val,y_val) in zip(self._data,other._data)]
             return MyContainer(data)
-        def __iter__(self):
-            print('	-> MyContainer.__iter__')
-            return MyContainerIterator(self._data)
         def __getitem__(self,key):
             print('	-> MyContainer.__getitem__')
             return self._data[key]
         def __setitem__(self,key,value):
             print('	-> MyContainer.__setitem__')
             self._data[key] = value
-
-In the iterator class ``MyContainerIterator`` the ``__next__`` operator is used for scanning
-each element one by one. Once the elements are exhausted, the ``StopIteration``
-exception is raised:
-
-.. code-block:: Python
-
-    class MyContainerIterator:
-        \"""a container iterator class\"""
-        def __init__(self,data):
-            print('	-> MyContainerIterator.__init__')
-            self.data = data
-            self.key  = 0
-        def __next__(self):
-            print('	-> MyContainerIterator.__next__')
-            if self.key >= len(self.data):
-                raise StopIteration
-            value = self.data[self.key]
-            self.key += 1
-            return value
-        def __repr__(self):
-            \"""overloads repr operator\"""
-            print('	-> MyContainerIterator.__repr__')
-            return 'MyContainerIterator(data=%r)' % (self._data)
 
 ``MyContainer`` instances are created as usual:
 
@@ -95,35 +65,126 @@ exception is raised:
 	-> MyContainer.__repr__
 MyContainer(data=[0, 1, 2, 3, 4, 5])
 
-The ``iter`` built-in function is applied now to ``container1`` for getting an iterator object back:
+>>> container2 = MyContainer([8,3,14,5,10,19])
+	-> MyContainer.__init__
+>>> container2
+	-> MyContainer.__repr__
+MyContainer(data=[8, 3, 14, 5, 10, 19])
 
->>> iterator_container1 = iter(container1)
-	-> MyContainer.__iter__
-	-> MyContainerIterator.__init__
+Containers can be added:
 
->>> next(iterator_container1), next(iterator_container1), next(iterator_container1)
-	-> MyContainerIterator.__next__
-	-> MyContainerIterator.__next__
-	-> MyContainerIterator.__next__
-0 1 2
+>>> container3 = container1 + container2
+	-> MyContainer.__add__
+	-> MyContainer.__init__
+>>> container3
+	-> MyContainer.__repr__
+MyContainer(data=[8, 4, 16, 8, 14, 24])
 
-.. seealso:: :doc:`The iteration protocol<feature26>`
+Containers can be subtracted:
+
+>>> container3 = container2 - container1
+	-> MyContainer.__sub__
+	-> MyContainer.__init__
+>>> container3
+	-> MyContainer.__repr__
+MyContainer(data=[8, 2, 12, 2, 6, 14])
+
+Containers can be indexed (read and write):
+
+>>> container3[5] = 31
+	-> MyContainer.__setitem__
+>>> container3
+	-> MyContainer.__repr__
+MyContainer(data=[8, 2, 12, 2, 6, 31])
+
+>>> container3[2]
+	-> MyContainer.__getitem__
+12
+
+.. note:: Index operators are also used in all iteration context.
+
+For example:
+
+* membership test
+
+>>> 31 in container3
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+True
+
+* list comprehension
+
+>>> [elem for elem in container3]
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+[8, 2, 12, 2, 6, 31]
+
+* ``map`` call
+
+>>> list(map(str,container3))
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+['8', '2', '12', '2', '6', '31']
+
+* sequence assignments
+
+>>> (a_val,b_val,c_val,d_val,e_val,f_val) = container3
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+>>> a_val,b_val,d_val,e_val,f_val
+(8, 2, 12, 2, 6, 31)
+
+* ``list()``, ``tuple()``, etc.
+
+>>> list(container3), tuple(container3)
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+	-> MyContainer.__getitem__
+([8, 2, 12, 2, 6, 31], (8, 2, 12, 2, 6, 31))
+
 """
 
 def feature65():
-    """Operator overloading: iteration protocol"""
-    print('Operator overloading: iteration protocol')
-    print('========================================\n')
+    """Operator overloading: add, sub, and basic indexing"""
+    print('Operator overloading: add, sub, and basic indexing')
+    print('==================================================\n')
     print(':py:mod:`codesnippets.feature65`')
     print('--------------------------------\n')
-    print('In order to support the iteration protocol in a given class, the:\n')
-    print('* ``__iter__`` operator needs to be implemented and it must return an iterator class')
-    print('* ``__next__`` operator needs to be implemented in the iterator class\n')
-    print('\nIn the following, the ``MyContainerClass`` from '
-          ':doc:`Operator overloading: add, sub, and\nbasic indexing<feature64>` is adapted for '
-          'supporting the iteration protocol. By implementing the\n``__iter__`` '
-          'operator instead of ``__getitem__``, the class can return '
-          'an iterator class instance:\n')
+    print('This is an example of a container class that implements also the:\n')
+    print('* ``__add__`` operator, which is called when class instances are added ``+``')
+    print('* ``__sub__`` operator, which is called when class instances are subtracted ``-``')
+    print('* ``__getitem__``, ``__setitem__`` operators, which are called when\n  class '
+          'instances are indexed ``[]``\n')
     print('.. code-block:: Python\n')
     print("""    class MyContainer:
         \\\"""my container class\\\"""
@@ -141,9 +202,6 @@ def feature65():
             print('\t-> MyContainer.__sub__')
             data = [x_val-y_val for (x_val,y_val) in zip(self._data,other._data)]
             return MyContainer(data)
-        def __iter__(self):
-            print('\t-> MyContainer.__iter__')
-            return MyContainerIterator(self._data)
         def __getitem__(self,key):
             print('\t-> MyContainer.__getitem__')
             return self._data[key]
@@ -167,65 +225,55 @@ def feature65():
             print('\t-> MyContainer.__sub__')
             data = [x_val-y_val for (x_val,y_val) in zip(self._data,other._data)]
             return MyContainer(data)
-        def __iter__(self):
-            print('\t-> MyContainer.__iter__')
-            return MyContainerIterator(self._data)
         def __getitem__(self,key):
             print('\t-> MyContainer.__getitem__')
             return self._data[key]
         def __setitem__(self,key,value):
             print('\t-> MyContainer.__setitem__')
             self._data[key] = value
-    print('In the iterator class ``MyContainerIterator`` the ``__next__`` operator is '
-          'used for scanning each element one by one. Once the elements are exhausted, '
-          'the ``StopIteration`` exception is raised:\n')
-    print('.. code-block:: Python\n')
-    print("""    class MyContainerIterator:
-        \\\"""a container iterator class\\\"""
-        def __init__(self,data):
-            print('\t-> MyContainerIterator.__init__')
-            self.data = data
-            self.key  = 0
-        def __next__(self):
-            print('\t-> MyContainerIterator.__next__')
-            if self.key >= len(self.data):
-                raise StopIteration
-            value = self.data[self.key]
-            self.key += 1
-            return value
-        def __repr__(self):
-            \\\"""overloads repr operator\\\"""
-            print('\t-> MyContainerIterator.__repr__')
-            return 'MyContainerIterator(data=%r)' % (self._data)
-        """)
-    class MyContainerIterator:
-        """a container iterator class"""
-        def __init__(self,data):
-            print('\t-> MyContainerIterator.__init__')
-            self._data = data
-            self._key  = 0
-        def __next__(self):
-            print('\t-> MyContainerIterator.__next__')
-            if self._key >= len(self._data):
-                raise StopIteration
-            value = self._data[self._key]
-            self._key += 1
-            return value
-        def __repr__(self):
-            """overloads repr operator"""
-            print('\t-> MyContainerIterator.__repr__')
-            return 'MyContainerIterator(data=%r)' % (self._data)
-
     print('``MyContainer`` instances are created as usual:\n')
     print('>>> container1 = MyContainer([0,1,2,3,4,5])')
     container1 = MyContainer([0,1,2,3,4,5])
     print('>>> container1')
     print(container1)
-    print('\nThe ``iter`` built-in function is applied now to ``container1`` for getting an '
-          'iterator object back:\n')
-    print(">>> iterator_container1 = iter(container1)")
-    iterator_container1 = iter(container1)
-    print("\n>>> next(iterator_container1), next(iterator_container1), next(iterator_container1)")
-    print(next(iterator_container1), next(iterator_container1), next(iterator_container1))
-    print('\n.. seealso:: :doc:`The iteration protocol<feature26>`')
+    print('\n>>> container2 = MyContainer([8,3,14,5,10,19])')
+    container2 = MyContainer([8,3,14,5,10,19])
+    print('>>> container2')
+    print(container2)
+    print('\nContainers can be added:\n')
+    print('>>> container3 = container1 + container2')
+    container3 = container1+container2
+    print('>>> container3')
+    print(container3)
+    print('\nContainers can be subtracted:\n')
+    print('>>> container3 = container2 - container1')
+    container3 = container2 - container1
+    print('>>> container3')
+    print(container3)
+    print('\nContainers can be indexed (read and write):\n')
+    print('>>> container3[5] = 31')
+    container3[5] = 31
+    print('>>> container3')
+    print(container3)
+    print('\n>>> container3[2]')
+    print(container3[2])
+    print('\n.. note:: Index operators are also used in all iteration context.\n')
+    print('For example:')
+    print('\n* membership test\n')
+    print('>>> 31 in container3')
+    print(31 in container3)
+    print('\n* list comprehension\n')
+    print('>>> [elem for elem in container3]')
+    print([elem for elem in container3])
+    print('\n* ``map`` call\n')
+    print('>>> list(map(str,container3))')
+    print(list(map(str,container3)))
+    print('\n* sequence assignments\n')
+    print('>>> (a_val,b_val,c_val,d_val,e_val,f_val) = container3')
+    (a_val,b_val,c_val,d_val,e_val,f_val) = container3
+    print('>>> a_val,b_val,d_val,e_val,f_val')
+    print((a_val,b_val,c_val,d_val,e_val,f_val))
+    print('\n* ``list()``, ``tuple()``, etc.\n')
+    print('>>> list(container3), tuple(container3)')
+    print((list(container3), tuple(container3)))
     print(80*'-')

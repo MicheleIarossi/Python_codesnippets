@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Boolean and/or operators &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Dictionary-based C-type switch &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Ternary expression" href="feature21.html" />
-    <link rel="prev" title="Dictionary-based C-type switch" href="feature19.html" /> 
+    <link rel="next" title="Boolean and/or operators" href="feature21.html" />
+    <link rel="prev" title="Assignment expressions: walrus operator" href="feature19.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature21.html" title="Ternary expression"
+          <a href="feature21.html" title="Boolean and/or operators"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature19.html" title="Dictionary-based C-type switch"
+          <a href="feature19.html" title="Assignment expressions: walrus operator"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Boolean and/or operators</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Dictionary-based C-type switch</a></li> 
       </ul>
     </div>  
 
@@ -45,19 +45,34 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature20"></span><div class="section" id="boolean-and-or-operators">
-<h1>Boolean and/or operators<a class="headerlink" href="#boolean-and-or-operators" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature20"></span><div class="section" id="dictionary-based-c-type-switch">
+<h1>Dictionary-based C-type switch<a class="headerlink" href="#dictionary-based-c-type-switch" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature20">
 <h2><a class="reference internal" href="#module-codesnippets.feature20" title="codesnippets.feature20"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature20</span></code></a><a class="headerlink" href="#codesnippets-feature20" title="Permalink to this headline">¶</a></h2>
-<p>Boolean operators <code class="docutils literal notranslate"><span class="pre">and</span></code> and <code class="docutils literal notranslate"><span class="pre">or</span></code> return true or false objects not values!</p>
-<p><code class="docutils literal notranslate"><span class="pre">or</span></code> returns the left operand if true:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="ow">or</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span> <span class="ow">or</span> <span class="mi">2</span>
-<span class="go">(2, 3)</span>
+<p>A dictionary can be used for emulating a simple switch.</p>
+<p>Below different values are selected for different names:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dict_switch</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mike&#39;</span><span class="p">:</span> <span class="mf">0.23</span><span class="p">,</span> <span class="s1">&#39;maria&#39;</span><span class="p">:</span> <span class="mf">2.12</span><span class="p">,</span> <span class="s1">&#39;carl&#39;</span><span class="p">:</span> <span class="mf">1.45</span><span class="p">}</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">and</span></code> returns the right operand if true:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="ow">and</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span> <span class="ow">and</span> <span class="mi">2</span>
-<span class="go">(3, 2)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">input_name</span>  <span class="o">=</span> <span class="s1">&#39;maria&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">input_name</span> <span class="ow">in</span> <span class="n">dict_switch</span><span class="p">:</span>
+<span class="go">        print(f&#39;{dict_switch[input_name]}&#39;)</span>
+<span class="go">else:</span>
+<span class="go">        print(&#39;default case&#39;)</span>
+<span class="go">2.12</span>
+</pre></div>
+</div>
+<p>Now the default case is triggered:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">input_name</span>  <span class="o">=</span> <span class="s1">&#39;bob&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">input_name</span> <span class="ow">in</span> <span class="n">dict_switch</span><span class="p">:</span>
+<span class="go">        print(f&#39;{dict_switch[input_name]}&#39;)</span>
+<span class="go">else:</span>
+<span class="go">        print(&#39;default case&#39;)</span>
+<span class="go">default case</span>
 </pre></div>
 </div>
 </div>
@@ -72,7 +87,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Boolean and/or operators</a><ul>
+<li><a class="reference internal" href="#">Dictionary-based C-type switch</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature20"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature20</span></code></a></li>
 </ul>
 </li>
@@ -80,10 +95,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature19.html"
-                        title="previous chapter">Dictionary-based C-type switch</a></p>
+                        title="previous chapter">Assignment expressions: walrus operator</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature21.html"
-                        title="next chapter">Ternary expression</a></p>
+                        title="next chapter">Boolean and/or operators</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -115,13 +130,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature21.html" title="Ternary expression"
+          <a href="feature21.html" title="Boolean and/or operators"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature19.html" title="Dictionary-based C-type switch"
+          <a href="feature19.html" title="Assignment expressions: walrus operator"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Boolean and/or operators</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Dictionary-based C-type switch</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

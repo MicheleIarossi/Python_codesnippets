@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ASCII text &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>String type conversions &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Unicode text" href="feature89.html" />
-    <link rel="prev" title="String type conversions" href="feature87.html" /> 
+    <link rel="next" title="ASCII text" href="feature89.html" />
+    <link rel="prev" title="Byte and string types" href="feature87.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature89.html" title="Unicode text"
+          <a href="feature89.html" title="ASCII text"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature87.html" title="String type conversions"
+          <a href="feature87.html" title="Byte and string types"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">ASCII text</a></li> 
+        <li class="nav-item nav-item-this"><a href="">String type conversions</a></li> 
       </ul>
     </div>  
 
@@ -45,28 +45,56 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature88"></span><div class="section" id="ascii-text">
-<h1>ASCII text<a class="headerlink" href="#ascii-text" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature88"></span><div class="section" id="string-type-conversions">
+<h1>String type conversions<a class="headerlink" href="#string-type-conversions" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature88">
 <h2><a class="reference internal" href="#module-codesnippets.feature88" title="codesnippets.feature88"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature88</span></code></a><a class="headerlink" href="#codesnippets-feature88" title="Permalink to this headline">¶</a></h2>
-<p>ASCII uses only 7 bits for the encoding.
-ASCII is supported by Latin-1 and UTF-8.
-Latin-1 uses 8 bits, and UTF-8/16/32 uses 8, 16 or 32 bits.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_str</span> <span class="o">=</span> <span class="s1">&#39;ABC&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">a_str</span><span class="p">)</span>
-<span class="go">3</span>
+<p>From <code class="docutils literal notranslate"><span class="pre">str</span></code> to <code class="docutils literal notranslate"><span class="pre">bytes</span></code>: <code class="docutils literal notranslate"><span class="pre">str.encode(encoding)</span></code> and <code class="docutils literal notranslate"><span class="pre">bytes(str,</span> <span class="pre">encoding)</span></code></p>
+<p>From <code class="docutils literal notranslate"><span class="pre">bytes</span></code> to <code class="docutils literal notranslate"><span class="pre">str</span></code>  : <code class="docutils literal notranslate"><span class="pre">bytes.decode(encoding)</span></code> and <code class="docutils literal notranslate"><span class="pre">str(bytes,</span> <span class="pre">encoding)</span></code></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">locale</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">a_str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">))</span>
-<span class="go">[65, 66, 67]</span>
+<p>Get the platform name:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">platform</span>
+<span class="go">darwin</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">a_str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;latin-1&#39;</span><span class="p">))</span>
-<span class="go">[65, 66, 67]</span>
+<p>Get the default encoding on this platform:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">encoding</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">getdefaultencoding</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encoding</span>
+<span class="go">utf-8</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">a_str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
-<span class="go">[65, 66, 67]</span>
+<p>A simple string:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_str</span> <span class="o">=</span> <span class="s1">&#39;hello, world&#39;</span>
+</pre></div>
+</div>
+<p>From <code class="docutils literal notranslate"><span class="pre">str</span></code> to <code class="docutils literal notranslate"><span class="pre">bytes</span></code> with <code class="docutils literal notranslate"><span class="pre">str.encode()</span></code> which uses
+the default encoding if no parameter is given:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b_bytes</span> <span class="o">=</span> <span class="n">a_str</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_bytes</span>
+<span class="go">b&#39;hello, world&#39;</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">a_str</span><span class="p">,</span><span class="n">encoding</span><span class="p">)</span> <span class="c1"># requires the encoding type!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_bytes</span>
+<span class="go">b&#39;hello, world&#39;</span>
+</pre></div>
+</div>
+<p>From <code class="docutils literal notranslate"><span class="pre">bytes</span></code> to <code class="docutils literal notranslate"><span class="pre">str</span></code> with <code class="docutils literal notranslate"><span class="pre">bytes.decode()</span></code> which uses
+the default encoding if no parameter is given:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b_bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+<span class="go">hello, world</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="o">==</span> <span class="n">a_str</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">b_bytes</span><span class="p">,</span><span class="n">encoding</span><span class="p">)</span> <span class="c1"># requires the encoding type!</span>
+<span class="go">hello, world</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">b_bytes</span><span class="p">,</span><span class="n">encoding</span><span class="p">)</span> <span class="o">==</span> <span class="n">a_str</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 </div>
@@ -81,7 +109,7 @@ Latin-1 uses 8 bits, and UTF-8/16/32 uses 8, 16 or 32 bits.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">ASCII text</a><ul>
+<li><a class="reference internal" href="#">String type conversions</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature88"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature88</span></code></a></li>
 </ul>
 </li>
@@ -89,10 +117,10 @@ Latin-1 uses 8 bits, and UTF-8/16/32 uses 8, 16 or 32 bits.</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature87.html"
-                        title="previous chapter">String type conversions</a></p>
+                        title="previous chapter">Byte and string types</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature89.html"
-                        title="next chapter">Unicode text</a></p>
+                        title="next chapter">ASCII text</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -124,13 +152,13 @@ Latin-1 uses 8 bits, and UTF-8/16/32 uses 8, 16 or 32 bits.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature89.html" title="Unicode text"
+          <a href="feature89.html" title="ASCII text"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature87.html" title="String type conversions"
+          <a href="feature87.html" title="Byte and string types"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">ASCII text</a></li> 
+        <li class="nav-item nav-item-this"><a href="">String type conversions</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

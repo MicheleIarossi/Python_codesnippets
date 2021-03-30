@@ -1,4 +1,4 @@
-##    Python codesnippets - Built-in method resolution starts at the class
+##    Python codesnippets - Built-in operations cannot be delegated via __getattr__
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,16 +19,14 @@
 #
 
 """
-Built-in method resolution starts at the class
-==============================================
+Built-in operations cannot be delegated via ``__getattr__``
+===========================================================
 
 :py:mod:`codesnippets.feature76`
 --------------------------------
 
-Built-in method resolution starts at the class and skips the instance.
-
-This is equivalent to ``type(my_obj).__xxxxx__(my_obj,...)``, which means
-that you have to override the built-in operations in the class itself.
+In a class, you cannot delegate built-in operations via ``__getattr__``.
+You have to override the built-in operations in the class itself.
 
 Consider the following class:
 
@@ -38,100 +36,103 @@ Consider the following class:
         \"""a class\"""
         def __init__(self,valstr):
             self.data = valstr
+        def __getattr__(self,attrstr):
+            return getattr(self.data,attrstr)
 
 and the following object:
 
 >>> my_obj = MyClass('hello')
 
-When indexed, an exception is thrown since the instance has no ``__getitem__`` built-in defined:
+The ``__getattr__`` method forwards every undefined attribute fetch to the ``self.data``
+object, but not for built-in operations like indexing:
 
 >>> my_obj[2]
 	--> Exception: 'MyClass' object is not subscriptable
-	Instance has no __getitem__ built-in defined
+	__getattr__ is not called!
 
-But ``__getitem__`` can be added to the instance itself:
+This is equivalent to ``type(my_obj).__getitem__(my_obj,2)`` and ``__getitem__``
+is not overridden in the class!
 
->>> def my_getitem(self,index):
-        return self.data[index]
+The ``__getitem__`` built-in method needs to be overridden in order to avoid such exception:
 
->>> my_obj.__getitem__ = my_getitem
+.. code-block:: Python
 
-If the method is explicitely called, then it works:
+    class MyClass:
+        def __init__(self,valstr):
+            self.data = valstr
+        def __getattr__(self,attrstr):
+            return getattr(self.data,attrstr)
+        def __getitem__(self,index):
+            return self.data[index]
 
->>> my_obj.__getitem__(my_obj,2)
-l
+The same object is created and indexed again:
 
-But if it is called as a built-in operation, it fails because the
-instance is skipped and the operation is not overloaded in the class:
+>>> my_obj = MyClass('hello')
 
->>> my_obj[2]
-	--> Exception: 'MyClass' object is not subscriptable
-	__getitem__ is not called! Equivalent to type(my_obj).__getitem__(my_obj,idx)
-	and __getitem__ is not overridden in the class!
+This works as expected:
 
-The ``__getitem__`` built-in method needs to be overridden in
-the class in order to avoid such exception.
-
-.. seealso:: :doc:`Built-in operations cannot be delegated via __getattr__<feature74>`
-"""
+>>> [x_var for x_var in my_obj]
+['h', 'e', 'l', 'l', 'o']"""
 
 def feature76():
-    """Built-in method resolution starts at the class"""
-    print('Built-in method resolution starts at the class')
-    print('==============================================\n')
+    """Built-in operations cannot be delegated via __getattr__"""
+    print('Built-in operations cannot be delegated via ``__getattr__``')
+    print('===========================================================\n')
     print(':py:mod:`codesnippets.feature76`')
     print('--------------------------------\n')
-    print('Built-in method resolution starts at the class and skips the instance.\n')
-    print('This is equivalent to ``type(my_obj).__xxxxx__(my_obj,...)``, which means\nthat '
-          'you have to override the built-in operations in the class itself.\n')
+    print('In a class, you cannot delegate built-in operations via ``__getattr__``.')
+    print('You have to override the built-in operations in the class itself.\n')
     print('Consider the following class:\n')
     print('.. code-block:: Python\n')
     print("""    class MyClass:
-        \\\"""a class\\\"""
+        \\\"""my class\\\"""
         def __init__(self,valstr):
             self.data = valstr
+        def __getattr__(self,attrstr):
+            return getattr(self.data,attrstr)
         """)
     class MyClass:
-        """a class"""
+        """my class"""
         def __init__(self,valstr):
             self.data = valstr
+        def __getattr__(self,attrstr):
+            return getattr(self.data,attrstr)
     print('and the following object:\n')
     print(">>> my_obj = MyClass('hello')")
     my_obj = MyClass('hello')
-    print('\nWhen indexed, an exception is thrown since the instance has no '
-          '``__getitem__`` built-in defined:\n')
+    print('\nThe ``__getattr__`` method forwards every undefined attribute fetch '
+          'to the ``self.data``\nobject, but not for built-in operations like indexing:\n')
     print(">>> my_obj[2]")
     try:
         print(my_obj[2])
     except TypeError as exc:
         print('\t--> Exception: ' + str(exc))
-        print('\tInstance has no __getitem__ built-in defined')
-    print("\nBut ``__getitem__`` can be added to the instance itself:\n")
-    def my_getitem(self,index):
-        return self.data[index]
-    print(""">>> def my_getitem(self,index):
-        return self.data[index]
+        print('\t__getattr__ is not called!\n')
+    print('This is equivalent to ``type(my_obj).__getitem__(my_obj,2)`` '
+          'and ``__getitem__``\nis not overridden in the class!\n')
+    print("The ``__getitem__`` built-in method needs to be overridden in order to "
+        "avoid such exception:\n")
+    print('.. code-block:: Python\n')
+    print("""    class MyClass:
+        def __init__(self,valstr):
+            self.data = valstr
+        def __getattr__(self,attrstr):
+            return getattr(self.data,attrstr)
+        def __getitem__(self,index):
+            return self.data[index]
         """)
-    print(">>> my_obj.__getitem__ = my_getitem")
-    my_obj.__getitem__ = my_getitem
-    print("\nIf the method is explicitely called, then it works:\n")
-    try:
-        print(">>> my_obj.__getitem__(my_obj,2)")
-        print(my_obj.__getitem__(my_obj,2))
-    except TypeError as exc:
-        print('\t--> Exception: ' + str(exc))
-        print('\tInstance has no __getitem__ built-in defined')
-    print("\nBut if it is called as a built-in operation, it fails because the")
-    print("instance is skipped and the operation is not overloaded in the class:\n")
-    try:
-        print(">>> my_obj[2]")
-        print(my_obj[2])
-    except TypeError as exc:
-        print('\t--> Exception: ' + str(exc))
-        print('\t__getitem__ is not called! Equivalent to type(my_obj).__getitem__(my_obj,idx)')
-        print('\tand __getitem__ is not overridden in the class!')
-    print("\nThe ``__getitem__`` built-in method needs to be overridden in\nthe class in order to "
-        "avoid such exception.")
-    print('\n.. seealso:: :doc:`Built-in operations cannot be '
-          'delegated via __getattr__<feature75>`')
+    class MyClass:
+        """a class"""
+        def __init__(self,valstr):
+            self.data = valstr
+        def __getattr__(self,attrstr):
+            return getattr(self.data,attrstr)
+        def __getitem__(self,index):
+            return self.data[index]
+    print('The same object is created and indexed again:\n')
+    print(">>> my_obj = MyClass('hello')")
+    my_obj = MyClass('hello')
+    print('\nThis works as expected:\n')
+    print(">>> [x_var for x_var in my_obj]")
+    print([x_var for x_var in my_obj])
     print(80*'-')

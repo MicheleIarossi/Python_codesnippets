@@ -1,4 +1,4 @@
-##    Python codesnippets - Usage of __getattr__ and __getattribute__
+##    Python codesnippets - Inheritance attribute lister class
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,128 +19,209 @@
 #
 
 """
-Usage of ``__getattr__`` and ``__getattribute__``
-=================================================
+Inheritance attribute lister class
+==================================
 
 :py:mod:`codesnippets.feature73`
 --------------------------------
 
-In the delegation pattern, ``__getattr__`` is used for forwarding
-undefined attribute fetches to encapsulated objects:
-
-* ``__getattr__`` is called when the requested attribute is not defined for the current instance
-* ``__getattribute__`` is always called on every attribute fetch, irrespective of the requested
-  attribute being defined or not for the current instance
-
-Consider the following classes:
+The class below uses the ``dir()`` function for getting all attributes and names,
+and the ``getattr()`` function for retrieving their values:
 
 .. code-block:: Python
 
-    class ClassA:
-        \"""a class\"""
-        def __init__(self,val):
-            self.data_a = val
+    class ClassInspector:
+        \"""a self inspecting class\"""
+        def __attr_list(self, indent=' '*4):
+            \"""provides list of attributes\"""
+            result  = 'Interns%s\\n%s%%s\\nOthers%s\\n' % ('-'*120, indent, '-'*120)
+            unders = []
+            for attr in dir(self):                              # Instance dir()
+                if attr[:2] == '__' and attr[-2:] == '__':      # Skip internals
+                    unders.append(attr)
+                else:
+                    display = str(getattr(self, attr))[:120-(len(indent) + len(attr))]
+                    result += '%s%s=%s\\n' % (indent, attr, display)
+            return result % ', '.join(unders)
+        def __str__(self):
+            \"""overloading repr operator\"""
+            return '<Instance of %s, address 0x%x:\\n%s>' % (
+                           self.__class__.__name__,         # My class's name
+                           id(self),                        # My address
+                           self.__attr_list())              # name=value list
+        def __repr__(self):
+            \"""overloading repr operator\"""
+            return 'ClassInspector()'
 
-    class ClassB:
-        \"""another class\"""
-        def __init__(self,val):
-            self.data_b = val
-            self.obj_a  = ClassA(val*10)
-        def __getattr__(self,attrstr):
-            print('	-> ClassB.__getattr__(self,%s)' % (attrstr))
-            return getattr(self.obj_a, attrstr)
-        def __getattribute__(self,attrstr):
-            print('	-> ClassB.__getattribute__(self,%s)' % (attrstr))
-            return object.__getattribute__(self,attrstr)
+The following are some test classes:
 
-Given an object of ``ClassB``:
+.. code-block:: Python
 
->>> obj_b = ClassB(8)
+    class Parent:
+        \"""a parent class\"""
+        def __init__(self):
+            self.data_parent = 100
+        def parent_method_1(self):
+            \"""a method function\"""
+            pass
+        def parent_method_2(self):
+            \"""a method function\"""
+            pass
 
-the following attribute fetch of ``data_b`` is defined for ``obj_b`` and only
-``__getattribute__`` is called:
+    class Child(Parent, ClassInspector):
+        \"""a child class\"""
+        def __init__(self):
+            Parent.__init__(self)
+            self.data_child1 = 200
+            self.data_child2 = 201
+        def child_method_1(self):
+            \"""a method function\"""
+            pass
+        def child_method_2(self):
+            \"""a method function\"""
+            pass
 
->>> obj_b.data_b
-	-> ClassB.__getattribute__(self,data_b)
-8
+A ``Child`` object is created as follows:
 
-But the following attribute fetch of ``data_a`` is undefined for ``obj_b``:
+>>> a_child = Child()
 
->>> obj_b.data_a # instance obj_b has no attribute data_a!
-	-> ClassB.__getattribute__(self,data_a)
-	-> ClassB.__getattr__(self,data_a)
-	-> ClassB.__getattribute__(self,obj_a)
-80
+By invoking the ``print`` function on it, the ``__str__`` method of the ``ClassInspector`` is called:
 
-From the calls above notice that:
+>>> print(a_child)
+<Instance of Child, address 0x7f9b4839d3a0:
+Interns--------------------------------------------------------------------------------------------------------
+    __class__, __delattr__, __dict__, __dir__, __doc__,
+    __eq__, __format__, __ge__, __getattribute__, __gt__, __hash__,
+    __init__, __init_subclass__, __le__, __lt__, __module__, __ne__,
+    __new__, __reduce__, __reduce_ex__, __repr__, __setattr__, __sizeof__,
+    __str__, __subclasshook__, __weakref__
+Others---------------------------------------------------------------------------------------------------------
+    _ClassInspector__attr_list=<bound method feature73.<locals>.ClassInspector.__attr_list of ClassInspector()>
+    child_method_1=<bound method feature73.<locals>.Child.child_method_1 of ClassInspector()>
+    child_method_2=<bound method feature73.<locals>.Child.child_method_2 of ClassInspector()>
+    data_child1=200
+    data_child2=201
+    data_parent=100
+    parent_method_1=<bound method feature73.<locals>.Parent.parent_method_1 of ClassInspector()>
+    parent_method_2=<bound method feature73.<locals>.Parent.parent_method_2 of ClassInspector()>
+>
 
-* ``__getattribute__`` is called irrespective of ``data_a`` being defined or undefined for ``obj_b``
-* ``__getattr__`` is called because ``data_a`` is undefined for ``obj_b``
-* ``__getattribute__`` is called again because of the attribute fetch ``self.obj_a``
-  inside ``ClassB.__getattr__``
+.. seealso:: :doc:`dir() on an integer variable<feature1>`
 """
 
 def feature73():
-    """Usage of __getattr__ and __getattribute__"""
-    print('Usage of ``__getattr__`` and ``__getattribute__``')
-    print('=================================================\n')
+    """Inheritance attribute lister class"""
+    print('Inheritance attribute lister class')
+    print('==================================\n')
     print(':py:mod:`codesnippets.feature73`')
     print('--------------------------------\n')
-    print('In the delegation pattern, ``__getattr__`` is used for forwarding')
-    print('undefined attribute fetches to encapsulated objects:\n')
-    print('* ``__getattr__`` is called when the requested attribute is not defined '
-          'for the current instance')
-    print('* ``__getattribute__`` is always called on every attribute fetch, irrespective '
-          'of the requested\n  attribute being defined or not for the current instance\n')
-    print('Consider the following classes:\n')
-    class ClassA:
-        """a class"""
-        def __init__(self,val):
-            self.data_a = val
+    print('The class below uses the ``dir()`` function for getting all attributes and names,')
+    print('and the ``getattr()`` function for retrieving their values:\n')
+    class ClassInspector:
+        """a self inspecting class"""
+        def __attr_list(self, indent=' '*4, count=6):
+            """provides list of attributes"""
+            result  = 'Interns%s\n%s%%s\nOthers%s\n' % ('-'*104, indent, '-'*105)
+            interns = []
+            cnt = 0
+            for attr in dir(self):                              # Instance dir()
+                if attr[:2] == '__' and attr[-2:] == '__':      # Skip internals
+                    cnt += 1
+                    if cnt == count:
+                        attr = '\n' + indent + attr
+                        cnt = 0
+                    interns.append(attr)
+                else:
+                    display = str(getattr(self, attr))[:120-(len(indent) + len(attr))]
+                    result += '%s%s=%s\n' % (indent, attr, display)
+            return result % ', '.join(interns)
+        def __str__(self):
+            """overloading str operator"""
+            return '<Instance of %s, address 0x%x:\n%s>' % (
+                           self.__class__.__name__,         # My class's name
+                           id(self),                        # My address
+                           self.__attr_list())              # name=value list
+        def __repr__(self):
+            """overloading repr operator"""
+            return 'ClassInspector()'
     print('.. code-block:: Python\n')
-    print("""    class ClassA:
-        \\\"""a class\\\"""
-        def __init__(self,val):
-            self.data_a = val
+    print("""    class ClassInspector:
+        \\\"""a self inspecting class\\\"""
+        def __attr_list(self, indent=' '*4):
+            \\\"""provides list of attributes\\\"""
+            result  = 'Interns%s\\\\n%s%%s\\\\nOthers%s\\\\n' % ('-'*120, indent, '-'*120)
+            interns = []
+            for attr in dir(self):                              # Instance dir()
+                if attr[:2] == '__' and attr[-2:] == '__':      # Skip internals
+                    interns.append(attr)
+                else:
+                    display = str(getattr(self, attr))[:120-(len(indent) + len(attr))]
+                    result += '%s%s=%s\\\\n' % (indent, attr, display)
+            return result % ', '.join(interns)
+        def __str__(self):
+            \\\"""overloading repr operator\\\"""
+            return '<Instance of %s, address 0x%x:\\\\n%s>' % (
+                           self.__class__.__name__,         # My class's name
+                           id(self),                        # My address
+                           self.__attr_list())              # name=value list
+        def __repr__(self):
+            \\\"""overloading repr operator\\\"""
+            return 'ClassInspector()'
         """)
-    class ClassB:
-        """another class"""
-        def __init__(self,val):
-            self.data_b = val
-            self.obj_a  = ClassA(val*10)
-        def __getattr__(self,attrstr):
-            print('\t-> ClassB.__getattr__(self,%s)' % (attrstr))
-            return getattr(self.obj_a, attrstr)
-        def __getattribute__(self,attrstr):
-            print('\t-> ClassB.__getattribute__(self,%s)' % (attrstr))
-            return object.__getattribute__(self,attrstr)
-    print("""    class ClassB:
-        \\\"""another class\\\"""
-        def __init__(self,val):
-            self.data_b = val
-            self.obj_a  = ClassA(val*10)
-        def __getattr__(self,attrstr):
-            print('\t-> ClassB.__getattr__(self,%s)' % (attrstr))
-            return getattr(self.obj_a, attrstr)
-        def __getattribute__(self,attrstr):
-            print('\t-> ClassB.__getattribute__(self,%s)' % (attrstr))
-            return object.__getattribute__(self,attrstr)
+    print('The following are some test classes:\n')
+    class Parent:
+        """a parent class"""
+        def __init__(self):
+            self.data_parent = 100
+        def parent_method_1(self):
+            """a method function"""
+            pass
+        def parent_method_2(self):
+            """a method function"""
+            pass
+    class Child(Parent, ClassInspector):
+        """a child class"""
+        def __init__(self):
+            Parent.__init__(self)
+            self.data_child1 = 200
+            self.data_child2 = 201
+        def child_method_1(self):
+            """a method function"""
+            pass
+        def child_method_2(self):
+            """a method function"""
+            pass
+    print('.. code-block:: Python\n')
+    print("""    class Parent:
+        \\\"""a parent class\\\"""
+        def __init__(self):
+            self.data_parent = 100
+        def parent_method_1(self):
+            \\\"""a method function\\\"""
+            pass
+        def parent_method_2(self):
+            \\\"""a method function\\\"""
+            pass
         """)
-    print('Given an object of ``ClassB``:\n')
-    print('>>> obj_b = ClassB(8)')
-    obj_b = ClassB(8)
-    print('\nthe following attribute fetch of ``data_b`` is defined for ``obj_b`` and '
-          'only\n``__getattribute__`` is called:\n')
-    print('>>> obj_b.data_b')
-    print(obj_b.data_b)
-    print('\nBut the following attribute fetch of ``data_a`` is undefined for ``obj_b``:\n')
-    print('>>> obj_b.data_a # instance obj_b has no attribute data_a!')
-    print(obj_b.data_a)
-    print('\nFrom the calls above notice that:\n')
-    print('* ``__getattribute__`` is called irrespective of ``data_a`` being defined '
-          'or undefined for ``obj_b``')
-    print('* ``__getattr__`` is called because ``data_a`` is undefined '
-          'for ``obj_b``')
-    print('* ``__getattribute__`` is called again because of the attribute '
-          'fetch ``self.obj_a``\n  inside ``ClassB.__getattr__``')
+    print("""    class Child(Parent, ClassInspector):
+        \\\"""a child class\\\"""
+        def __init__(self):
+            Parent.__init__(self)
+            self.data_child1 = 200
+            self.data_child2 = 201
+        def child_method_1(self):
+            \\\"""a method function\\\"""
+            pass
+        def child_method_2(self):
+            \\\"""a method function\\\"""
+            pass
+        """)
+    print('A ``Child`` object is created as follows:\n')
+    print('>>> a_child = Child()')
+    a_child = Child()
+    print('\nBy invoking the ``print`` function on it, the ``__str__`` method of '
+          'the ``ClassInspector`` is called:\n')
+    print('>>> print(a_child)')
+    print(a_child)
+    print('\n.. seealso:: :doc:`dir() on an integer variable<feature1>`')
     print(80*'-')

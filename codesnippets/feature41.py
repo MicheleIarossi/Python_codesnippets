@@ -1,4 +1,4 @@
-##    Python codesnippets - Keyword only arguments
+##    Python codesnippets - Unpacking arguments
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,65 +19,47 @@
 #
 
 """
-Keyword only arguments
-======================
+Unpacking arguments
+===================
 
 :py:mod:`codesnippets.feature41`
 --------------------------------
 
-Keyword only arguments are used for providing optional configuration
-parameters. They must be coded after ``*pargs`` and before ``**kwargs``!
+The ``*`` unpacks a tuple into positional arguments.\n
+The ``**`` unpacks a dictionary into an arbitrary number of keyword arguments.
 
 .. code-block:: Python
 
-    def func(*pargs,a_value=1,b_value=2,**kwargs):
+    def func(*pargs,a_value=0,**kwargs):
         print(f'Arbitrary positional arguments: pargs   = {pargs}')
         print(f'Positional parameter:           a_value = {a_value}')
-        print(f'Positional parameter:           b_value = {b_value}')
         print(f'Arbitrary keyword arguments:    kwargs  = {kwargs}')
 
-Here the arguments ``a_value`` and ``b_value`` get their default values:
-
->>> func(*(3,4,5),**{'alfa':3,'beta':5,'gamma':10})
-Arbitrary positional arguments: pargs   = (3, 4, 5)
-Positional parameter:           a_value = 1
-Positional parameter:           b_value = 2
-Arbitrary keyword arguments:    kwargs  = {'alfa': 3, 'beta': 5, 'gamma': 10}
-
-Here the arguments ``a_value`` and ``b_value`` are given as keyword arguments:
-
->>> func(*(3,4,5),a_value=5,b_value=6,**{'alfa':3,'beta':5,'gamma':10})
-Arbitrary positional arguments: pargs   = (3, 4, 5)
-Positional parameter:           a_value = 5
-Positional parameter:           b_value = 6
+>>> func(*(3,4,5),2,**{'alfa':3,'beta':5,'gamma':10})
+Arbitrary positional arguments: pargs   = (3, 4, 5, 2)
+Positional parameter:           a_value = 0
 Arbitrary keyword arguments:    kwargs  = {'alfa': 3, 'beta': 5, 'gamma': 10}
 """
 
-def func(*pargs,a_value=1,b_value=2,**kwargs):
+def func(*pargs,a_value=0,**kwargs):
     """uses positional, arbitrary positional and keyword arguments"""
     print(f'Arbitrary positional arguments: pargs   = {pargs}')
     print(f'Positional parameter:           a_value = {a_value}')
-    print(f'Positional parameter:           b_value = {b_value}')
     print(f'Arbitrary keyword arguments:    kwargs  = {kwargs}')
 
 def feature41():
-    """Keyword only arguments"""
-    print('Keyword only arguments')
-    print('======================\n')
+    """Unpacking arguments"""
+    print('Unpacking arguments')
+    print('===================\n')
     print(':py:mod:`codesnippets.feature41`')
     print('--------------------------------\n')
-    print('Keyword only arguments are used for providing optional configuration')
-    print('parameters. They must be coded after ``*pargs`` and before ``**kwargs``!\n')
+    print('The ``*`` unpacks a tuple into positional arguments.\\n')
+    print('The ``**`` unpacks a dictionary into an arbitrary number of keyword arguments.\n')
     print('.. code-block:: Python\n')
-    print('    def func(*pargs,a_value=1,b_value=2,**kwargs):')
+    print('    def func(*pargs,a_value=0,**kwargs):')
     print("        print(f'Arbitrary positional arguments: pargs   = {pargs}')")
     print("        print(f'Positional parameter:           a_value = {a_value}')")
-    print("        print(f'Positional parameter:           b_value = {b_value}')")
     print("        print(f'Arbitrary keyword arguments:    kwargs  = {kwargs}')\n")
-    print("Here the arguments ``a_value`` and ``b_value`` get their default values:\n")
-    print(">>> func(*(3,4,5),**{'alfa':3,'beta':5,'gamma':10})")
-    func(*(3,4,5),**{'alfa':3,'beta':5,'gamma':10})
-    print("\nHere the arguments ``a_value`` and ``b_value`` are given as keyword arguments:\n")
-    print(">>> func(*(3,4,5),a_value=5,b_value=6,**{'alfa':3,'beta':5,'gamma':10})")
-    func(*(3,4,5),a_value=5,b_value=6,**{'alfa':3,'beta':5,'gamma':10})
+    print(">>> func(*(3,4,5),2,**{'alfa':3,'beta':5,'gamma':10})")
+    func(*(3,4,5),2,**{'alfa':3,'beta':5,'gamma':10})
     print(80*'-')

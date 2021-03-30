@@ -1,4 +1,4 @@
-##    Python codesnippets - Adding features via inheritance
+##    Python codesnippets - Built-in class attributes for introspection
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,127 +19,55 @@
 #
 
 """
-Adding features via inheritance
-===============================
+Built-in ``class`` attributes for introspection
+===============================================
 
 :py:mod:`codesnippets.feature60`
 --------------------------------
 
-New features can be added to an existing class via inheritance.
+Instances of classes have built-in attributes that are available for introspection.
 
-The following ``class`` provides a representation method that prints out the
-instance class name and attributes:
-
-.. code-block:: Python
-
-    class Attributes:
-        \"""Class for printing attributes of inherited classes.\"""
-        def __repr__(self):
-            \"""Overloaded repr operator.\"""
-            class_name = self.__class__.__name__
-            class_keys = self.__dict__.keys()
-            attr_list  = ['%s=%r' % (k,self.__dict__[k]) for k in class_keys]
-            attr_str   = ','.join(attr_list)
-            return '%s(%s)' % (class_name,attr_str)
-
-The classes ``Animal`` and ``Mammal`` from :doc:`First classes<feature58>` are now adapted for
-taking advantage of the usage of the ``Attributes`` class:
-
-.. code-block:: Python
-
-    class Animal(Attributes):
-        \"""Base class for describing an animal.\"""
-        def __init__(self,name='',species='',rank=0):
-            \"""Animal constructor.\"""
-            self.name    = name
-            self.species = species
-            self.rank    = rank
-        def elevate_rank(self,delta):
-            \"""Method for changing the rank.\"""
-            self.rank += delta
-        def __repr__(self):
-            \"""Overloaded repr operator.\"""
-            return Attributes.__repr__(self)
-
-In the class definition above:
-
-* ``Animal`` is derived now from ``Attributes``,
-* the special method ``__repr__`` uses the ``Attributes.__repr__`` method, instead of
-  its own implementation.
-
-The following is the subclass modeling mammals derived from ``Animal`` above:
-
-.. code-block:: Python
-
-    class Mammal(Animal):
-        \"""Specialized class for describing a mammal.\"""
-        def __init__(self,name='',rank=0,weight=100,height=100):
-            \"""Mammal constructor.\"""
-            Animal.__init__(self,name,'mammal',rank) # Base class constructor is called
-            self.weight = weight
-            self.height = height
-        def elevate_rank(self,delta):
-            \"""Customized method for changing the rank for mammals.\"""
-            Animal.elevate_rank(self,2*delta)        # Reuses the method from the base class
-        def __repr__(self):
-            \"""Overloaded repr operator.\"""
-            return Animal.__repr__(self)
-
-The class ``Mammal`` now still reuses methods of its base class ``Animal`` as before, but
-``__repr__`` uses the ``Attributes.__repr__`` method as well, via ``Animal.__repr__``.
-
-Given the classes above, the creation of instances of ``Animal`` and ``Mammal`` is done as:
-
->>> snake = Animal('snake','reptile',23)
->>> snake
-Animal(name='snake',species='reptile',rank=23)
-
->>> snake.elevate_rank(3)
->>> snake
-Animal(name='snake',species='reptile',rank=26)
+Given the ``Mammal`` class in :doc:`First classes<feature59>`, a ``tiger`` is instanced as:
 
 >>> tiger = Mammal('tiger',143,132,110)
 >>> tiger
-Mammal(name='Tiger',species='mammal',rank=143,weight=132,height=110)
+Mammal(name='Tiger',rank=143,weight=132,height=110)
 
 >>> tiger.elevate_rank(3)
 >>> tiger
-Mammal(name='Tiger',species='mammal',rank=149,weight=132,height=110)
+Mammal(name='Tiger',rank=149,weight=132,height=110)
 
-.. seealso:: :doc:`First classes<feature58>`"""
+The following are some of the built-in attributes available for introspection:
+
+* the ``__class__`` attribute points to the class object
+
+>>> tiger.__class__
+<class 'codesnippets.feature60.feature60.<locals>.Mammal'>
+
+* the ``__class__.__name__`` attribute is a string of the name of the class
+
+>>> tiger.__class__.__name__
+Mammal
+
+* the ``__dict__`` attribute is a dictionary of the instance attributes
+
+>>> list(tiger.__dict__.keys())
+['name', 'species', 'rank', 'weight', 'height']
+
+.. seealso:: :doc:`First classes<feature59>`, :doc:`More on class introspection tools: __class__,
+    __bases__, __dict__<feature63>`
+"""
 
 def feature60():
-    """Adding features via inheritance"""
-    print('Adding features via inheritance')
-    print('===============================\n')
+    """Built-in attributes of class for introspection"""
+    print('Built-in ``class`` attributes for introspection')
+    print('===============================================\n')
     print(':py:mod:`codesnippets.feature60`')
     print('--------------------------------\n')
-    print('New features can be added to an existing class via inheritance.\n')
-    print('The following ``class`` provides a representation method that prints out'
-          '\nthe instance class name and attributes:\n')
-    class Attributes:
-        """Class for printing attributes of inherited classes"""
-        def __repr__(self):
-            """Overloaded repr operator"""
-            class_name = self.__class__.__name__
-            class_keys = self.__dict__.keys()
-            attr_list  = ['%s=%r' % (k,self.__dict__[k]) for k in class_keys]
-            attr_str   = ','.join(attr_list)
-            return '%s(%s)' % (class_name,attr_str)
-    print('.. code-block:: Python\n')
-    print("""    class Attributes:
-        \\\"""Class for printing attributes of inherited classes.\\\"""
-        def __repr__(self):
-            \\\"""Overloaded repr operator.\\\"""
-            class_name = self.__class__.__name__
-            class_keys = self.__dict__.keys()
-            attr_list  = ['%s=%r' % (k,self.__dict__[k]) for k in class_keys]
-            attr_str   = ','.join(attr_list)
-            return '%s(%s)' % (class_name,attr_str)
-        """)
-    print('The classes ``Animal`` and ``Mammal`` from :doc:`First classes<feature58>`'
-          ' are now adapted for\ntaking advantage of the usage of the ``Attributes`` class:\n')
-    class Animal(Attributes):
+    print('Instances of classes have built-in attributes that are available for introspection.\n')
+    print('Given the ``Mammal`` class in :doc:`First classes<feature59>`, a ``tiger`` '
+          'is instanced as:\n')
+    class Animal:
         """Base class for describing an animal"""
         def __init__(self,name='',species='',rank=0):
             """Animal constructor"""
@@ -150,28 +78,8 @@ def feature60():
             """Method for changing the rank"""
             self.rank += delta
         def __repr__(self):
-            """overloads repr operator"""
-            return Attributes.__repr__(self)
-    print('.. code-block:: Python\n')
-    print("""    class Animal(Attributes):
-        \\\"""Base class for describing an animal.\\\"""
-        def __init__(self,name='',species='',rank=0):
-            \\\"""Animal constructor.\\\"""
-            self.name    = name
-            self.species = species
-            self.rank    = rank
-        def elevate_rank(self,delta):
-            \\\"""Method for changing the rank.\\\"""
-            self.rank += delta
-        def __repr__(self):
-            \\\"""Overloaded repr operator.\\\"""
-            return Attributes.__repr__(self) 
-            """)
-    print('In the class definition above:\n')
-    print('* ``Animal`` is derived now from ``Attributes``,')
-    print('* the special method ``__repr__`` uses the ``Attributes.__repr__`` method, '
-          'instead of\n  its own implementation.')
-    print('\nThe following is the subclass modeling mammals derived from ``Animal`` above:\n')
+            """Overloaded repr operator"""
+            return 'Animal(name=%r,species=%r, rank=%r)' % (self.name,self.species,self.rank)
     class Mammal(Animal):
         """Specialized class for describing a mammal"""
         def __init__(self,name='',rank=0,weight=100,height=100):
@@ -183,37 +91,11 @@ def feature60():
             """Customized method for changing the rank for mammals"""
             Animal.elevate_rank(self,2*delta)         # Reuses the method from the base class
         def __repr__(self):
-            """overloads repr operator"""
-            return Animal.__repr__(self)
-    print('.. code-block:: Python\n')
-    print("""    class Mammal(Animal):
-        \\\"""Specialized class for describing a mammal.\\\"""
-        def __init__(self,name='',rank=0,weight=100,height=100):
-            \\\"""Mammal constructor.\\\"""
-            Animal.__init__(self,name,'mammal',rank) # Base class constructor is called
-            self.weight = weight
-            self.height = height
-        def elevate_rank(self,delta):
-            \\\"""Customized method for changing the rank for mammals.\\\"""
-            Animal.elevate_rank(self,2*delta)        # Reuses the method from the base class
-        def __repr__(self):
-            \\\"""Overloaded repr operator.\\\"""
-            return Animal.__repr__(self)
-            """)
-    print('The class ``Mammal`` now still reuses methods of its base class ``Animal`` as before, '
-          'but\n``__repr__`` uses the ``Attributes.__repr__`` method as well, via'
-          '``Animal.__repr__``.\n')
-    print('Given the classes above, the creation of instances of ``Animal`` and'
-          ' ``Mammal`` is done as:\n')
-    print(">>> snake = Animal('snake','reptile',23)")
-    snake = Animal('snake','reptile',23)
-    print(">>> snake")
-    print(snake)
-    print("\n>>> snake.elevate_rank(3)")
-    snake.elevate_rank(3)
-    print(">>> snake")
-    print(snake)
-    print("\n>>> tiger = Mammal('tiger',143,132,110)")
+            """Overloaded repr operator"""
+            # Customizes representation of the base class
+            return 'Mammal(name=%r,rank=%r,weight=%r,height=%r)' % (self.name,self.rank,
+                                                                    self.weight,self.height)
+    print(">>> tiger = Mammal('tiger',143,132,110)")
     tiger = Mammal('Tiger',143,132,110)
     print(">>> tiger")
     print(tiger)
@@ -221,5 +103,17 @@ def feature60():
     tiger.elevate_rank(3)
     print(">>> tiger")
     print(tiger)
-    print('\n.. seealso:: :doc:`First classes<feature58>`')
+    print('\nThe following are some of the built-in attributes available for introspection:\n')
+    print('* the ``__class__`` attribute points to the class object\n')
+    print(">>> tiger.__class__")
+    print(tiger.__class__)
+    print('\n* the ``__class__.__name__`` attribute is a string of the name of the class\n')
+    print(">>> tiger.__class__.__name__")
+    print(tiger.__class__.__name__)
+    print('\n* the ``__dict__`` attribute is a dictionary of the instance attributes\n')
+    print(">>> list(tiger.__dict__.keys())")
+    print(list(tiger.__dict__.keys()))
+    print('\n.. seealso:: :doc:`First classes<feature59>`, '
+          ':doc:`More on class introspection tools: __class__,\n    '
+          '__bases__, __dict__<feature63>`')
     print(80*'-')

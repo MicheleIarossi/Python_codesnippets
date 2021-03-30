@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Exception hierarchies &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Exception handling &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Byte and string types" href="feature86.html" />
-    <link rel="prev" title="Exception handling" href="feature84.html" /> 
+    <link rel="next" title="Exception hierarchies" href="feature86.html" />
+    <link rel="prev" title="Constructor calls with multiple inheritance" href="feature84.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature86.html" title="Byte and string types"
+          <a href="feature86.html" title="Exception hierarchies"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature84.html" title="Exception handling"
+          <a href="feature84.html" title="Constructor calls with multiple inheritance"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Exception hierarchies</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Exception handling</a></li> 
       </ul>
     </div>  
 
@@ -45,64 +45,47 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature85"></span><div class="section" id="exception-hierarchies">
-<h1>Exception hierarchies<a class="headerlink" href="#exception-hierarchies" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature85"></span><div class="section" id="exception-handling">
+<h1>Exception handling<a class="headerlink" href="#exception-handling" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature85">
 <h2><a class="reference internal" href="#module-codesnippets.feature85" title="codesnippets.feature85"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature85</span></code></a><a class="headerlink" href="#codesnippets-feature85" title="Permalink to this headline">¶</a></h2>
-<p>Exception hierarchies can be created by inheriting from
-the <code class="docutils literal notranslate"><span class="pre">Exception</span></code> base class, and in turn by inheriting from
-specialized exception classes:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MotorError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;a motor exception class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">exc_str</span> <span class="o">=</span> <span class="ne">Exception</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;Exception -&gt; MotorError. &quot;</span> <span class="o">+</span> <span class="n">exc_str</span>
-
-<span class="k">class</span> <span class="nc">IgnitionError</span><span class="p">(</span><span class="n">MotorError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;an ignition motor exception class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">exc_str</span> <span class="o">=</span> <span class="ne">Exception</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;Exception -&gt; IgnitionError. &quot;</span> <span class="o">+</span> <span class="n">exc_str</span>
-
-<span class="k">class</span> <span class="nc">TransmissionError</span><span class="p">(</span><span class="n">MotorError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;a transmission motor exception class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">exc_str</span> <span class="o">=</span> <span class="ne">Exception</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;Exception -&gt; TransmissionError. &quot;</span> <span class="o">+</span> <span class="n">exc_str</span>
+<p><code class="docutils literal notranslate"><span class="pre">try</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">except</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">else</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">finally</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">else</span></code> part is run ONLY if no exception occurs,
+and the <code class="docutils literal notranslate"><span class="pre">finally</span></code> part is run in any case.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Exceptions always catch (and raise!) a class instance object.</p>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_str</span> <span class="o">=</span> <span class="s1">&#39;test&#39;</span>
 </pre></div>
 </div>
-<p>With the base exception, a family of exceptions can be caught.
-The call to <code class="docutils literal notranslate"><span class="pre">sys.exc_info()</span></code> returns a list of the exception class,
-the exception instance itself, and the traceback:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="go">        raise TransmissionError(&#39;Error transmitting data!&#39;) # Needs an istance!</span>
-<span class="go">    except MotorError as exc:</span>
-<span class="go">        print(sys.exc_info())</span>
-<span class="go">        print(exc)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="go">        a_chr = a_str[5]</span>
+<span class="go">        print(&#39;selected a_chr = &#39; + a_chr)</span>
+<span class="go">    except IndexError as exc:</span>
+<span class="go">        print(&#39;-&gt; Exception: &#39; + str(exc))</span>
+<span class="go">        print(dir(exc))</span>
+<span class="go">    else:</span>
+<span class="go">        print(&#39;-&gt; else: no exception&#39;)</span>
 <span class="go">    finally:</span>
-<span class="go">        print(&quot;End of the try block...&quot;)</span>
-<span class="go">(&lt;class &#39;codesnippets.feature85.feature85.&lt;locals&gt;.TransmissionError&#39;&gt;,</span>
-<span class="go">TransmissionError(&#39;Error transmitting data!&#39;),</span>
-<span class="go">&lt;traceback object at 0x7fcead50f200&gt;)</span>
-<span class="go">Exception -&gt; TransmissionError. Error transmitting data!</span>
-<span class="go">End of the try block...</span>
+<span class="go">        print(&#39;-&gt; finally: leaving the try statement&#39;)</span>
+<span class="go">-&gt; Exception: string index out of range</span>
+<span class="go">-&gt; finally: leaving the try statement</span>
 </pre></div>
 </div>
-<p>With the specialized exceptions, specific error causes are cought.
-They have to precede the base exception in the exception list:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="go">        raise IgnitionError(&#39;Error motor ignition!&#39;) # Needs an istance!</span>
-<span class="go">    except IgnitionError as exc:</span>
-<span class="go">        print(exc)</span>
-<span class="go">    except MotorError as exc:</span>
-<span class="go">        print(sys.exc_info())</span>
-<span class="go">        print(exc)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="go">        a_chr = a_str[3]</span>
+<span class="go">        print(&#39;selected a_chr = &#39; + a_chr)</span>
+<span class="go">    except IndexError as exc:</span>
+<span class="go">        print(&#39;-&gt; Exception: &#39; + str(exc))</span>
+<span class="go">        print(dir(exc))</span>
+<span class="go">    else:</span>
+<span class="go">        print(&#39;-&gt; else: no exception&#39;)</span>
 <span class="go">    finally:</span>
-<span class="go">        print(&quot;End of the try block...&quot;)</span>
-<span class="go">Exception -&gt; IgnitionError. Error motor ignition!</span>
-<span class="go">End of the try block...</span>
+<span class="go">        print(&#39;-&gt; finally: leaving the try statement&#39;)</span>
+<span class="go">selected a_chr = t</span>
+<span class="go">-&gt; else: no exception</span>
+<span class="go">-&gt; finally: leaving the try statement</span>
 </pre></div>
 </div>
 </div>
@@ -117,7 +100,7 @@ They have to precede the base exception in the exception list:</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Exception hierarchies</a><ul>
+<li><a class="reference internal" href="#">Exception handling</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature85"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature85</span></code></a></li>
 </ul>
 </li>
@@ -125,10 +108,10 @@ They have to precede the base exception in the exception list:</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature84.html"
-                        title="previous chapter">Exception handling</a></p>
+                        title="previous chapter">Constructor calls with multiple inheritance</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature86.html"
-                        title="next chapter">Byte and string types</a></p>
+                        title="next chapter">Exception hierarchies</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -160,13 +143,13 @@ They have to precede the base exception in the exception list:</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature86.html" title="Byte and string types"
+          <a href="feature86.html" title="Exception hierarchies"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature84.html" title="Exception handling"
+          <a href="feature84.html" title="Constructor calls with multiple inheritance"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Exception hierarchies</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Exception handling</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

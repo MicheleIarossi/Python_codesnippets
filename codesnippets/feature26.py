@@ -1,4 +1,4 @@
-##    Python codesnippets - The iteration protocol
+##    Python codesnippets - Side effects in loops
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,66 +19,55 @@
 #
 
 """
-The iteration protocol
-======================
+Side effects in loops
+=====================
 
 :py:mod:`codesnippets.feature26`
 --------------------------------
 
-Automatic iteration:
+If the data type is immutable, there are no side effects!
 
->>> a_lst = ['abc','def','ghi']
->>> for a_str in a_lst:
-        print(a_str)
-abc
-def
-ghi
+>>> a_lst = [1,2,3,4]
 
-Manual iteration:
+>>> for a_value in a_lst:
+        a_value += 1
 
->>> a_lst = ['abc','def','ghi']       # a list is an iterable object
+>>> a_lst
+[1, 2, 3, 4]
 
->>> a_lst_iter = iter(str_lst)        # get iterator object
+If the data type is mutable, beware of in-place changes!
 
->>> while True:
-        try:
-            a_str = next(a_lst_iter)  # same as str_lst_iter.__next__()
-        except StopIteration:
-            break
-        print(a_str)
-abc
-def
-ghi
+>>> a_lst_of_lst = [[1,2],[3,4],[5,6],[7,8]]
+
+>>> for a_lst in a_lst_of_lst:
+        a_lst += [-1,-2] # calls list extend method
+
+>>> a_lst_of_lst
+[[1, 2, -1, -2], [3, 4, -1, -2], [5, 6, -1, -2], [7, 8, -1, -2]]
 """
 
 def feature26():
-    """The iteration protocol"""
-    print('The iteration protocol')
-    print('======================\n')
+    """Side effects in loops"""
+    print('Side effects in loops')
+    print('=====================\n')
     print(':py:mod:`codesnippets.feature26`')
     print('--------------------------------\n')
-    print('Automatic iteration:\n')
-    print(">>> a_lst = ['abc','def','ghi']")
-    print('>>> for a_str in a_lst:')
-    print('        print(a_str)')
-    a_lst = ['abc','def','ghi']
-    for a_str in a_lst:
-        print(a_str)
-    print('\nManual iteration:\n')
-    print(">>> a_lst = ['abc','def','ghi']       # a list is an iterable object\n")
-    print('>>> a_lst_iter = iter(str_lst)        # get iterator object\n')
-    print('>>> while True:')
-    print('        try:')
-    print('            a_str = next(a_lst_iter)  # same as str_lst_iter.__next__()')
-    print('        except StopIteration:')
-    print('            break')
-    print('        print(a_str)')
-    a_lst = ['abc','def','ghi']
-    a_lst_iter = iter(a_lst)
-    while True:
-        try:
-            a_str = next(a_lst_iter)
-        except StopIteration:
-            break
-        print(a_str)
+    print("If the data type is immutable, there are no side effects!\n")
+    print(">>> a_lst = [1,2,3,4]\n")
+    print(">>> for a_value in a_lst:")
+    print("        a_value += 1\n")
+    print(">>> a_lst")
+    a_lst = [1,2,3,4]
+    for a_value in a_lst:
+        a_value += 1
+    print(a_lst)
+    print("\nIf the data type is mutable, beware of in-place changes!\n")
+    print(">>> a_lst_of_lst = [[1,2],[3,4],[5,6],[7,8]]\n")
+    print(">>> for a_lst in a_lst_of_lst:")
+    print("        a_lst += [-1,-2] # calls list extend method\n")
+    print(">>> a_lst_of_lst")
+    a_lst_of_lst = [[1,2],[3,4],[5,6],[7,8]]
+    for a_lst in a_lst_of_lst:
+        a_lst += [-1,-2]
+    print(a_lst_of_lst)
     print(80*'-')

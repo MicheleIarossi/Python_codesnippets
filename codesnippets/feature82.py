@@ -1,4 +1,4 @@
-##    Python codesnippets - Usage of super() in diamond class trees
+##    Python codesnippets - Static methods via function decorator @staticmethod
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,182 +19,105 @@
 #
 
 """
-Usage of super() in diamond class trees
-=======================================
+Static methods via function decorator @staticmethod
+===================================================
 
 :py:mod:`codesnippets.feature82`
 --------------------------------
 
-Each ``super()`` call selects the method from a next class that implements the
-requested method following it in the MRO ordering of the class of the
-``self`` subject of the method call. This selection process chooses
-the first class following the calling class having the requested method.
+By decorating a method with ``@staticmethod``, it can be called either
+via the class or via the instance and without the required ``self`` parameter.
 
-Given the following hierarchy of classes:
+The following class counts the instances of Cars:
 
 .. code-block:: Python
 
-    class ClassA:
-        \"""a class\"""
-        def __init__(self):
-            print('	-> ClassA.__init__')
+    class Car():
+        \"""a car class\"""
+        n_val = 0
+        def __init__(self,name):
+            self.name = name
+            Car.n_val += 1
+            print('<Car: %s created>' % (name))
+        @staticmethod
+        def num_of_instances():
+            \"""returns the total number of instances\"""
+            return Car.n_val
         def __repr__(self):
-            return 'ClassA()'
+            return 'Car(%r)' % (self.name)
 
-    class ClassB(ClassA):
-        \"""a derived class\"""
-        def __init__(self):
-            print('	-> ClassB.__init__')
-            super().__init__()
-        def __repr__(self):
-            return 'ClassB()'
+>>> bmw = Car('BMW 3er')
+<Car: BMW 3er created>
+>>> bmw
+Car('BMW 3er')
 
-    class ClassC(ClassA):
-        \"""another derived class\"""
-        def __init__(self):
-            print('	-> ClassC.__init__')
-            super().__init__()
-        def __repr__(self):
-            return 'ClassC()'
+>>> audi = Car('Audi A6')
+<Car: Audi A6 created>
+>>> audi
+Car('Audi A6')
 
-    class ClassD(ClassB,ClassC):
-        \"""multiple inheritance class\"""
-        def __init__(self):
-            print('	-> ClassD.__init__')
-            super().__init__()
-        def __repr__(self):
-            return 'ClassD()'
+>>> vwag = Car('VW Golf')
+<Car: VW Golf created>
+>>> vwag
+Car('VW Golf')
 
-and an instance of ``ClassD``:
+>>> Car.num_of_instances()
+3
 
->>> obj_d = ClassD()
-	-> ClassD.__init__
-	-> ClassB.__init__
-	-> ClassC.__init__
-	-> ClassA.__init__
-
->>> ClassD.__mro__
-(<class 'codesnippets.feature82.feature82.<locals>.ClassD'>,
-<class 'codesnippets.feature82.feature82.<locals>.ClassB'>,
-<class 'codesnippets.feature82.feature82.<locals>.ClassC'>,
-<class 'codesnippets.feature82.feature82.<locals>.ClassA'>,
-<class 'object'>)
-
-When the constructor of ``classD`` is called, ``self`` is an instance of the ``classD``, so
-the MRO of the ``classD`` is considered as printed above, in all the calls.
-
-When the constructor of ``classD`` calls ``super().__init__()`` then the next class in
-the MRO following the ``classD`` that has an ``__init__`` function is called.
-In this case it is the ``classB``.
-
-When the constructor of the ``classB`` calls ``super().__init__()`` then the next class in
-the MRO following the ``classB`` that has an ``__init__`` function is called.
-In this case it is the ``classC``.
-
-When the constructor of the ``classC`` calls ``super().__init__()`` then the next class in
-the MRO following the ``classC`` that has an ``__init__`` function is called.
-In this case it is the ``classA``.
-
-The constructor of the ``classA`` has no ``super`` call and so the chain stops.
-
-.. seealso:: :doc:`Method resolution order (MRO)<feature77>`
+.. seealso:: :doc:`Basic function decorator<feature97>`
 """
 
 def feature82():
-    """Usage of super() in diamond class trees"""
-    print('Usage of super() in diamond class trees')
-    print('=======================================\n')
+    """Static methods via function decorator @staticmethod"""
+    print('Static methods via function decorator @staticmethod')
+    print('===================================================\n')
     print(':py:mod:`codesnippets.feature82`')
     print('--------------------------------\n')
-    print("Each ``super()`` call selects the method from a next class that implements the")
-    print("requested method following it in the MRO ordering of the class of the")
-    print("``self`` subject of the method call. This selection process chooses")
-    print("the first class following the calling class having the requested method.\n")
-    print('Given the following hierarchy of classes:\n')
+    print('By decorating a method with ``@staticmethod``, it can be called either')
+    print('via the class or via the instance and without the required ``self`` parameter.\n')
+    print('The following class counts the instances of Cars:\n')
+    class Car():
+        """a car class"""
+        n_val = 0
+        def __init__(self,name):
+            self.name = name
+            Car.n_val += 1
+            print('<Car: %s created>' % (name))
+        @staticmethod
+        def num_of_instances():
+            """returns the total number of instances"""
+            return Car.n_val
+        def __repr__(self):
+            """overloads repr operator"""
+            return 'Car(%r)' % (self.name)
     print('.. code-block:: Python\n')
-    print("""    class ClassA:
-        \\\"""a class\\\"""
-        def __init__(self):
-            print('\t-> ClassA.__init__')
+    print("""    class Car():
+        \\\"""a car class\\\"""
+        n_val = 0
+        def __init__(self,name):
+            self.name = name
+            Car.n_val += 1
+            print('<Car: %s created>' % (name))
+        @staticmethod
+        def num_of_instances():
+            \\\"""returns the total number of instances\\\"""
+            return Car.n_val
         def __repr__(self):
-            return 'ClassA()'
+            return 'Car(%r)' % (self.name)
         """)
-    class ClassA:
-        """a class"""
-        def __init__(self):
-            print('\t-> ClassA.__init__')
-        def __repr__(self):
-            """overloads repr operator"""
-            return 'ClassA()'
-    print("""    class ClassB(ClassA):
-        \\\"""a derived class\\\"""
-        def __init__(self):
-            print('\t-> ClassB.__init__')
-            super().__init__()
-        def __repr__(self):
-            return 'ClassB()'
-        """)
-    class ClassB(ClassA):
-        """a derived class"""
-        def __init__(self):
-            print('\t-> ClassB.__init__')
-            super().__init__()
-        def __repr__(self):
-            """overloads repr operator"""
-            return 'ClassB()'
-    print("""    class ClassC(ClassA):
-        \\\"""another derived class\\\"""
-        def __init__(self):
-            print('\t-> ClassC.__init__')
-            super().__init__()
-        def __repr__(self):
-            return 'ClassC()'
-        """)
-    class ClassC(ClassA):
-        """another derived class"""
-        def __init__(self):
-            print('\t-> ClassC.__init__')
-            super().__init__()
-        def __repr__(self):
-            """overloads repr operator"""
-            return 'ClassC()'
-    print("""    class ClassD(ClassB,ClassC):
-        \\\"""multiple inheritance class\\\"""
-        def __init__(self):
-            print('\t-> ClassD.__init__')
-            super().__init__()
-        def __repr__(self):
-            return 'ClassD()'
-        """)
-    class ClassD(ClassB,ClassC):
-        """multiple inheritance class"""
-        def __init__(self):
-            print('\t-> ClassD.__init__')
-            super().__init__()
-        def __repr__(self):
-            """overloads repr operator"""
-            return 'ClassD()'
-    print('and an instance of ``ClassD``:\n')
-    print('>>> obj_d = ClassD()')
-    obj_d = ClassD()
-    print('\n>>> ClassD.__mro__')
-    print(ClassD.__mro__)
-    print("\nWhen the constructor of ``classD`` is called, ``self`` is "
-          "an instance of the ``classD``, so")
-    print("the MRO of the ``classD`` is considered as printed above, in all the calls.\n")
-    print("When the constructor of ``classD`` calls ``super().__init__()`` then "
-          "the next class in")
-    print("the MRO following the ``classD`` that has an ``__init__`` function"
-          " is called.")
-    print("In this case it is the ``classB``.\n")
-    print("When the constructor of the ``classB`` calls ``super().__init__()`` then"
-          "the next class in")
-    print("the MRO following the ``classB`` that has an ``__init__`` function is called.")
-    print("In this case it is the ``classC``.\n")
-    print("When the constructor of the ``classC`` calls ``super().__init__()`` then"
-          " the next class in")
-    print("the MRO following the ``classC`` that has an ``__init__`` function is called.")
-    print("In this case it is the ``classA``.\n")
-    print("The constructor of the ``classA`` has no ``super`` call and so the chain stops.")
-    print('\n.. seealso:: :doc:`Method resolution order (MRO)<feature77>`')
+    print("\n>>> bmw = Car('BMW 3er')")
+    bmw = Car('BMW 3er')
+    print('>>> bmw')
+    print(bmw)
+    print("\n>>> audi = Car('Audi A6')")
+    audi = Car('Audi A6')
+    print('>>> audi')
+    print(audi)
+    print("\n>>> vwag = Car('VW Golf')")
+    vwag   = Car('VW Golf')
+    print('>>> vwag')
+    print(vwag)
+    print("\n>>> Car.num_of_instances()")
+    print(Car.num_of_instances())
+    print('\n.. seealso:: :doc:`Basic function decorator<feature97>`')
     print(80*'-')

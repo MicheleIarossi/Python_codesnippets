@@ -1,4 +1,4 @@
-##    Python codesnippets - lambda functions
+##    Python codesnippets - Avoiding calls by breadth-first scanning
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,77 +19,95 @@
 #
 
 """
-``lambda`` functions
-====================
+Avoiding recursive calls by breadth-first scanning
+==================================================
 
 :py:mod:`codesnippets.feature45`
 --------------------------------
 
-``lambda`` functions return a value which is a function.
-They are limited to one line expression and should be used only
-for coding simple expressions or logic.
-Default arguments can also be used.
+This functions sums up all the elements in a list and
+in its contained sublists.
+Single elements are summed up first and sublists are scanned later (queued).
 
-.. note:: ``lambda`` functions are expressions and not statements like ``def``.
+.. code-block:: Python
 
->>> func = lambda alpha=1,beta=1,gamma=1: alpha+beta+gamma
->>> func(3,4,5)
-12
->>> func()
+    def sumtree(lst):
+        # Breadth-first, explicit queue
+        total = 0
+        # Start with copy of top level
+        items = list(lst)
+        while items:
+            # Fetch/delete front item
+            front = items.pop(0)
+            if not isinstance(front, list):
+                # Add numbers directly
+                total += front
+            else:
+                # Append all in nested list
+                items.extend(front)
+        return total
+
+>>> lst = [1, [2, [3, 4], 5], 6, [7, 8]]               # Arbitrary nesting
+
+>>> sumtree(lst)                                       # Prints 36
+1
+6
+2
+5
+7
+8
 3
-
-if-then-else logic can also be coded:
-
->>> lower = lambda alpha,beta : alpha if alpha>beta else beta
->>> lower('aa','bb')
-bb
->>> lower('bb','aa')
-bb
-
-Loops can be coded by means of list comprehension:
-
->>> printall = lambda s_str: [print(sigma) for sigma in s_str]
->>> printall(['Hello','Pippo','Bye']
-Hello
-Pippo
-Bye
-
-``lambda`` can be nested as well and the same scope rules apply:
-
->>> (lambda alpha: (lambda beta: alpha+beta))(99)(4)
-103
+4
+36
 """
 
+def sumtree(lst):
+    # Breadth-first, explicit queue
+    """sums up all the elements in a list and in its sublists by breadth-first scanning"""
+    total = 0
+    # Start with copy of top level
+    items = list(lst)
+    while items:
+        # Fetch/delete front item
+        front = items.pop(0)
+        if not isinstance(front, list):
+            # Add numbers directly
+            total += front
+            print(front)
+        else:
+            # <== Append all in nested list
+            items.extend(front)
+    return total
+
 def feature45():
-    """Lambda functions"""
-    print('``Lambda functions``')
-    print('====================\n')
+    """Avoiding recursive calls by breadth-first scanning"""
+    print('Avoiding recursive calls by breadth-first scanning')
+    print('==================================================\n')
     print(':py:mod:`codesnippets.feature45`')
     print('--------------------------------\n')
-    print('``lambda`` functions return a value which is a function.')
-    print('They are limited to one line expression and should be used only')
-    print('for coding simple expressions or logic.')
-    print('Default arguments can also be used.\n')
-    print('.. note:: ``lambda`` functions are expressions and not statements like ``def``.\n')
-    print('>>> func = lambda alpha=1,beta=1,gamma=1: alpha+beta+gamma')
-    func = lambda alpha=1,beta=1,gamma=1: alpha+beta+gamma
-    print('>>> func(3,4,5)')
-    print(func(3,4,5))
-    print('>>> func()')
-    print(func())
-    print('\nif-then-else logic can also be coded:\n')
-    print('>>> lower = lambda alpha,beta : alpha if alpha>beta else beta')
-    lower = lambda alpha,beta : alpha if alpha>beta else beta
-    print(">>> lower('aa','bb')")
-    print(lower('aa','bb'))
-    print(">>> lower('bb','aa')")
-    print(lower('bb','aa'))
-    print('\nLoops can be coded by means of list comprehension:\n')
-    print('>>> printall = lambda s_str: [print(sigma) for sigma in s_str]')
-    printall = lambda s_str: [print(sigma) for sigma in s_str]
-    print(">>> printall(['Hello','Pippo','Bye']")
-    printall(['Hello','Pippo','Bye'])
-    print('\n``lambda`` s can be nested as well and the same scope rules apply:\n')
-    print('>>> (lambda alpha: (lambda beta: alpha+beta))(99)(4)')
-    print((lambda alpha: (lambda beta: alpha+beta))(99)(4))
+    print('This functions sums up all the elements in a list and')
+    print('in its contained sublists.')
+    print('Single elements are summed up first and sublists are scanned later (queued).\n')
+    print('.. code-block:: Python\n')
+    print('    def sumtree(lst):')
+    print('        # Breadth-first, explicit queue')
+    print('        total = 0')
+    print('        # Start with copy of top level')
+    print('        items = list(lst)')
+    print('        while items:')
+    print('            # Fetch/delete front item')
+    print('            front = items.pop(0)')
+    print('            if not isinstance(front, list):')
+    print('                # Add numbers directly')
+    print('                total += front')
+    print('            else:')
+    print('                # Append all in nested list')
+    print('                items.extend(front)')
+    print('        return total\n')
+    print('>>> lst = [1, [2, [3, 4], 5], 6, [7, 8]]          # Arbitrary nesting\n')
+    # Arbitrary nesting
+    lst = [1, [2, [3, 4], 5], 6, [7, 8]]
+    print('>>> sumtree(lst)                                  # Prints 36')
+    # Prints 36
+    print(sumtree(lst))
     print(80*'-')

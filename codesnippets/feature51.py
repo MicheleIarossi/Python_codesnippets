@@ -1,4 +1,4 @@
-##    Python codesnippets - Side effects when importing modules
+##    Python codesnippets - Module import
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,90 +19,91 @@
 #
 
 """
-Side effects when importing modules
-===================================
+Module import
+=============
 
 :py:mod:`codesnippets.feature51`
 --------------------------------
 
-Subtle side effects might occur when ``from`` is used:
-
->>> from module1 import A_VARIABLE,A_LIST
-
-``from`` performs an implicit assignment, but ``A_VARIABLE`` is an immutable type and
-it is not shared with ``module1``, whereas ``A_LIST`` is mutable and the
-reference is shared with ``module1``:
-
->>> A_VARIABLE
-1
->>> A_LIST
-[4, 5, 6]
-
-The following code changes ``A_VARIABLE`` and ``A_LIST`` (a mutable object):
-
->>> A_VARIABLE = 7
-
->>> A_LIST[0] = 8
->>> A_LIST
-[8, 5, 6]
-
-By importing again the module, the module's code is **not** rerun:
+When an ``import`` statement is run, the module is compiled and the module code is run:
 
 >>> import module1
 
-Here ``module1.A_VARIABLE`` is a different object than ``A_VARIABLE``:
+A module object is created:
+
+>>> module1
+<module 'codesnippets.module1'
+from '/Users/miia/Programming/LearningPython/Python_codesnippets/codesnippets/module1.py'>
+
+Its global variables become its attributes:
 
 >>> module1.A_VARIABLE
 1
 
-But ``module1.A_LIST`` and ``A_LIST`` share the same object and the same
-referenced object was changed before!
+The attributes can be changed:
 
->>> module1.A_LIST
-[8, 5, 6]
+>>> module1.A_VARIABLE = 2
+>>> module1.A_VARIABLE
+2
+
+But when an ``import`` statement is rerun, the module is NOT imported again:
+
+>>> import module1
+
+The attribute ``A_VARIABLE`` is unchanged, the module code has not been rerun!
+
+>>> module1.A_VARIABLE
+2
+
+Module namespaces are stored internally as dictionary objects, e.g. ``module1.__dict__`` :
+
+>>> list(name for name in module1.__dict__ if not name.startswith('__'))
+['a_function', 'A_VARIABLE', 'A_LIST']
+
+>>> dir(module1)
+['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__',
+'__package__', '__spec__', 'a_function', 'A_VARIABLE', 'A_LIST']
 
 .. note:: If you wish to rerun this example, you need to restart the Python shell.
 
-.. seealso:: :doc:`Side effects in assignments<feature18>`
+.. seealso:: :doc:`dir() on an integer variable<feature1>`
 """
 
 import importlib
-from codesnippets.module1 import A_VARIABLE,A_LIST
 
 def feature51():
-    """Side effects when importing modules"""
-    global A_VARIABLE
-    global A_LIST
-    print('Side effects when importing modules')
-    print('===================================\n')
+    """Module import"""
+    print('Module import')
+    print('=============\n')
     print(':py:mod:`codesnippets.feature51`')
     print('--------------------------------\n')
-    print("Subtle side effects might occur when ``from`` is used:\n")
-    print('>>> from module1 import A_VARIABLE,A_LIST\n')
-    print("``from`` performs an implicit assignment, but ``A_VARIABLE`` is an immutable type and\n"
-          "it is not shared with ``module1``, whereas ``A_LIST`` is mutable and the"
-          "\nreference is shared with ``module1``:\n")
-    print('>>> A_VARIABLE')
-    print(A_VARIABLE)
-    print('>>> A_LIST')
-    print(A_LIST)
-    print("\nThe following code changes ``A_VARIABLE`` and ``A_LIST`` (a mutable object):\n")
-    print('>>> A_VARIABLE = 7\n')
-    A_VARIABLE = 7
-    print('>>> A_LIST[0] = 8')
-    A_LIST[0] = 8
-    print('>>> A_LIST')
-    print(A_LIST)
-    print("\nBy importing again the module, the module's code is **not** rerun:\n")
+    print("When an ``import`` statement is run, the module is compiled and the module "
+          "code is run:\n")
     print('>>> import module1')
     module1 = importlib.import_module('.module1','codesnippets')
-    print("\nHere ``module1.A_VARIABLE`` is a different object than ``A_VARIABLE``:\n")
+    print("\nA module object is created:\n")
+    print('>>> module1')
+    print(module1)
+    print("\nIts global variables become its attributes:\n")
+    print('>>> module1.A_VARIABLE')
+    print(module1.A_VARIABLE)
+    print("\nThe attributes can be changed:\n")
+    print(">>> module1.A_VARIABLE = 2")
+    module1.A_VARIABLE = 2
+    print('>>> module1.A_VARIABLE')
+    print(module1.A_VARIABLE)
+    print("\nBut when an ``import`` statement is rerun, the module is NOT imported again:\n")
+    print('>>> import module1')
+    module1 = importlib.import_module('.module1','codesnippets')
+    print("\nThe attribute ``A_VARIABLE`` is unchanged, the module code has not been rerun!\n")
     print(">>> module1.A_VARIABLE")
     print(module1.A_VARIABLE)
-    print("\nBut ``module1.A_LIST`` and ``A_LIST`` share the same object and the same"
-          "\nreferenced object was changed before!\n")
-    print(">>> module1.A_LIST")
-    print(module1.A_LIST)
+    print("\nModule namespaces are stored internally as dictionary "
+          "objects, e.g. ``module1.__dict__`` :\n")
+    print(">>> list(name for name in module1.__dict__ if not name.startswith('__'))")
+    print(list(name for name in module1.__dict__ if not name.startswith('__')))
+    print("\n>>> dir(module1)")
+    print(dir(module1))
     print("\n.. note:: If you wish to rerun this example, you need to restart the Python shell.")
-    print('\n.. seealso:: :doc:`Side effects in assignments<feature18>`')
+    print('\n.. seealso:: :doc:`dir() on an integer variable<feature1>`')
     print(80*'-')

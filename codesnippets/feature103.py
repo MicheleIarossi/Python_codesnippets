@@ -1,4 +1,4 @@
-##    Python codesnippets - Call tracer with a function decorator
+##    Python codesnippets - Decorator arguments
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -13,133 +13,116 @@
 ##
 ##    You should have received a copy of the GNU General Public License
 ##    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #
 # Feature 103
 #
 
 """
-Call tracer with a function decorator
-=====================================
+Decorator arguments
+===================
 
 :py:mod:`codesnippets.feature103`
 ---------------------------------
 
-The ``wrapper()`` is the actual function that gets called after decoration:
+The arguments are passed to the outer decorator, which needs to return an
+inner decorator that actually takes a function:
 
 .. code-block:: Python
 
-    def func_tracer(a_func):
-        \"""decorator for tracing the number of calls\"""
-        print(f"	-> decorating {repr(a_func.__name__)}")
-        calls = 0
-        def wrapper(*args,**kwargs):
-            \"""the real function that gets called\"""
-            nonlocal calls
-            calls =+ 1
-            print(f"total function calls of {repr(a_func.__name__)}: {calls}")
-            return a_func(*arg,**kwargs)
-        return wrapper
+    def decorator_1(param_a,param_b):
+        \"""decorator function\"""
+        print(f"	-> inside decorator_1({param_a},{param_b})...")
+        def decorator_2(a_func):
+            print("inside decorator_2...")
+            def wrapper(*args):
+                \"""wrapper function inside decorator_2\"""
+                print("	-> inside the wrapper function...")
+                args = tuple(param_a*x+param_b for x in args)
+                a_func(*args)
+            return wrapper
+        return decorator_2
 
->>> @func_tracer
-    def my_func(param_a,param_b):
+>>> @decorator_1(3,4)
+    def myfunc(param_a,param_b):
+        print(f"	-> inside my function...")
+	-> inside decorator_1(3,4)...
+	-> inside decorator_2...
+
+This is equivalent to:
+
+>>> def myfunc(param_a,param_b):
         \"""my decorated function\"""
-        print("	-> inside my function...")
-	-> decorating 'my_func'
+        print(f"	-> inside my function({param_a},{param_b})...")
 
-When ``my_func(param_a,param_b)`` is called, it is the ``wrapper()`` that is actually called,
-because the wrapper is returned by the ``func_tracer()`` decoration:
+>>> myfunc = decorator_1(3,4)(myfunc)
 
->>> my_func(2,3)
-total function calls of 'my_func': 1
-	-> inside myfunc(2,3)...
+When ``myfunc(param_a,param_b)`` is called, it is the ``wrapper()``
+that is actually called,
+because the wrapper is returned by the ``decorator_2``.
+The wrapper uses the parameters of ``decorator_1`` for changing the function
+arguments to be used for the actual function call:
 
->>> my_func(6,7)
-total function calls of 'my_func': 2
-	-> inside myfunc(6,7)...
-
-Works for different functions too:
-
->>> @func_tracer
-    def your_func(a,b):
-        \"""your decorated function\"""
-        print(f"	-> inside your_func({a},{b})")
-	-> decorating 'your_func'
-
->>> your_func(1,2)
-total function calls of 'your_func': 1
-	-> inside your_func(1,2)
-
->>> your_func(1,2)
-total function calls of 'your_func': 2
-	-> inside your_func(1,2)
-
-.. seealso:: :doc:`Wrapper/proxy pattern with function decorator<feature97>`
+>>> myfunc(2,3)
+inside the wrapper function...
+	-> inside myfunc(10,13)...
 """
 
 def feature103():
-    """Call tracer with a function decorator"""
-    print('Call tracer with a function decorator')
-    print('=====================================\n')
+    """Decorator arguments"""
+    print('Decorator arguments')
+    print('===================\n')
     print(':py:mod:`codesnippets.feature103`')
     print('---------------------------------\n')
-    print('The ``wrapper()`` is the actual function that gets called after decoration:\n')
+    print('The arguments are passed to the outer decorator, which needs to return an')
+    print('inner decorator that actually takes a function:\n')
     print('.. code-block:: Python\n')
-    print("""    def func_tracer(a_func):
-        \\\"""decorator for tracing the number of calls\\\"""
-        print(f"\t-> decorating {repr(a_func.__name__)}")
-        calls = 0
-        def wrapper(*args,**kwargs):
-            \\\"""the real function that gets called\\\"""
-            nonlocal calls
-            calls =+ 1
-            print(f"total function calls of {repr(a_func.__name__)}: {calls}")
-            return a_func(*arg,**kwargs)
-        return wrapper
-        """)
-    def func_tracer(a_func):
-        """decorator for tracing the number of calls"""
-        print(f"\t-> decorating {repr(a_func.__name__)}")
-        calls = 0
-        def wrapper(*args,**kwargs):
-            """the real function that gets called"""
-            nonlocal calls
-            calls += 1
-            print(f"total function calls of {repr(a_func.__name__)}: {calls}")
-            return a_func(*args,**kwargs)
-        return wrapper
-    print(""">>> @func_tracer
-    def my_func(param_a,param_b):
-        \\\"""my decorated function\\\"""
-        print("\t-> inside my function...")""")
-    @func_tracer
-    def my_func(param_a,param_b):
+    print("""    def decorator_1(param_a,param_b):
+        \\\"""decorator function\\\"""
+        print(f"\t-> inside decorator_1({param_a},{param_b})...")
+        def decorator_2(a_func):
+            print("inside decorator_2...")
+            def wrapper(*args):
+                \\\"""wrapper function inside decorator_2\\\"""
+                print("\t-> inside the wrapper function...")
+                args = tuple(a*x+b for x in args)
+                a_func(*args)
+            return wrapper
+        return decorator_2
+          """)
+    def decorator_1(param_a,param_b):
+        """decorator function"""
+        print(f"\t-> inside decorator_1({param_a},{param_b})...")
+        def decorator_2(a_func):
+            print("\t-> inside decorator_2...")
+            def wrapper(*args):
+                """wrapper function inside decorator_2"""
+                print("inside the wrapper function...")
+                args = tuple(param_a*x+param_b for x in args)
+                a_func(*args)
+            return wrapper
+        return decorator_2
+    print(""">>> @decorator_1(3,4)
+    def myfunc(a,b):
+        print(f"\t-> inside my function...")""")
+    @decorator_1(3,4)
+    def myfunc(param_a,param_b):
         """my decorated function"""
         print(f"\t-> inside myfunc({param_a},{param_b})...")
     print()
-    print("When ``my_func(param_a,param_b)`` is called, it is the ``wrapper()`` that is"
-          " actually called,")
-    print("because the wrapper is returned by the ``func_tracer()`` decoration:\n")
-    print(">>> my_func(2,3)")
-    my_func(2,3)
+    print("This is equivalent to:\n")
+    print(""">>> def myfunc(param_a,param_b):
+        \\\"""my decorated function\\\"""
+        print(f"\t-> inside my function({param_a},{param_b})...") """)
     print()
-    print(">>> my_func(6,7)")
-    my_func(6,7)
+    print(">>> myfunc = decorator_1(3,4)(myfunc)")
     print()
-    print("Works for different functions too:")
+    print("When ``myfunc(param_a,param_b)`` is called, it is the ``wrapper()``"
+          "\nthat is actually called,")
+    print("because the wrapper is returned by the ``decorator_2``.")
+    print("The wrapper uses the parameters of ``decorator_1`` for changing the function")
+    print("arguments to be used for the actual function call:")
     print()
-    print(""">>> @func_tracer
-    def your_func(param_a,param_b):
-        \\\"""your decorated function\\\"""
-        print(f"\t-> inside your_func({param_a},{param_b})") """)
-    @func_tracer
-    def your_func(param_a,param_b):
-        """your decorated function"""
-        print(f"\t-> inside your_func({param_a},{param_b})")
-    print()
-    print(">>> your_func(1,2)")
-    your_func(1,2)
-    print()
-    print(">>> your_func(1,2)")
-    your_func(1,2)
-    print('\n.. seealso:: :doc:`Wrapper/proxy pattern with function decorator<feature99>`')
+    print(">>> myfunc(2,3)")
+    myfunc(2,3)
     print(80*'-')

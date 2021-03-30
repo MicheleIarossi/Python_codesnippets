@@ -40,7 +40,7 @@ Same but now sorting on the dictionary keys:
 >>> sorted(a_dict.items(),key=lambda x: x[0])
 [('arnold', 1), ('john', 2), ('mary', 9), ('mike', 5)]
 
-.. seealso:: :doc:`Lambda functions<feature45>`
+.. seealso:: :doc:`Lambda functions<feature46>`
 """
 
 def feature12():
@@ -60,5 +60,5 @@ def feature12():
     print("\nSame but now sorting on the dictionary keys:\n")
     print(">>> sorted(a_dict.items(),key=lambda x: x[0])")
     print(sorted(a_dict.items(),key=lambda x: x[0]))
-    print('\n.. seealso:: :doc:`Lambda functions<feature45>`')
+    print('\n.. seealso:: :doc:`Lambda functions<feature46>`')
     print(80*'-')

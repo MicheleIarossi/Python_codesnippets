@@ -1,4 +1,4 @@
-##    Python codesnippets - Recursion
+##    Python codesnippets - Keyword only arguments
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,79 +19,65 @@
 #
 
 """
-Recursion
-=========
+Keyword only arguments
+======================
 
 :py:mod:`codesnippets.feature42`
 --------------------------------
 
-This function sums up all the elements in a list and
-in its contained sublists by recursive calls:
+Keyword only arguments are used for providing optional configuration
+parameters. They must be coded after ``*pargs`` and before ``**kwargs``!
 
 .. code-block:: Python
 
-    def sumtree(a_list):
-        print(a_list)
-        total = 0
-        # For each item at this level
-        for elem in a_list:
-            if not isinstance(x, list):
-                # Add numbers directly
-                total += elem
-            else:
-                # Recur for sublists
-                total += sumtree(elem)
-        return total
+    def func(*pargs,a_value=1,b_value=2,**kwargs):
+        print(f'Arbitrary positional arguments: pargs   = {pargs}')
+        print(f'Positional parameter:           a_value = {a_value}')
+        print(f'Positional parameter:           b_value = {b_value}')
+        print(f'Arbitrary keyword arguments:    kwargs  = {kwargs}')
 
->>> lst = [1, [2, [3, 4], 5], 6, [7, 8]]          # Arbitrary nesting
+Here the arguments ``a_value`` and ``b_value`` get their default values:
 
->>> sumtree(lst)                                  # Prints 36
-[1, [2, [3, 4], 5], 6, [7, 8]]
-[2, [3, 4], 5]
-[3, 4]
-[7, 8]
-36
+>>> func(*(3,4,5),**{'alfa':3,'beta':5,'gamma':10})
+Arbitrary positional arguments: pargs   = (3, 4, 5)
+Positional parameter:           a_value = 1
+Positional parameter:           b_value = 2
+Arbitrary keyword arguments:    kwargs  = {'alfa': 3, 'beta': 5, 'gamma': 10}
+
+Here the arguments ``a_value`` and ``b_value`` are given as keyword arguments:
+
+>>> func(*(3,4,5),a_value=5,b_value=6,**{'alfa':3,'beta':5,'gamma':10})
+Arbitrary positional arguments: pargs   = (3, 4, 5)
+Positional parameter:           a_value = 5
+Positional parameter:           b_value = 6
+Arbitrary keyword arguments:    kwargs  = {'alfa': 3, 'beta': 5, 'gamma': 10}
 """
 
-def sumtree(a_list):
-    """sums up all the elements in a list and in its sublists"""
-    print(a_list)
-    total = 0
-    # For each item at this level
-    for elem in a_list:
-        if not isinstance(elem, list):
-            # Add numbers directly
-            total += elem
-        else:
-            # Recur for sublists
-            total += sumtree(elem)
-    return total
+def func(*pargs,a_value=1,b_value=2,**kwargs):
+    """uses positional, arbitrary positional and keyword arguments"""
+    print(f'Arbitrary positional arguments: pargs   = {pargs}')
+    print(f'Positional parameter:           a_value = {a_value}')
+    print(f'Positional parameter:           b_value = {b_value}')
+    print(f'Arbitrary keyword arguments:    kwargs  = {kwargs}')
 
 def feature42():
-    """Recursion"""
-    print('Recursion')
-    print('=========\n')
+    """Keyword only arguments"""
+    print('Keyword only arguments')
+    print('======================\n')
     print(':py:mod:`codesnippets.feature42`')
     print('--------------------------------\n')
-    print('This function sums up all the elements in a list and')
-    print('in its contained sublists by recursive calls:\n')
+    print('Keyword only arguments are used for providing optional configuration')
+    print('parameters. They must be coded after ``*pargs`` and before ``**kwargs``!\n')
     print('.. code-block:: Python\n')
-    print('    def sumtree(a_list):')
-    print('        print(a_list)')
-    print('        total = 0')
-    print('        # For each item at this level')
-    print('        for elem in a_list:')
-    print('            if not isinstance(x, list):')
-    print('                # Add numbers directly')
-    print('                total += elem')
-    print('            else:')
-    print('                # Recur for sublists')
-    print('                total += sumtree(elem)')
-    print('        return total\n')
-    print('>>> lst = [1, [2, [3, 4], 5], 6, [7, 8]]          # Arbitrary nesting\n')
-    # Arbitrary nesting
-    lst = [1, [2, [3, 4], 5], 6, [7, 8]]
-    print('>>> sumtree(lst)                                  # Prints 36')
-    # Prints 36
-    print(sumtree(lst))
+    print('    def func(*pargs,a_value=1,b_value=2,**kwargs):')
+    print("        print(f'Arbitrary positional arguments: pargs   = {pargs}')")
+    print("        print(f'Positional parameter:           a_value = {a_value}')")
+    print("        print(f'Positional parameter:           b_value = {b_value}')")
+    print("        print(f'Arbitrary keyword arguments:    kwargs  = {kwargs}')\n")
+    print("Here the arguments ``a_value`` and ``b_value`` get their default values:\n")
+    print(">>> func(*(3,4,5),**{'alfa':3,'beta':5,'gamma':10})")
+    func(*(3,4,5),**{'alfa':3,'beta':5,'gamma':10})
+    print("\nHere the arguments ``a_value`` and ``b_value`` are given as keyword arguments:\n")
+    print(">>> func(*(3,4,5),a_value=5,b_value=6,**{'alfa':3,'beta':5,'gamma':10})")
+    func(*(3,4,5),a_value=5,b_value=6,**{'alfa':3,'beta':5,'gamma':10})
     print(80*'-')

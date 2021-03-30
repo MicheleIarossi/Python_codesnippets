@@ -1,4 +1,4 @@
-##    Python codesnippets - Operator overloading: specific membership with __contains__
+##    Python codesnippets - Operator overloading: iteration protocol via function generator
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -13,20 +13,23 @@
 ##
 ##    You should have received a copy of the GNU General Public License
 ##    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #
 # Feature 67
 #
 
 """
-Operator overloading: specific membership with ``__contains__``
+Operator overloading: iteration protocol via function generator
 ===============================================================
 
 :py:mod:`codesnippets.feature67`
 --------------------------------
 
-Specific class membership requires the class to overload the ``__contains__``  operator.
-In the following, the ``MyContainerClass`` from :doc:`Operator overloading: iteration
-protocol via function generator<feature66>` is extended  to support specific membership testing:
+In the following, the ``MyContainerClass`` from :doc:`Operator overloading:
+add, sub, and basic indexing<feature65>` is adapted for supporting the
+iteration protocol via function generators. By implementing the ``__iter__`` operator
+and by returning a function generator, which is an iterator, the class
+can still use the iteration protocol:
 
 .. code-block:: Python
 
@@ -46,9 +49,6 @@ protocol via function generator<feature66>` is extended  to support specific mem
             print('	-> MyContainer.__sub__')
             data = [x_val-y_val for (x_val,y_val) in zip(self._data,other._data)]
             return MyContainer(data)
-        def __contains__(self, value):
-            print('	-> MyContainer.__contains__')
-            return value in self._data
         def __iter__(self):
             print('	-> MyContainer.__iter__')
             for v_val in self._data:
@@ -68,26 +68,29 @@ protocol via function generator<feature66>` is extended  to support specific mem
 	-> MyContainer.__repr__
 MyContainer(data=[0, 1, 2, 3, 4, 5])
 
-When membership of an element is tested, the ``__contains__`` operator of ``MyContainer`` is called:
+The ``iter`` built-in function is applied now to ``container1`` for getting
+a function generator back:
 
->>> 9 in container1
-	-> MyContainer.__contains__
-False
->>> 3 in container1
-	-> MyContainer.__contains__
-True
+>>> iterator_container1 = iter(container1)
+
+>>> next(iterator_container1), next(iterator_container1), next(iterator_container1)
+	-> MyContainer.__iter__
+0 1 2
+
+.. seealso:: :doc:`Function generators<feature48>`
 """
 
 def feature67():
-    """Operator overloading: specific membership with __contains__"""
-    print('Operator overloading: specific membership with ``__contains__``')
+    """Operator overloading: iteration protocol via function generator"""
+    print('Operator overloading: iteration protocol via function generator')
     print('===============================================================\n')
     print(':py:mod:`codesnippets.feature67`')
     print('--------------------------------\n')
-    print('Specific class membership requires the class to overload the ``__contains__`` '
-          ' operator.\nIn the following, the ``MyContainerClass`` from '
-          ':doc:`Operator overloading: iteration\nprotocol via function'
-          ' generator<feature66>` is extended to support specific membership testing:\n')
+    print('In the following, the ``MyContainerClass`` from '
+          ':doc:`Operator overloading:\nadd, sub, and basic indexing<feature65>` is adapted for '
+          'supporting the\niteration protocol via function generators.'
+          'By implementing the ``__iter__`` operator\nand by returning a function '
+          'generator, which is an iterator, the class\ncan still use the iteration protocol:\n')
     print('.. code-block:: Python\n')
     print("""    class MyContainer:
         \\\"""my container class\\\"""
@@ -105,9 +108,6 @@ def feature67():
             print('\t-> MyContainer.__sub__')
             data = [x_val-y_val for (x_val,y_val) in zip(self._data,other._data)]
             return MyContainer(data)
-        def __contains__(self, value):
-            print('\t-> MyContainer.__contains__')
-            return value in self._data
         def __iter__(self):
             print('\t-> MyContainer.__iter__')
             for v_val in self._data:
@@ -135,9 +135,6 @@ def feature67():
             print('\t-> MyContainer.__sub__')
             data = [x_val-y_val for (x_val,y_val) in zip(self._data,other._data)]
             return MyContainer(data)
-        def __contains__(self, value):
-            print('\t-> MyContainer.__contains__')
-            return value in self._data
         def __iter__(self):
             print('\t-> MyContainer.__iter__')
             for v_val in self._data:
@@ -153,10 +150,11 @@ def feature67():
     container1 = MyContainer([0,1,2,3,4,5])
     print('>>> container1')
     print(container1)
-    print('\nWhen membership of an element is tested, the ``__contains__`` operator'
-          ' of ``MyContainer`` is called:\n')
-    print('>>> 9 in container1')
-    print(9 in container1)
-    print('>>> 3 in container1')
-    print(3 in container1)
+    print('\nThe ``iter`` built-in function is applied now to ``container1`` for getting\n'
+          'a function generator back:\n')
+    iterator_container1 = iter(container1)
+    print(">>> iterator_container1 = iter(container1)")
+    print("\n>>> next(iterator_container1), next(iterator_container1), next(iterator_container1)")
+    print(next(iterator_container1), next(iterator_container1), next(iterator_container1))
+    print('\n.. seealso:: :doc:`Function generators<feature48>`')
     print(80*'-')

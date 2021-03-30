@@ -1,4 +1,4 @@
-##    Python codesnippets - Factory function (state retention)
+##    Python codesnippets - How to avoid nested scopes
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,61 +19,82 @@
 #
 
 """
-Factory function (state retention)
-==================================
+How to avoid nested scopes
+==========================
 
 :py:mod:`codesnippets.feature32`
 --------------------------------
 
-The following function is a factory function which remembers the value
-of the input parameter ``n_value`` provided:
+Remember that flat is better than nested!
+
+Given the function definitions below:
 
 .. code-block:: Python
 
-    def pow_func_maker(n_value):
-        def pow_x_to_n(x_value):
-            return x_value**n_value
-        return pow_x_to_n
+    def func1():
+        global_var = 200 # Shadows the global variable
+        func2(global_var)
 
-Given the parameter ``n`` it returns the power function :math:`f(x) = x^n`
+    def func2(x_value):
+        # prints 200
+        print(x_value)
 
->>> square = pow_func_maker(2)
->>> cube   = pow_func_maker(3)
+Forward referencing is used which is valid code,
+as long as the function ``func2`` is defined before the function ``func1`` is called.
 
->>> square(4)
-16
+.. note:: Code inside a ``def`` is never evaluated until the function is called.
 
->>> cube(5)
-125
+>>> global_var = 100 # global variable at module level
+
+>>> func1()
+200
+
+The local variable ``global_var`` inside the function ``func1`` shadows the global one, but the
+function ``func2`` gets the value of the local global counter from its parameter istead of
+fetching it from a nested scope.
+
+.. seealso:: :doc:`The LEGB rule (nested scopes) <feature31>`
 """
 
-def pow_func_maker(n_value):
-    """returns a power function"""
-    def pow_x_to_n(x_value):
-        """power function"""
-        return x_value**n_value
-    return pow_x_to_n
+# global variable at module level
+global_var = 100
+
+def func1():
+    """shadows the global variable"""
+    # Shadows the global variable
+    global_var = 200
+    # The local variable is passed along
+    func2(global_var)
+
+def func2(x_value):
+    """prints its parameter"""
+    # prints 200
+    print(x_value)
 
 def feature32():
-    """Factory function (state retention)"""
-    print('Factory function (state retention)')
-    print('==================================\n')
+    """How to avoid nested scopes"""
+    print('How to avoid nested scopes')
+    print('==========================\n')
     print(':py:mod:`codesnippets.feature32`')
     print('--------------------------------\n')
-    print('The following function is a factory function which remembers the value')
-    print('of the input parameter ``n_value`` provided:\n')
+    print('Remember that flat is better than nested!\n')
+    print('Given the function definitions below:\n')
     print('.. code-block:: Python\n')
-    print('    def pow_func_maker(n_value):')
-    print('        def pow_x_to_n(x_value):')
-    print('            return x_value**n_value')
-    print('        return pow_x_to_n\n')
-    print('Given the parameter ``n`` it returns the power function :math:`f(x) = x^n`\n')
-    print('>>> square = pow_func_maker(2)')
-    print('>>> cube   = pow_func_maker(3)\n')
-    square = pow_func_maker(2)
-    cube   = pow_func_maker(3)
-    print('>>> square(4)')
-    print(square(4))
-    print('\n>>> cube(5)')
-    print(cube(5))
+    print('    def func1():')
+    print('        global_var = 200 # Shadows the global variable')
+    print('        func2(global_var)\n')
+    print('    def func2(x_value):')
+    print('        # prints 200')
+    print('        print(x_value)\n')
+    print('Forward referencing is used which is valid code,')
+    print("as long as the function ``func2`` is defined before the function ``func1`` is called.\n")
+    print(".. note:: Code inside a ``def`` is never evaluated until the function is called.\n")
+    print('>>> global_var = 100 # global variable at module level\n')
+    print('>>> func1()')
+    func1()
+    print('\nThe local variable ``global_var`` inside the function ``func1`` '
+          'shadows the global one, but the\nfunction ``func2`` gets the value '
+          'of the local global counter from its parameter istead of\nfetching it '
+          'from a nested scope.')
+    print('\n.. seealso:: :doc:`The LEGB rule (nested scopes) <feature31>`')
     print(80*'-')

@@ -1,4 +1,4 @@
-##    Python codesnippets - Module packages
+##    Python codesnippets - Module reload
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,41 +19,86 @@
 #
 
 """
-Module packages
-===============
+Module reload
+=============
 
 :py:mod:`codesnippets.feature53`
 --------------------------------
 
-Packages work like modules but the path must be given as well.
-A file ``__init__.py`` must be located in all the subdirectories.
-This file is loaded and run the very first time a package is included:
+For restoring the attributes of an already imported module, the latter
+must be explicitely reloaded.
 
->>> import system1.utilities
->>> import system2.utilities
+For example ``module1`` is imported and its attributes printed:
 
->>> system1.utilities.print_string('Hello')
-Hello
->>> system2.utilities.print_string('Hello')
-Hello
+>>> import module1
+
+>>> module1.A_VARIABLE
+1
+>>> module1.A_LIST
+[4, 5, 6]
+
+The following code changes ``module1.A_VARIABLE`` and ``module1.A_LIST`` (a mutable object):
+
+>>> module1.A_VARIABLE = 7
+
+>>> module1.A_LIST[0] = 8
+>>> module1.A_LIST
+[8, 5, 6]
+
+By reloading ``module1``, its code is rerun:
+
+>>> import importlib
+>>> importlib.reload(module1)
+
+The content of ``module1`` attributes has been restored:
+
+>>> module1.A_VARIABLE
+1
+>>> module1.A_LIST
+[4, 5, 6]
+
+.. note:: Notice that if the module itself imports other modules, these are not reloaded!
+    If you wish to rerun this example, you need to restart the Python shell.
+
+.. seealso:: :doc:`Side effects when importing modules<feature52>`
 """
 
-import codesnippets.system1.utilities
-import codesnippets.system2.utilities
+import importlib
 
 def feature53():
-    """Module packages"""
-    print('Module packages')
-    print('===============\n')
+    """Module reload"""
+    print('Module reload')
+    print('=============\n')
     print(':py:mod:`codesnippets.feature53`')
     print('--------------------------------\n')
-    print('Packages work like modules but the path must be given as well.')
-    print('A file ``__init__.py`` must be located in all the subdirectories.')
-    print('This file is loaded and run the very first time a package is included:\n')
-    print('>>> import system1.utilities')
-    print('>>> import system2.utilities\n')
-    print(">>> system1.utilities.print_string('Hello')")
-    codesnippets.system1.utilities.print_string('Hello')
-    print(">>> system2.utilities.print_string('Hello')")
-    codesnippets.system2.utilities.print_string('Hello')
+    print('For restoring the attributes of an already imported module, the latter')
+    print('must be explicitely reloaded.\n')
+    print('For example ``module1`` is imported and its attributes printed:\n')
+    print('>>> import module1\n')
+    module1 = importlib.import_module('.module1','codesnippets')
+    print('>>> module1.A_VARIABLE')
+    print(module1.A_VARIABLE)
+    print('>>> module1.A_LIST')
+    print(module1.A_LIST)
+    print("\nThe following code changes ``module1.A_VARIABLE`` and ``module1.A_LIST``"
+          " (a mutable object):\n")
+    print('>>> module1.A_VARIABLE = 7\n')
+    module1.A_VARIABLE = 7
+    print('>>> module1.A_LIST[0] = 8')
+    module1.A_LIST[0] = 8
+    print('>>> module1.A_LIST')
+    print(module1.A_LIST)
+    print("\nBy reloading ``module1``, its code is rerun:\n")
+    print('>>> import importlib')
+    print('>>> importlib.reload(module1)\n')
+    importlib.reload(module1)
+    print("The content of ``module1`` attributes has been restored:\n")
+    print('>>> module1.A_VARIABLE')
+    print(module1.A_VARIABLE)
+    print('>>> module1.A_LIST')
+    print(module1.A_LIST)
+    print("\n.. note:: Notice that if the module itself imports other modules, "
+          "these are not reloaded!\n    If you wish to rerun this example, you need "
+          "to restart the Python shell.")
+    print('\n.. seealso:: :doc:`Side effects when importing modules<feature52>`')
     print(80*'-')

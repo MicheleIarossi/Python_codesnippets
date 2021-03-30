@@ -1,4 +1,4 @@
-##    Python codesnippets - Class interface techniques
+##    Python codesnippets - More on class introspection tools: __class__, __bases__, __dict__
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,213 +19,174 @@
 #
 
 """
-Class interface techniques
-==========================
+More on class introspection tools: ``__class__`` , ``__bases__`` , ``__dict__``
+===============================================================================
 
 :py:mod:`codesnippets.feature63`
 --------------------------------
 
-There are different inheritance patterns available for adding new features to derived classes:
+These special attributes are useful as introspection tools:
 
-* Inheritor,
-* Replacer,
-* Extender,
-* Provider.
+* ``__class__`` is a reference to the class object,
+* ``__bases__`` is a list of references to the base class objects,
+* ``__dict__`` is a dictionary of the object attributes.
 
-Given the following base class:
-
-.. code-block:: Python
-
-    class Super:
-        \"""a base class\"""
-        def method(self):
-            \"""a default method\"""
-            print(f'	-> In Super.method')           # Default behavior
-        def delegate(self):
-            \"""another method\"""
-            self.action()                      # Expected to be defined
-        
-This is the default behaviour of the base class above:
-
->>> sup = Super()
->>> sup.method()
-	-> In Super.method
-
-The ``Inheritor`` just derives the methods from the base class as they are:
+Their usage is shown by means of the following classes:
 
 .. code-block:: Python
 
->>> class Inheritor(Super):                    # Inherit method verbatim
-        \"""a derived class\"""
-        pass
-        
-The behaviour is the same as the ``Super`` class:
-
->>> inh = Inheritor()
->>> inh.method()
-	-> In Super.method
-
-The ``Replacer`` redefines methods from the base class:
+    class Aircraft:
+	\"""a base class\"""
+        counter = 0
+        def __init__(self,name):
+            self._name = name
+            Aircraft.counter += 1
+        def __repr__(self):
+            \"""overloads repr operator\"""
+            return 'Aircraft(name=%r)' % (self._name)
 
 .. code-block:: Python
 
-    class Replacer(Super):                     # Replace method completely
-        \"""derived class replacing a method\"""
-        def method(self):
-            \"""new method\"""
-            print(f'	-> In Replacer.method')
-        
-The ``method`` call is completely replaced by ``Replacer``:
+    class Airplane(Aircraft):
+	\"""a derived class\"""
+        max_speed = 900
+        def __init__(self,name,passengers):
+            Aircraft.__init__(self,name)
+            self._passengers = passengers
+        def __repr__(self):
+            \"""overloads repr operator\"""
+            return 'Airplane(name=%r,passengers=%r)' % (self._name,self._passengers)
 
->>> rep = Replacer()
->>> rep.method()
-	-> In Replacer.method
+These are now examples of instances:
 
-The ``Extender`` extends methods from the base class:
+>>> helicopter = Aircraft('Helicopter')
+>>> helicopter
+Aircraft(name='Helicopter')
 
-.. code-block:: Python
+>>> airbus320 = Airplane('Airbus_320',300)
+>>> airbus320
+Airplane(name='Airbus_320',passengers=300)
 
-    class Extender(Super):                     # Extend method behavior
-        \"""extends the base class\"""
-        def method(self):
-            \"""extends base method function\"""
-            print(f'	-> Starting Extender.method')
-            Super.method(self)
-            print(f'	-> Ending Extender.method')
-        
-The ``method`` call references ``Super.method()`` and extends it:
+The attribute ``__class__`` provides a reference to the class object:
 
->>> ext = Extender()
->>> ext.method()
-	-> Starting Extender.method
-	-> In Super.method
-	-> Ending Extender.method
+>>> helicopter.__class__
+<class 'codesnippets.feature63.feature63.<locals>.Aircraft'>
+>>> helicopter.__class__.__name__ # String of the name of the class
+Aircraft
 
-Finally, the ``Provider`` provides the missing method in the base class:
+>>> airbus320.__class__
+<class 'codesnippets.feature63.feature63.<locals>.Airplane'>
+>>> airbus320.__class__.__name__ # String of the name of the class
+Airplane
 
-.. code-block:: Python
+The attribute ``__dict__`` provides a dictionary of attributes.
+Notice the difference when applied to an instance and to a class:
 
-    class Provider(Super):                     # Fill in a required method
-        \"""provides missing method in the base class\"""
-        def action(self):
-            \"""missing method\"""
-            print(f'	-> In Provider.action')
-        
-The method ``Super.delegate()`` needs an ``action()`` method provided by the ``Provider`` class:
+>>> list(helicopter.__dict__.keys())
+['_name']
+>>> list(airbus320.__dict__.keys())
+['_name', '_passengers']
 
->>> pro = Provider()
->>> pro.delegate()
-	-> In Provider.action
+>>> list(Aircraft.__dict__.keys())
+['__module__', '__doc__', 'counter', '__init__', '__repr__', '__dict__', '__weakref__']
+>>> list(Airplane.__dict__.keys())
+['__module__', '__doc__', 'max_speed', '__init__', '__repr__']
+
+The attribute ``__bases__`` provides a list of the superclasses.
+It can be used only on class objects, not instances:
+
+>>> Aircraft.__bases__
+(<class 'object'>,)
+>>> Airplane.__bases__
+(<class 'codesnippets.feature63.feature63.<locals>.Aircraft'>,)
+
+.. seealso:: :doc:`Built-in class attributes for introspection<feature60>`
 """
 
 def feature63():
-    """Class interface techniques"""
-    print('Class interface techniques')
-    print('==========================\n')
+    """More on class introspection tools: __class__, __bases__, __dict__"""
+    print('More on class introspection tools: ``__class__`` , ``__bases__`` , ``__dict__``')
+    print('===============================================================================\n')
     print(':py:mod:`codesnippets.feature63`')
     print('--------------------------------\n')
-    print('There are different inheritance patterns available for adding new'
-          ' features to derived classes:\n')
-    print('* Inheritor,')
-    print('* Replacer,')
-    print('* Extender,')
-    print('* Provider.\n')
-    print('Given the following base class:\n')
-    print('.. code-block:: Python\n')
-    print("""    class Super:
-        \\\"""a base class\\\"""
-        def method(self):
-            \\\"""a default method\\\"""
-            print(f'\t-> In Super.method')           # Default behavior
-        def delegate(self):
-            \\\"""another method\\\"""
-            self.action()                      # Expected to be defined
-        """)
-    class Super:
+    print("These special attributes are useful as introspection tools:\n")
+    print('* ``__class__`` is a reference to the class object,')
+    print('* ``__bases__`` is a list of references to the base class objects,')
+    print('* ``__dict__`` is a dictionary of the object attributes.')
+    print('\nTheir usage is shown by means of the following classes:\n')
+    class Aircraft:
         """a base class"""
-        def method(self):
-            """a default method"""
-            print(f'\t-> In Super.method')           # Default behavior
-        def delegate(self):
-            """another method"""
-            self.action()                      # Expected to be defined
-    print('This is the default behaviour of the base class above:\n')
-    print(">>> sup = Super()")
-    sup = Super()
-    print(">>> sup.method()")
-    sup.method()
-    print('\nThe ``Inheritor`` just derives the methods from the base class as they are:\n')
+        counter = 0
+        def __init__(self,name):
+            self._name = name
+            Aircraft.counter += 1
+        def __repr__(self):
+            """overloads repr operator"""
+            return 'Aircraft(name=%r)' % (self._name)
     print('.. code-block:: Python\n')
-    print(""">>> class Inheritor(Super):                    # Inherit method verbatim
-        \\\"""a derived class\\\"""
-        pass
-        """)
-    class Inheritor(Super):                    # Inherit method verbatim
+    print("""    class Aircraft:
+	\\\"""a base class\\\"""
+        counter = 0
+        def __init__(self,name):
+            self._name = name
+            Aircraft.counter += 1
+        def __repr__(self):
+            \\\"""overloads repr operator\\\"""
+            return 'Aircraft(name=%r)' % (self._name)
+	""")
+    class Airplane(Aircraft):
         """a derived class"""
-        pass
-    print('The behaviour is the same as the ``Super`` class:\n')
-    print(">>> inh = Inheritor()")
-    inh = Inheritor()
-    print(">>> inh.method()")
-    inh.method()
-    print('\nThe ``Replacer`` redefines methods from the base class:\n')
+        max_speed = 900
+        def __init__(self,name,passengers):
+            Aircraft.__init__(self,name)
+            self._passengers = passengers
+        def __repr__(self):
+            """overloads repr operator"""
+            return 'Airplane(name=%r,passengers=%r)' % (self._name,self._passengers)
     print('.. code-block:: Python\n')
-    print("""    class Replacer(Super):                     # Replace method completely
-        \\\"""derived class replacing a method\\\"""
-        def method(self):
-            \\\"""new method\\\"""
-            print(f'\t-> In Replacer.method')
-        """)
-
-    class Replacer(Super):                     # Replace method completely
-        """derived class replacing a method"""
-        def method(self):
-            """new method"""
-            print(f'\t-> In Replacer.method')
-    print('The ``method`` call is completely replaced by ``Replacer``:\n')
-    print(">>> rep = Replacer()")
-    rep = Replacer()
-    print(">>> rep.method()")
-    rep.method()
-    print('\nThe ``Extender`` extends methods from the base class:\n')
-    print('.. code-block:: Python\n')
-    print("""    class Extender(Super):                     # Extend method behavior
-        \\\"""extends the base class\\\"""
-        def method(self):
-            \\\"""extends base method function\\\"""
-            print(f'\t-> Starting Extender.method')
-            Super.method(self)
-            print(f'\t-> Ending Extender.method')
-        """)
-    class Extender(Super):                     # Extend method behavior
-        """extends the base class"""
-        def method(self):
-            """extends base method function"""
-            print(f'\t-> Starting Extender.method')
-            Super.method(self)
-            print(f'\t-> Ending Extender.method')
-    print('The ``method`` call references ``Super.method()`` and extends it:\n')
-    print(">>> ext = Extender()")
-    ext = Extender()
-    print(">>> ext.method()")
-    ext.method()
-    print('\nFinally, the ``Provider`` provides the missing method in the base class:\n')
-    print('.. code-block:: Python\n')
-    print("""    class Provider(Super):                     # Fill in a required method
-        \\\"""provides missing method in the base class\\\"""
-        def action(self):
-            \\\"""missing method\\\"""
-            print(f'\t-> In Provider.action')
-        """)
-    class Provider(Super):                     # Fill in a required method
-        """provides missing method in the base class"""
-        def action(self):
-            """missing method"""
-            print(f'\t-> In Provider.action')
-    print('The method ``Super.delegate()`` needs an ``action()`` method '
-          'provided by the ``Provider`` class:\n')
-    print(">>> pro = Provider()")
-    pro = Provider()
-    print(">>> pro.delegate()")
-    pro.delegate()
+    print("""   class Airplane(Aircraft):
+	\\\"""a derived class\\\"""
+        max_speed = 900
+        def __init__(self,name,passengers):
+            Aircraft.__init__(self,name)
+            self._passengers = passengers
+        def __repr__(self):
+            \\\"""overloads repr operator\\\"""
+            return 'Airplane(name=%r,passengers=%r)' % (self._name,self._passengers)
+	""")
+    print("These are now examples of instances:\n")
+    print(">>> helicopter = Aircraft('Helicopter')")
+    helicopter = Aircraft('Helicopter')
+    print(">>> helicopter")
+    print(helicopter)
+    print("\n>>> airbus320 = Airplane('Airbus_320',300)")
+    airbus320 = Airplane('Airbus_320',300)
+    print(">>> airbus320")
+    print(airbus320)
+    print("\nThe attribute ``__class__`` provides a reference to the class object:\n")
+    print(">>> helicopter.__class__")
+    print(helicopter.__class__)
+    print(">>> helicopter.__class__.__name__ # String of the name of the class")
+    print(helicopter.__class__.__name__)
+    print("\n>>> airbus320.__class__")
+    print(airbus320.__class__)
+    print(">>> airbus320.__class__.__name__ # String of the name of the class")
+    print(airbus320.__class__.__name__)
+    print("\nThe attribute ``__dict__`` provides a dictionary of attributes.")
+    print("Notice the difference when applied to an instance and to a class:\n")
+    print(">>> list(helicopter.__dict__.keys())")
+    print(list(helicopter.__dict__.keys()))
+    print(">>> list(airbus320.__dict__.keys())")
+    print(list(airbus320.__dict__.keys()))
+    print("\n>>> list(Aircraft.__dict__.keys())")
+    print(list(Aircraft.__dict__.keys()))
+    print(">>> list(Airplane.__dict__.keys())")
+    print(list(Airplane.__dict__.keys()))
+    print("\nThe attribute ``__bases__`` provides a list of the superclasses. ")
+    print("It can be used only on class objects, not instances:\n")
+    print(">>> Aircraft.__bases__")
+    print(Aircraft.__bases__)
+    print(">>> Airplane.__bases__")
+    print(Airplane.__bases__)
+    print('\n.. seealso:: :doc:`Built-in class attributes for introspection<feature60>`')
     print(80*'-')

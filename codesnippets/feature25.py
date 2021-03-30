@@ -1,4 +1,4 @@
-##    Python codesnippets - Side effects in loops
+##    Python codesnippets - Loop with enumerate()
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,55 +19,51 @@
 #
 
 """
-Side effects in loops
-=====================
+Loop with ``enumerate()``
+=========================
 
 :py:mod:`codesnippets.feature25`
 --------------------------------
 
-If the data type is immutable, there are no side effects!
+The built-in ``enumerate()`` gives the offset and the item to use:
 
->>> a_lst = [1,2,3,4]
+>>> a_lst = ['abc','def','ghi']
 
->>> for a_value in a_lst:
-        a_value += 1
+>>> for (i_idx,s_str) in enumerate(a_lst):
+        print(i_idx,s_str)
+0 abc
+1 def
+2 ghi
 
->>> a_lst
-[1, 2, 3, 4]
+A start value can be also given, e.g. starting from 1 instead of 0:
 
-If the data type is mutable, beware of in-place changes!
+>>> a_lst = ['abc','def','ghi']
 
->>> a_lst_of_lst = [[1,2],[3,4],[5,6],[7,8]]
-
->>> for a_lst in a_lst_of_lst:
-        a_lst += [-1,-2] # calls list extend method
-
->>> a_lst_of_lst
-[[1, 2, -1, -2], [3, 4, -1, -2], [5, 6, -1, -2], [7, 8, -1, -2]]
+>>> for (i_idx,s_str) in enumerate(a_lst,1):
+        print(i_idx,s_str)
+1 abc
+2 def
+3 ghi
 """
 
 def feature25():
-    """Side effects in loops"""
-    print('Side effects in loops')
-    print('=====================\n')
+    """Loop with enumerate()"""
+    print('Loop with ``enumerate()``')
+    print('=========================\n')
     print(':py:mod:`codesnippets.feature25`')
     print('--------------------------------\n')
-    print("If the data type is immutable, there are no side effects!\n")
-    print(">>> a_lst = [1,2,3,4]\n")
-    print(">>> for a_value in a_lst:")
-    print("        a_value += 1\n")
-    print(">>> a_lst")
-    a_lst = [1,2,3,4]
-    for a_value in a_lst:
-        a_value += 1
-    print(a_lst)
-    print("\nIf the data type is mutable, beware of in-place changes!\n")
-    print(">>> a_lst_of_lst = [[1,2],[3,4],[5,6],[7,8]]\n")
-    print(">>> for a_lst in a_lst_of_lst:")
-    print("        a_lst += [-1,-2] # calls list extend method\n")
-    print(">>> a_lst_of_lst")
-    a_lst_of_lst = [[1,2],[3,4],[5,6],[7,8]]
-    for a_lst in a_lst_of_lst:
-        a_lst += [-1,-2]
-    print(a_lst_of_lst)
+    print("The built-in ``enumerate()`` gives the offset and the item to use:\n")
+    print(">>> a_lst = ['abc','def','ghi']\n")
+    print(">>> for (i_idx,s_str) in enumerate(a_lst):")
+    print("        print(i_idx,s_str)")
+    a_lst = ['abc','def','ghi']
+    for (i_idx,s_str) in enumerate(a_lst):
+        print(i_idx,s_str)
+    print("\nA start value can be also given, e.g. starting from 1 instead of 0:\n")
+    print(">>> a_lst = ['abc','def','ghi']\n")
+    print(">>> for (i_idx,s_str) in enumerate(a_lst,1):")
+    print("        print(i_idx,s_str)")
+    a_lst = ['abc','def','ghi']
+    for (i_idx,s_str) in enumerate(a_lst,1):
+        print(i_idx,s_str)
     print(80*'-')

@@ -1,4 +1,4 @@
-##    Python codesnippets - Simulating output parameters in a function call
+##    Python codesnippets - State retention using mutable list
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,54 +19,84 @@
 #
 
 """
-Simulating output parameters in a function call
-===============================================
+State retention using mutable list
+==================================
 
 :py:mod:`codesnippets.feature37`
 --------------------------------
 
-Input parameters are always passed by assignment. Immutable objects
-cannot be changed inside the function, but multiple new values
-can be returned by the ``return`` statement.
+The function below calls methods of a ``list`` to perform in-place changes.
+
+.. note:: In-place object changes do not classify as local.
 
 .. code-block:: Python
 
-    def assign_new_values(a_value,b_value,c_value):
-        a_value, b_value, c_value = 11, 22, 33
-        return a_value, b_value, c_value
+    def func_factory(start):
+        def nested_func(label):
+            print(label, state[0])
+            # hack: in-place object changes do not classify as local
+            state[0] += 1
+        # defines a mutable list
+        state = [start]
+        return nested_func
 
->>> a_value, b_value, c_value = 1, 2, 3
+>>> func = func_factory(23)
 
->>> a_value, b_value, c_value = assign_new_values(a_value,b_value,c_value)
+>>> func('one')
+one 23
+>>> func('two')
+two 24
 
->>> a_value,b_value,c_value
-(11, 22, 33)
+>>> new_func = func_factory(46)
+
+>>> new_func('three')
+three 46
+>>> new_func('four')
+four 47
+
+.. seealso:: :doc:`Accessing non-local variables<feature36>`
 """
 
-def assign_new_values(a_value,b_value,c_value):
-    """shadows its input parameters"""
-    a_value, b_value, c_value = 11, 22, 33
-    return a_value, b_value, c_value
-
+def func_factory(start):
+    """factory function returning a function working on a mutable list"""
+    def nested_func(label):
+        """nested function increasing the state"""
+        print(label, state[0])
+        # hack: in-place object changes do not classify as local
+        state[0] += 1
+    # defines a mutable list
+    state = [start]
+    return nested_func
 
 def feature37():
-    """Simulating output parameters in a function call"""
-    print('Simulating output parameters in a function call')
-    print('===============================================\n')
+    """State retention using mutable list"""
+    print('State retention using mutable list')
+    print('==================================\n')
     print(':py:mod:`codesnippets.feature37`')
     print('--------------------------------\n')
-    print('Input parameters are always passed by assignment. Immutable objects')
-    print('cannot be changed inside the function, but multiple new values')
-    print('can be returned by the ``return`` statement.\n')
+    print('The function below calls methods of a ``list`` to perform in-place changes.\n')
+    print('.. note:: In-place object changes do not classify as local.\n')
     print('.. code-block:: Python\n')
-    print('    def assign_new_values(a_value,b_value,c_value):')
-    print('        a_value, b_value, c_value = 11, 22, 33')
-    print('        return a_value, b_value, c_value')
+    print('    def func_factory(start):')
+    print('        def nested_func(label):')
+    print('            print(label, state[0])')
+    print('            # hack: in-place object changes do not classify as local')
+    print('            state[0] += 1')
+    print('        # defines a mutable list')
+    print('        state = [start]')
+    print('        return nested_func')
     print()
-    print('>>> a_value, b_value, c_value = 1, 2, 3\n')
-    a_value, b_value, c_value = 1, 2, 3
-    print('>>> a_value, b_value, c_value = assign_new_values(a_value,b_value,c_value)\n')
-    a_value, b_value, c_value = assign_new_values(a_value,b_value,c_value)
-    print('>>> a_value,b_value,c_value')
-    print((a_value,b_value,c_value))
+    print('>>> func = func_factory(23)\n')
+    func = func_factory(23)
+    print(">>> func('one')")
+    func('one')
+    print(">>> func('two')")
+    func('two')
+    print('\n>>> new_func = func_factory(46)\n')
+    new_func = func_factory(46)
+    print(">>> new_func('three')")
+    new_func("three")
+    print(">>> new_func('four')")
+    new_func("four")
+    print('\n.. seealso:: :doc:`Accessing non-local variables<feature36>`')
     print(80*'-')

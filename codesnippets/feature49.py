@@ -1,4 +1,4 @@
-##    Python codesnippets - Module import information
+##    Python codesnippets - Expression generators
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,61 +19,57 @@
 #
 
 """
-Module import information
-=========================
+Expression generators
+=====================
 
 :py:mod:`codesnippets.feature49`
 --------------------------------
 
-The ``sys`` module provides important information concerning for example:
+An expression generator returns results one at a time.
+It must be coded inside parentheses:
 
-* the path used for searching Python modules,
-* the dictonary of imported modules.
+>>> g_expr = (x_var**2 for x_var in range(5))
 
->>> import sys
+An expression generator is its own iterator:
 
-The path used for searching Python modules is given by ``sys.path``:
+>>> iter(g_expr) is g_expr
+True
 
->>> sys.path
-['/Users/miia/Programming/LearningPython/Python_codesnippets',
-'/Library/Frameworks/Python.framework/Versions/3.9/bin', '/Users/miia/Programming/LearningPython',
-'/Library/Frameworks/Python.framework/Versions/3.9/lib/python39.zip',
-'/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9',
-'/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/lib-dynload',
-'/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages']
+By calling ``next()`` it provides results one at a time:
 
-The dictionary of imported modules is given by ``sys.modules`` (only 10 items are shown here):
+>>> next(g_expr)
+0
+>>> next(g_expr)
+1
+>>> next(g_expr)
+4
+>>> next(g_expr)
+9
 
->>> list(sys.modules.items())[:10]
-[('sys', <module 'sys' (built-in)>), ('builtins', <module 'builtins' (built-in)>),
-('_frozen_importlib', <module 'importlib._bootstrap' (frozen)>),
-('_imp', <module '_imp' (built-in)>),
-('_thread', <module '_thread' (built-in)>), ('_warnings', <module '_warnings' (built-in)>),
-('_weakref', <module '_weakref' (built-in)>),
-('_frozen_importlib_external', <module 'importlib._bootstrap_external' (frozen)>),
-('posix', <module 'posix' (built-in)>), ('_io', <module 'io' (built-in)>)]
-
-.. seealso:: :doc:`Module attribute access<feature56>`
+.. seealso:: :doc:`The iteration protocol<feature27>`
 """
 
-import sys
-
 def feature49():
-    """Module import information"""
-    print('Module import information')
-    print('=========================\n')
+    """Expression generators"""
+    print('Expression generators')
+    print('=====================\n')
     print(':py:mod:`codesnippets.feature49`')
     print('--------------------------------\n')
-    print('The ``sys`` module provides important information concerning for example:\n')
-    print('* the path used for searching Python modules,')
-    print('* the dictonary of imported modules.\n')
-    print('>>> import sys\n')
-    print('The path used for searching Python modules is given by ``sys.path``:\n')
-    print('>>> sys.path')
-    print(sys.path)
-    print('\nThe dictionary of imported modules is given by ``sys.modules`` (only 10 items '
-          'are shown here):\n')
-    print('>>> list(sys.modules.items())[:10]')
-    print(list(sys.modules.items())[:10])
-    print('\n.. seealso:: :doc:`Module attribute access<feature56>`')
+    print('An expression generator returns results one at a time.')
+    print('It must be coded inside parentheses:\n')
+    print('>>> g_expr = (x_var**2 for x_var in range(5))')
+    g_expr = (x_var**2 for x_var in range(5))
+    print('\nAn expression generator is its own iterator:\n')
+    print('>>> iter(g_expr) is g_expr')
+    print(iter(g_expr) is g_expr)
+    print('\nBy calling ``next()`` it provides results one at a time:\n')
+    print('>>> next(g_expr)')
+    print(next(g_expr))
+    print('>>> next(g_expr)')
+    print(next(g_expr))
+    print('>>> next(g_expr)')
+    print(next(g_expr))
+    print('>>> next(g_expr)')
+    print(next(g_expr))
+    print('\n.. seealso:: :doc:`The iteration protocol<feature27>`')
     print(80*'-')

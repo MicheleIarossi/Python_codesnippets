@@ -1,4 +1,4 @@
-##    Python codesnippets - Static methods via function decorator @staticmethod
+##    Python codesnippets - Static methods via built-in function staticmethod()
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,13 +19,13 @@
 #
 
 """
-Static methods via function decorator @staticmethod
+Static methods via built-in function staticmethod()
 ===================================================
 
 :py:mod:`codesnippets.feature81`
 --------------------------------
 
-By decorating a method with ``@staticmethod``, it can be called either
+By qualifying a method as static with ``staticmethod()``, it can be called either
 via the class or via the instance and without the required ``self`` parameter.
 
 The following class counts the instances of Cars:
@@ -39,12 +39,12 @@ The following class counts the instances of Cars:
             self.name = name
             Car.n_val += 1
             print('<Car: %s created>' % (name))
-        @staticmethod
         def num_of_instances():
             \"""returns the total number of instances\"""
             return Car.n_val
         def __repr__(self):
             return 'Car(%r)' % (self.name)
+        num_of_instances = staticmethod(num_of_instances)
 
 >>> bmw = Car('BMW 3er')
 <Car: BMW 3er created>
@@ -64,16 +64,17 @@ Car('VW Golf')
 >>> Car.num_of_instances()
 3
 
-.. seealso:: :doc:`Basic function decorator<feature96>`
+.. seealso:: :doc:`Static methods via function decorator @staticmethod<feature82>`
 """
 
 def feature81():
-    """Static methods via function decorator @staticmethod"""
-    print('Static methods via function decorator @staticmethod')
+    """Static methods via built-in function staticmethod"""
+    print('Static methods via built-in function staticmethod()')
     print('===================================================\n')
     print(':py:mod:`codesnippets.feature81`')
     print('--------------------------------\n')
-    print('By decorating a method with ``@staticmethod``, it can be called either')
+    print('By qualifying a method as static with the built-in ``staticmethod()``'
+          ' function, it can be called either')
     print('via the class or via the instance and without the required ``self`` parameter.\n')
     print('The following class counts the instances of Cars:\n')
     class Car():
@@ -83,13 +84,13 @@ def feature81():
             self.name = name
             Car.n_val += 1
             print('<Car: %s created>' % (name))
-        @staticmethod
         def num_of_instances():
             """returns the total number of instances"""
             return Car.n_val
         def __repr__(self):
             """overloads repr operator"""
             return 'Car(%r)' % (self.name)
+        num_of_instances = staticmethod(num_of_instances)
     print('.. code-block:: Python\n')
     print("""    class Car():
         \\\"""a car class\\\"""
@@ -98,12 +99,12 @@ def feature81():
             self.name = name
             Car.n_val += 1
             print('<Car: %s created>' % (name))
-        @staticmethod
         def num_of_instances():
             \\\"""returns the total number of instances\\\"""
             return Car.n_val
         def __repr__(self):
             return 'Car(%r)' % (self.name)
+        num_of_instances = staticmethod(num_of_instances)
         """)
     print("\n>>> bmw = Car('BMW 3er')")
     bmw = Car('BMW 3er')
@@ -119,5 +120,5 @@ def feature81():
     print(vwag)
     print("\n>>> Car.num_of_instances()")
     print(Car.num_of_instances())
-    print('\n.. seealso:: :doc:`Basic function decorator<feature96>`')
+    print('\n.. seealso:: :doc:`Static methods via function decorator @staticmethod<feature82>`')
     print(80*'-')

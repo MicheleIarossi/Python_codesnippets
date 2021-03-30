@@ -1,4 +1,4 @@
-##    Python codesnippets - Exception handling
+##    Python codesnippets - Constructor calls with multiple inheritance
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,97 +19,138 @@
 #
 
 """
-Exception handling
-==================
+Constructor calls with multiple inheritance
+===========================================
 
 :py:mod:`codesnippets.feature84`
 --------------------------------
 
-``try`` -> ``except`` -> ``else`` -> ``finally``
+If no constructor is provided, Python calls the lowest and leftmost
+constructor that is present in the inheritance hierarchy!
 
-The ``else`` part is run ONLY if no exception occurs,
-and the ``finally`` part is run in any case.
+Given the following hierarchy of classes:
 
-.. note:: Exceptions always catch (and raise!) a class instance object.
+.. code-block:: Python
 
->>> a_str = 'test'
+    class ClassA:
+        \"""a class\"""
+        def __init__(self):
+            print('	-> ClassA.__init__')
+        def __repr__(self):
+            return 'ClassA()'
 
->>> try:
-        a_chr = a_str[5]
-        print('selected a_chr = ' + a_chr)
-    except IndexError as exc:
-        print('-> Exception: ' + str(exc))
-        print(dir(exc))
-    else:
-        print('-> else: no exception')
-    finally:
-        print('-> finally: leaving the try statement')
--> Exception: string index out of range
--> finally: leaving the try statement
+    class ClassB(ClassA):
+        \"""a derived class\"""
+        def __init__(self):
+            print('	-> ClassB.__init__')
+        def __repr__(self):
+            return 'ClassB()'
 
->>> try:
-        a_chr = a_str[3]
-        print('selected a_chr = ' + a_chr)
-    except IndexError as exc:
-        print('-> Exception: ' + str(exc))
-        print(dir(exc))
-    else:
-        print('-> else: no exception')
-    finally:
-        print('-> finally: leaving the try statement')
-selected a_chr = t
--> else: no exception
--> finally: leaving the try statement
+    class ClassC(ClassA):
+        \"""another derived class\"""
+        def __init__(self):
+            print('	-> ClassC.__init__')
+        def __repr__(self):
+            return 'ClassC()'
+
+    class ClassD(ClassB):
+        \"""yet another derived class\"""
+        def __init__(self):
+            print('	-> ClassD.__init__')
+        def __repr__(self):
+            return 'ClassD()'
+
+    class ClassE(ClassC,ClassD):
+        \"""multiple inheritance class\"""
+        def __repr__(self):
+            return 'ClassE()'
+
+and an instance of ``ClassE``:
+
+>>> obj_e = ClassE()
+	-> ClassC.__init__
+
+Notice that only the construtor of the ``ClassC`` is called!
 """
 
 def feature84():
-    """Exception handling"""
-    print('Exception handling')
-    print('==================\n')
+    """Constructor calls with multiple inheritance"""
+    print('Constructor calls with multiple inheritance')
+    print('===========================================\n')
     print(':py:mod:`codesnippets.feature84`')
     print('--------------------------------\n')
-    print("``try`` -> ``except`` -> ``else`` -> ``finally``\n")
-    print("The ``else`` part is run ONLY if no exception occurs,")
-    print("and the ``finally`` part is run in any case.\n")
-    print(".. note:: Exceptions always catch (and raise!) a class instance object.\n")
-    print(">>> a_str = 'test'\n")
-    a_str = 'test'
-    print(""">>> try:
-        a_chr = a_str[5]
-        print('selected a_chr = ' + a_chr)
-    except IndexError as exc:
-        print('-> Exception: ' + str(exc))
-        print(dir(exc))
-    else:
-        print('-> else: no exception')
-    finally:
-        print('-> finally: leaving the try statement')""")
-    try:
-        a_chr = a_str[5]
-        print('selected a_chr = ' + a_chr)
-    except IndexError as exc:
-        print('-> Exception: ' + str(exc))
-    else:
-        print('-> else: no exception')
-    finally:
-        print('-> finally: leaving the try statement\n')
-    print(""">>> try:
-        a_chr = a_str[3]
-        print('selected a_chr = ' + a_chr)
-    except IndexError as exc:
-        print('-> Exception: ' + str(exc))
-        print(dir(exc))
-    else:
-        print('-> else: no exception')
-    finally:
-        print('-> finally: leaving the try statement')""")
-    try:
-        a_chr = a_str[3]
-        print('selected a_chr = ' + a_chr)
-    except IndexError as exc:
-        print('-> Exception: ' + str(exc))
-    else:
-        print('-> else: no exception')
-    finally:
-        print('-> finally: leaving the try statement')
+    print("If no constructor is provided, Python calls the lowest and leftmost")
+    print("constructor that is present in the inheritance hierarchy!\n")
+    print('Given the following hierarchy of classes:\n')
+    print('.. code-block:: Python\n')
+    print("""    class ClassA:
+        \\\"""a class\\\"""
+        def __init__(self):
+            print('\t-> ClassA.__init__')
+        def __repr__(self):
+            return 'ClassA()'
+        """)
+    class ClassA:
+        """a class"""
+        def __init__(self):
+            print('\t-> ClassA.__init__')
+        def __repr__(self):
+            """overloads repr operator"""
+            return 'ClassA()'
+    print("""    class ClassB(ClassA):
+        \\\"""a derived class\\\"""
+        def __init__(self):
+            print('\t-> ClassB.__init__')
+        def __repr__(self):
+            return 'ClassB()'
+        """)
+    class ClassB(ClassA):
+        """a derived class"""
+        def __init__(self):
+            print('\t-> ClassB.__init__')
+        def __repr__(self):
+            """overloads repr operator"""
+            return 'ClassB()'
+    print("""    class ClassC(ClassA):
+        \\\"""another derived class\\\"""
+        def __init__(self):
+            print('\t-> ClassC.__init__')
+        def __repr__(self):
+            return 'ClassC()'
+        """)
+    class ClassC(ClassA):
+        """another derived class"""
+        def __init__(self):
+            print('\t-> ClassC.__init__')
+        def __repr__(self):
+            """overloads repr operator"""
+            return 'ClassC()'
+    print("""    class ClassD(ClassB):
+        \\\"""yet another derived class\\\"""
+        def __init__(self):
+            print('\t-> ClassD.__init__')
+        def __repr__(self):
+            return 'ClassD()'
+        """)
+    class ClassD(ClassB):
+        """yet another derived class"""
+        def __init__(self):
+            print('\t-> ClassD.__init__')
+        def __repr__(self):
+            """overloads repr operator"""
+            return 'ClassD()'
+    print("""    class ClassE(ClassC,ClassD):
+        \\\"""multiple inheritance class\\\"""
+        def __repr__(self):
+            return 'ClassE()'
+        """)
+    class ClassE(ClassC,ClassD):
+        """multiple inheritance class"""
+        def __repr__(self):
+            """overloads repr operator"""
+            return 'ClassE()'
+    print('and an instance of ``ClassE``:\n')
+    print('>>> obj_e = ClassE()')
+    obj_e = ClassE()
+    print('\nNotice that only the construtor of the ``ClassC`` is called!')
     print(80*'-')

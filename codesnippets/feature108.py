@@ -1,4 +1,4 @@
-##    Python codesnippets - Class statement protocol
+##    Python codesnippets - Type
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,91 +19,50 @@
 #
 
 """
-Class statement protocol
-========================
+Type
+====
 
 :py:mod:`codesnippets.feature108`
 ---------------------------------
 
-Class objects are created by calling the ``type`` object:
+Instances are made from classes, but classes are instances of ``type``.
+A class object is an instance of a ``type`` object:
 
->>> MyClass = type(classname,superclasses,attributedict)
-
-at the end of a class definition.
-
-The ``type`` object overloads the ``__call__`` operator and calls
-``type.__new__`` for creating the class object, and ``type.__init__``
-for initializing it.
-
-Given the method function definition below:
-
-.. code-block:: Python
-
-    def a_method(self):
-	print(f"	-> Inside {self.__class__.__name__} -> a_method()...")
-	print(f"	-> Attribute self.name = {repr(self.name)}")
-
-a ``class`` can be created dynamically like this:
-
->>> MyClass = type('MyClass',(object,),{'name':'My class','a_method':a_method},
-                   '__module__':'codesnippets.feature108.feature108.<locals>')
+>>> class MyClass:
+        \"""my class\"""
+        pass
 
 >>> an_obj = MyClass()
 
->>> an_obj.a_method()
-	-> Inside MyClass -> a_method()...
-	-> Attribute self.name = 'My class'
+>>> (type(an_obj), an_obj.__class__)
+(<class 'codesnippets.feature108.feature108.<locals>.MyClass'>,
+ <class 'codesnippets.feature108.feature108.<locals>.MyClass'>)
 
->>> MyClass.__module__
-codesnippets.feature108.feature108.<locals>
-
->>> dir(MyClass)
-['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__',
-'__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__',
-'__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
-'__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__',
-'__weakref__', 'a_method', 'name']
-
-.. seealso:: :doc:`Type<feature107>`
+>>> (type(MyClass), MyClass.__class__)
+(<class 'type'>, <class 'type'>)
 """
 
 def feature108():
-    """Class statement protocol"""
-    print('Class statement protocol')
-    print('========================\n')
+    """Type"""
+    print('Type')
+    print('====\n')
     print(':py:mod:`codesnippets.feature108`')
     print('---------------------------------\n')
-    print("Class objects are created by calling the ``type`` object:\n")
-    print(">>> MyClass = type(classname,superclasses,attributedict)\n")
-    print("at the end of a class definition.\n")
-    print("The ``type`` object overloads the ``__call__`` operator and calls")
-    print("``type.__new__`` for creating the class object, and ``type.__init__``")
-    print("for initializing it.\n")
-    print("Given the method function definition below:\n")
-    print('.. code-block:: Python\n')
-    print("""    def a_method(self):
-	print(f"\t-> Inside {self.__class__.__name__} -> a_method()...")
-	print(f"\t-> Attribute self.name = {repr(self.name)}")
-	""")
-    def a_method(self):
-        print(f"\t-> Inside {self.__class__.__name__} -> a_method()...")
-        print(f"\t-> Attribute self.name = {repr(self.name)}")
-    print("a ``class`` can be created dynamically like this:\n")
-    print(">>> MyClass = type('MyClass',(object,),{'name':'My class',"
-          "\n'a_method':a_method},'__module__':'codesnippets.feature108.feature108.<locals>')")
-    MyClass = type('MyClass',(object,),
-                   {'name':'My class','a_method':a_method,
-                    '__module__':'codesnippets.feature108.feature108.<locals>'})
-    print()
-    print(">>> an_obj = MyClass()\n")
+    print("Instances are made from classes, but classes are instances of ``type``.")
+    print("A class object is an instance of a ``type`` object:\n")
+    print(""">>> class MyClass:
+        \\\"""my class\\\"""
+        pass
+          """)
+    class MyClass:
+        """my class"""
+        pass
+    print(">>> an_obj = MyClass()")
     an_obj = MyClass()
-    print(">>> an_obj.a_method()")
-    an_obj.a_method()
     print()
-    print(">>> MyClass.__module__")
-    print(MyClass.__module__)
+    print(">>> (type(an_obj), an_obj.__class__)")
+    print((type(an_obj), an_obj.__class__))
     print()
-    print(">>> dir(MyClass)")
-    print(dir(MyClass))
-    print('\n.. seealso:: :doc:`Type<feature107>`')
+    print(">>> (type(MyClass), MyClass.__class__)")
+    print((type(MyClass), MyClass.__class__))
     print(80*'-')
