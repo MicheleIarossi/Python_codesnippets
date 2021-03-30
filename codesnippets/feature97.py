@@ -1,4 +1,4 @@
-##    Python codesnippets - Wrapper/proxy pattern with function decorator
+##    Python codesnippets - Basic function decorator
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,128 +19,65 @@
 #
 
 """
-Wrapper/proxy pattern with function decorator
-=============================================
+Basic function decorator
+========================
 
 :py:mod:`codesnippets.feature97`
 --------------------------------
 
-The decorator adds a wrapper around the real function call which happens inside the wrapper itself:
+A function decorator is a metafunction that manages another function.
+Decoration happens only once at the end of the function definition:
 
 .. code-block:: Python
 
     def decorator(func):
-        \"""decorator function\"""
+        \"""very basic function decorator\"""
         print(f"	-> inside decorator function...")
-        calls = 0
-        print(f"	-> inside decorator of function {a_func.__name__}()")
-        def wrapper(*args):
-            \"""wrapper function inside the decorator\"""
-            nonlocal calls
-            calls += 1
-            print(f"	-> inside the wrapper function calling {a_func.__name__}()"
-                  f" for the {calls} time")
-            a_func(*args)
-        return wrapper
+        return func
 
->>> @decorator
-    def my_func(param_a,param_b):
-        \"""my decorated function\"""
-        print(f"	-> inside my function...")
-	-> inside decorator of function my_func()
+    @decorator
+    def myfunction(param_a,param_b):
+        \"""decorated function\"""
+        print(f"	-> inside myfunction({param_a},{param_b})")
 
-When ``my_func(a,b)`` is called, it is the ``wrapper()`` that is actually called!
+Decoration rebinds the function name and it's equivalent to:
 
->>> my_func(1,2)
-	-> inside the wrapper function calling my_func() for the 1 time
-	-> inside my function...
+>>> myfunction = decorator(myfunction)
+	-> inside decorator function...
 
->>> my_func(1,2)
-	-> inside the wrapper function calling my_func() for the 2 time
-	-> inside my function...
-
-Works for different functions too:
-
->>> @decorator
-    def your_func(param_a,param_b):
-        \"""my decorated function\"""
-        print(f"	-> inside your function...")
-	-> inside decorator of function your_func()
-
->>> your_func(1,2)
-	-> inside the wrapper function calling your_func() for the 1 time
-	-> inside your function...
-
->>> your_func(1,2)
-	-> inside the wrapper function calling your_func() for the 2 time
-	-> inside your function...
+>>> myfunction(4,5)
+	-> inside myfunction(4,5)
 """
 
 def feature97():
-    """Wrapper/proxy pattern with function decorator"""
-    print('Wrapper/proxy pattern with function decorator')
-    print('=============================================\n')
+    """Basic function decorator"""
+    print('Basic function decorator')
+    print('========================\n')
     print(':py:mod:`codesnippets.feature97`')
     print('--------------------------------\n')
-    print("The decorator adds a wrapper around the real function call which happens inside"
-          " the wrapper itself:\n")
+    print('A function decorator is a metafunction that manages another function.')
+    print('Decoration happens only once at the end of the function definition:\n')
     print('.. code-block:: Python\n')
     print("""    def decorator(func):
-        \\\"""decorator function\\\"""
+        \\\"""very basic function decorator\\\"""
         print(f"\t-> inside decorator function...")
-        calls = 0
-        print(f"\t-> inside decorator of function {a_func.__name__}()")
-        def wrapper(*args):
-            \\\"""wrapper function inside the decorator\\\"""
-            nonlocal calls
-            calls += 1
-            print(f"\t-> inside the wrapper function calling {a_func.__name__}()"
-                  f" for the {calls} time")
-            a_func(*args)
-        return wrapper
-          """)
-    def decorator(a_func):
-        """decorator function"""
-        calls = 0
-        print(f"\t-> inside decorator of function {a_func.__name__}()")
-        def wrapper(*args):
-            """wrapper function inside the decorator"""
-            nonlocal calls
-            calls += 1
-            print(f"\t-> inside the wrapper function calling {a_func.__name__}()"
-                  f" for the {calls} time")
-            a_func(*args)
-        return wrapper
-    print(""">>> @decorator
-    def my_func(param_a,param_b):
-        \\\"""my decorated function\\\"""
-        print(f"\t-> inside my function...")""")
+        return func
+        """)
+    print("""    @decorator
+    def myfunction(param_a,param_b):
+        \\\"""decorated function\\\"""
+        print(f"\t-> inside myfunction({param_a},{param_b})")
+        """)
+    print("Decoration rebinds the function name and it's equivalent to:\n")
+    print(">>> myfunction = decorator(myfunction)")
+    def decorator(func):
+        """very basic function decorator"""
+        print(f"\t-> inside decorator function...")
+        return func
     @decorator
-    def my_func(param_a,param_b):
-        """my decorated function"""
-        print(f"\t-> inside my function...")
-    print()
-    print("When ``my_func(a,b)`` is called, it is the ``wrapper()`` that is actually called!")
-    print()
-    print(">>> my_func(1,2)")
-    my_func(1,2)
-    print()
-    print(">>> my_func(1,2)")
-    my_func(1,2)
-    print()
-    print("Works for different functions too:\n")
-    print(""">>> @decorator
-    def your_func(param_a,param_b):
-        \\\"""my decorated function\\\"""
-        print(f"\t-> inside your function...")""")
-    @decorator
-    def your_func(param_a,param_b):
-        """my decorated function"""
-        print(f"\t-> inside your function...")
-    print()
-    print(">>> your_func(1,2)")
-    your_func(1,2)
-    print()
-    print(">>> your_func(1,2)")
-    your_func(1,2)
+    def myfunction(param_a,param_b):
+        """decorated function"""
+        print(f"\t-> inside myfunction({param_a},{param_b})")
+    print("\n>>> myfunction(4,5)")
+    myfunction(4,5)
     print(80*'-')

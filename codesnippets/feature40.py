@@ -1,4 +1,4 @@
-##    Python codesnippets - Unpacking arguments
+##    Python codesnippets - Arbitrary arguments
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,14 +19,14 @@
 #
 
 """
-Unpacking arguments
+Arbitrary arguments
 ===================
 
 :py:mod:`codesnippets.feature40`
 --------------------------------
 
-The ``*`` unpacks a tuple into positional arguments.\n
-The ``**`` unpacks a dictionary into an arbitrary number of keyword arguments.
+The ``*`` collects an arbitrary number of positional arguments into a tuple.\n
+The ``**`` collects an arbitrary number of keyword arguments into a dictionary.
 
 .. code-block:: Python
 
@@ -35,8 +35,23 @@ The ``**`` unpacks a dictionary into an arbitrary number of keyword arguments.
         print(f'Positional parameter:           a_value = {a_value}')
         print(f'Arbitrary keyword arguments:    kwargs  = {kwargs}')
 
->>> func(*(3,4,5),2,**{'alfa':3,'beta':5,'gamma':10})
-Arbitrary positional arguments: pargs   = (3, 4, 5, 2)
+>>> func(2,3,4,5,alfa=3,beta=5,gamma=10)
+Arbitrary positional arguments: pargs   = (2, 3, 4, 5)
+Positional parameter:           a_value = 0
+Arbitrary keyword arguments:    kwargs  = {'alfa': 3, 'beta': 5, 'gamma': 10}
+
+>>> func(3,4,5,alfa=3,beta=5,gamma=10)
+Arbitrary positional arguments: pargs   = (3, 4, 5)
+Positional parameter:           a_value = 0
+Arbitrary keyword arguments:    kwargs  = {'alfa': 3, 'beta': 5, 'gamma': 10}
+
+>>> func(4,alfa=3,beta=5,gamma=10)
+Arbitrary positional arguments: pargs   = (4,)
+Positional parameter:           a_value = 0
+Arbitrary keyword arguments:    kwargs  = {'alfa': 3, 'beta': 5, 'gamma': 10}
+
+>>> func(alfa=3,beta=5,gamma=10)
+Arbitrary positional arguments: pargs   = ()
 Positional parameter:           a_value = 0
 Arbitrary keyword arguments:    kwargs  = {'alfa': 3, 'beta': 5, 'gamma': 10}
 """
@@ -48,18 +63,24 @@ def func(*pargs,a_value=0,**kwargs):
     print(f'Arbitrary keyword arguments:    kwargs  = {kwargs}')
 
 def feature40():
-    """Unpacking arguments"""
-    print('Unpacking arguments')
+    """Arbitrary arguments"""
+    print('Arbitrary arguments')
     print('===================\n')
     print(':py:mod:`codesnippets.feature40`')
     print('--------------------------------\n')
-    print('The ``*`` unpacks a tuple into positional arguments.\\n')
-    print('The ``**`` unpacks a dictionary into an arbitrary number of keyword arguments.\n')
+    print('The ``*`` collects an arbitrary number of positional arguments into a tuple.\\n')
+    print('The ``**`` collects an arbitrary number of keyword arguments into a dictionary.\n')
     print('.. code-block:: Python\n')
     print('    def func(*pargs,a_value=0,**kwargs):')
     print("        print(f'Arbitrary positional arguments: pargs   = {pargs}')")
     print("        print(f'Positional parameter:           a_value = {a_value}')")
     print("        print(f'Arbitrary keyword arguments:    kwargs  = {kwargs}')\n")
-    print(">>> func(*(3,4,5),2,**{'alfa':3,'beta':5,'gamma':10})")
-    func(*(3,4,5),2,**{'alfa':3,'beta':5,'gamma':10})
+    print(">>> func(2,3,4,5,alfa=3,beta=5,gamma=10)")
+    func(2,3,4,5,alfa=3,beta=5,gamma=10)
+    print("\n>>> func(3,4,5,alfa=3,beta=5,gamma=10)")
+    func(3,4,5,alfa=3,beta=5,gamma=10)
+    print("\n>>> func(4,alfa=3,beta=5,gamma=10)")
+    func(4,alfa=3,beta=5,gamma=10)
+    print("\n>>> func(alfa=3,beta=5,gamma=10)")
+    func(alfa=3,beta=5,gamma=10)
     print(80*'-')

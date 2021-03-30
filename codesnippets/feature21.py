@@ -1,4 +1,4 @@
-##    Python codesnippets - Ternary expression
+##    Python codesnippets - Boolean and/or operators
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,36 +19,36 @@
 #
 
 """
-Ternary expression
-==================
+Boolean and/or operators
+========================
 
 :py:mod:`codesnippets.feature21`
 --------------------------------
 
-Saves lines when typing code:
+Boolean operators ``and`` and ``or`` return true or false objects not values!
 
->>> a_str = 't' if 'spam' else 'f'
->>> a_str
-t
+``or`` returns the left operand if true:
 
->>> a_str = 't' if '' else 'f'
->>> a_str
-f
+>>> 2 or 3, 3 or 2
+(2, 3)
+
+``and`` returns the right operand if true:
+
+>>> 2 and 3, 3 and 2
+(3, 2)
 """
 
 def feature21():
-    """Ternary expression"""
-    print("Ternary expression")
-    print('==================\n')
+    """Boolean and/or operators"""
+    print("Boolean and/or operators")
+    print('========================\n')
     print(':py:mod:`codesnippets.feature21`')
     print('--------------------------------\n')
-    print("Saves lines when typing code:\n")
-    print(">>> a_str = 't' if 'spam' else 'f'")
-    print(">>> a_str")
-    a_str = 't' if 'spam' else 'f'
-    print(a_str)
-    print("\n>>> a_str = 't' if '' else 'f'")
-    print(">>> a_str")
-    a_str = 't' if '' else 'f'
-    print(a_str)
+    print("Boolean operators 'and' and 'or' return true or false objects not values!\n")
+    print("'or' returns left operand if true:\n")
+    print(">>> 2 or 3, 3 or 2")
+    print((2 or 3, 3 or 2))
+    print("\n'and' returns right operand if true:\n")
+    print(">>> 2 and 3, 3 and 2")
+    print((2 and 3, 3 and 2))
     print(80*'-')

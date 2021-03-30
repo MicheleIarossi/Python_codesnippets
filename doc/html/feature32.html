@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Factory function (state retention) &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>How to avoid nested scopes &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Factory function with lambda" href="feature33.html" />
-    <link rel="prev" title="How to avoid nested scopes" href="feature31.html" /> 
+    <link rel="next" title="Factory function (state retention)" href="feature33.html" />
+    <link rel="prev" title="The LEGB rule (nested scopes)" href="feature31.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature33.html" title="Factory function with lambda"
+          <a href="feature33.html" title="Factory function (state retention)"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature31.html" title="How to avoid nested scopes"
+          <a href="feature31.html" title="The LEGB rule (nested scopes)"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Factory function (state retention)</a></li> 
+        <li class="nav-item nav-item-this"><a href="">How to avoid nested scopes</a></li> 
       </ul>
     </div>  
 
@@ -45,30 +45,40 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature32"></span><div class="section" id="factory-function-state-retention">
-<h1>Factory function (state retention)<a class="headerlink" href="#factory-function-state-retention" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature32"></span><div class="section" id="how-to-avoid-nested-scopes">
+<h1>How to avoid nested scopes<a class="headerlink" href="#how-to-avoid-nested-scopes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature32">
 <h2><a class="reference internal" href="#module-codesnippets.feature32" title="codesnippets.feature32"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature32</span></code></a><a class="headerlink" href="#codesnippets-feature32" title="Permalink to this headline">¶</a></h2>
-<p>The following function is a factory function which remembers the value
-of the input parameter <code class="docutils literal notranslate"><span class="pre">n_value</span></code> provided:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pow_func_maker</span><span class="p">(</span><span class="n">n_value</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">pow_x_to_n</span><span class="p">(</span><span class="n">x_value</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">x_value</span><span class="o">**</span><span class="n">n_value</span>
-    <span class="k">return</span> <span class="n">pow_x_to_n</span>
+<p>Remember that flat is better than nested!</p>
+<p>Given the function definitions below:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func1</span><span class="p">():</span>
+    <span class="n">global_var</span> <span class="o">=</span> <span class="mi">200</span> <span class="c1"># Shadows the global variable</span>
+    <span class="n">func2</span><span class="p">(</span><span class="n">global_var</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">func2</span><span class="p">(</span><span class="n">x_value</span><span class="p">):</span>
+    <span class="c1"># prints 200</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x_value</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Given the parameter <code class="docutils literal notranslate"><span class="pre">n</span></code> it returns the power function <span class="math notranslate nohighlight">\(f(x) = x^n\)</span></p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">square</span> <span class="o">=</span> <span class="n">pow_func_maker</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span>   <span class="o">=</span> <span class="n">pow_func_maker</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<p>Forward referencing is used which is valid code,
+as long as the function <code class="docutils literal notranslate"><span class="pre">func2</span></code> is defined before the function <code class="docutils literal notranslate"><span class="pre">func1</span></code> is called.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Code inside a <code class="docutils literal notranslate"><span class="pre">def</span></code> is never evaluated until the function is called.</p>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">global_var</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># global variable at module level</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">square</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="go">16</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func1</span><span class="p">()</span>
+<span class="go">200</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="go">125</span>
-</pre></div>
+<p>The local variable <code class="docutils literal notranslate"><span class="pre">global_var</span></code> inside the function <code class="docutils literal notranslate"><span class="pre">func1</span></code> shadows the global one, but the
+function <code class="docutils literal notranslate"><span class="pre">func2</span></code> gets the value of the local global counter from its parameter istead of
+fetching it from a nested scope.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="feature31.html"><span class="doc">The LEGB rule (nested scopes)</span></a></p>
 </div>
 </div>
 </div>
@@ -82,7 +92,7 @@ of the input parameter <code class="docutils literal notranslate"><span class="p
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Factory function (state retention)</a><ul>
+<li><a class="reference internal" href="#">How to avoid nested scopes</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature32"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature32</span></code></a></li>
 </ul>
 </li>
@@ -90,10 +100,10 @@ of the input parameter <code class="docutils literal notranslate"><span class="p
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature31.html"
-                        title="previous chapter">How to avoid nested scopes</a></p>
+                        title="previous chapter">The LEGB rule (nested scopes)</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature33.html"
-                        title="next chapter">Factory function with <code class="docutils literal notranslate"><span class="pre">lambda</span></code></a></p>
+                        title="next chapter">Factory function (state retention)</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -125,13 +135,13 @@ of the input parameter <code class="docutils literal notranslate"><span class="p
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature33.html" title="Factory function with lambda"
+          <a href="feature33.html" title="Factory function (state retention)"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature31.html" title="How to avoid nested scopes"
+          <a href="feature31.html" title="The LEGB rule (nested scopes)"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Factory function (state retention)</a></li> 
+        <li class="nav-item nav-item-this"><a href="">How to avoid nested scopes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

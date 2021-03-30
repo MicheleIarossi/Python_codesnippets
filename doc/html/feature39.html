@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Arbitrary arguments &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Arguments matched by default values, by position and by name &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Unpacking arguments" href="feature40.html" />
-    <link rel="prev" title="Arguments matched by default values, by position and by name" href="feature38.html" /> 
+    <link rel="next" title="Arbitrary arguments" href="feature40.html" />
+    <link rel="prev" title="Simulating output parameters in a function call" href="feature38.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature40.html" title="Unpacking arguments"
+          <a href="feature40.html" title="Arbitrary arguments"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature38.html" title="Arguments matched by default values, by position and by name"
+          <a href="feature38.html" title="Simulating output parameters in a function call"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Arbitrary arguments</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Arguments matched by default values, by position and by name</a></li> 
       </ul>
     </div>  
 
@@ -45,41 +45,34 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature39"></span><div class="section" id="arbitrary-arguments">
-<h1>Arbitrary arguments<a class="headerlink" href="#arbitrary-arguments" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature39"></span><div class="section" id="arguments-matched-by-default-values-by-position-and-by-name">
+<h1>Arguments matched by default values, by position and by name<a class="headerlink" href="#arguments-matched-by-default-values-by-position-and-by-name" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature39">
 <h2><a class="reference internal" href="#module-codesnippets.feature39" title="codesnippets.feature39"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature39</span></code></a><a class="headerlink" href="#codesnippets-feature39" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">*</span></code> collects an arbitrary number of positional arguments into a tuple.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">**</span></code> collects an arbitrary number of keyword arguments into a dictionary.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="o">*</span><span class="n">pargs</span><span class="p">,</span><span class="n">a_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Arbitrary positional arguments: pargs   = </span><span class="si">{</span><span class="n">pargs</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Positional parameter:           a_value = </span><span class="si">{</span><span class="n">a_value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Arbitrary keyword arguments:    kwargs  = </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<p>The following function assigns default values to its parameters:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">a_value</span><span class="o">=</span><span class="mi">44</span><span class="p">,</span><span class="n">b_value</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span><span class="n">c_value</span><span class="o">=</span><span class="mi">66</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">a_value</span><span class="p">,</span><span class="n">b_value</span><span class="p">,</span><span class="n">c_value</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="n">alfa</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">beta</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="go">Arbitrary positional arguments: pargs   = (2, 3, 4, 5)</span>
-<span class="go">Positional parameter:           a_value = 0</span>
-<span class="go">Arbitrary keyword arguments:    kwargs  = {&#39;alfa&#39;: 3, &#39;beta&#39;: 5, &#39;gamma&#39;: 10}</span>
+<p>If no arguments are provided, the default values are used:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">()</span>  <span class="c1"># uses default values</span>
+<span class="go">(44, 55, 66)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="n">alfa</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">beta</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="go">Arbitrary positional arguments: pargs   = (3, 4, 5)</span>
-<span class="go">Positional parameter:           a_value = 0</span>
-<span class="go">Arbitrary keyword arguments:    kwargs  = {&#39;alfa&#39;: 3, &#39;beta&#39;: 5, &#39;gamma&#39;: 10}</span>
+<p>If no special matching is used, position is the normal matching mode, where
+arguments are matched from left to right:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="mi">222</span><span class="p">,</span><span class="mi">333</span><span class="p">)</span>  <span class="c1"># match by position</span>
+<span class="go">(111, 222, 333)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="n">alfa</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">beta</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="go">Arbitrary positional arguments: pargs   = (4,)</span>
-<span class="go">Positional parameter:           a_value = 0</span>
-<span class="go">Arbitrary keyword arguments:    kwargs  = {&#39;alfa&#39;: 3, &#39;beta&#39;: 5, &#39;gamma&#39;: 10}</span>
+<p>If keyword arguments are used, the matching is done by name in any order:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="n">c_value</span><span class="o">=</span><span class="mi">333</span><span class="p">,</span><span class="n">b_value</span><span class="o">=</span><span class="mi">222</span><span class="p">,</span><span class="n">a_value</span><span class="o">=</span><span class="mi">111</span><span class="p">)</span>  <span class="c1"># match by name</span>
+<span class="go">(111, 222, 333)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="n">alfa</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">beta</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="go">Arbitrary positional arguments: pargs   = ()</span>
-<span class="go">Positional parameter:           a_value = 0</span>
-<span class="go">Arbitrary keyword arguments:    kwargs  = {&#39;alfa&#39;: 3, &#39;beta&#39;: 5, &#39;gamma&#39;: 10}</span>
-</pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Positional arguments must precede any keyword arguments.</p>
 </div>
 </div>
 </div>
@@ -93,7 +86,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Arbitrary arguments</a><ul>
+<li><a class="reference internal" href="#">Arguments matched by default values, by position and by name</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature39"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature39</span></code></a></li>
 </ul>
 </li>
@@ -101,10 +94,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature38.html"
-                        title="previous chapter">Arguments matched by default values, by position and by name</a></p>
+                        title="previous chapter">Simulating output parameters in a function call</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature40.html"
-                        title="next chapter">Unpacking arguments</a></p>
+                        title="next chapter">Arbitrary arguments</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -136,13 +129,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature40.html" title="Unpacking arguments"
+          <a href="feature40.html" title="Arbitrary arguments"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature38.html" title="Arguments matched by default values, by position and by name"
+          <a href="feature38.html" title="Simulating output parameters in a function call"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Arbitrary arguments</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Arguments matched by default values, by position and by name</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

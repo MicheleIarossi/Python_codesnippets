@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Unbound and bound methods &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Pseudoprivate class attributes &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Inheritance attribute lister class" href="feature72.html" />
-    <link rel="prev" title="Pseudoprivate class attributes" href="feature70.html" /> 
+    <link rel="next" title="Unbound and bound methods" href="feature72.html" />
+    <link rel="prev" title="Operator overloading: final MyContainer class" href="feature70.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature72.html" title="Inheritance attribute lister class"
+          <a href="feature72.html" title="Unbound and bound methods"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature70.html" title="Pseudoprivate class attributes"
+          <a href="feature70.html" title="Operator overloading: final MyContainer class"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Unbound and bound methods</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Pseudoprivate class attributes</a></li> 
       </ul>
     </div>  
 
@@ -45,57 +45,30 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature71"></span><div class="section" id="unbound-and-bound-methods">
-<h1>Unbound and bound methods<a class="headerlink" href="#unbound-and-bound-methods" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature71"></span><div class="section" id="pseudoprivate-class-attributes">
+<h1>Pseudoprivate class attributes<a class="headerlink" href="#pseudoprivate-class-attributes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature71">
 <h2><a class="reference internal" href="#module-codesnippets.feature71" title="codesnippets.feature71"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature71</span></code></a><a class="headerlink" href="#codesnippets-feature71" title="Permalink to this headline">¶</a></h2>
-<p>Since everything in Python is an object, methods of classes and instances
-can be used as callback functions, but bound methods do not need an explicit
-reference to an instance:</p>
+<p>If attributes in a class hierarchy have the same names, then some
+unintended attribute hiding might occur.
+Pseudoprivate class attributes solve this problem by adding
+the name of the class in front of the attribute name:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;a class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&lt;Object </span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">))</span>
-    <span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;a method function&quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&lt;Object </span><span class="si">%s</span><span class="s1">&gt;.function(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span><span class="n">val</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;my class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__val</span> <span class="o">=</span> <span class="n">val</span>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;overloads repr operator&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;MyClass(name=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;MyClass(val=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__val</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The following objects are 2 instances of the class <code class="docutils literal notranslate"><span class="pre">MyClass</span></code> above:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj1</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="s1">&#39;obj1&#39;</span><span class="p">)</span>
-<span class="go">&lt;Object obj1&gt;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">an_obj</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">an_obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">[&#39;_MyClass__val&#39;]</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="s1">&#39;obj2&#39;</span><span class="p">)</span>
-<span class="go">&lt;Object obj2&gt;</span>
-</pre></div>
-</div>
-<p>The variable <code class="docutils literal notranslate"><span class="pre">f1_func</span></code> saves a reference to the bound method of the instance <code class="docutils literal notranslate"><span class="pre">obj1</span></code>:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f1_func</span> <span class="o">=</span> <span class="n">obj1</span><span class="o">.</span><span class="n">function</span>     <span class="c1"># Bound method to the instance obj1</span>
-</pre></div>
-</div>
-<p>On the contrary, the variable <code class="docutils literal notranslate"><span class="pre">f2_func</span></code> saves a reference to the
-unbound method of the class <code class="docutils literal notranslate"><span class="pre">MyClass</span></code>:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f2_func</span> <span class="o">=</span> <span class="n">MyClass</span><span class="o">.</span><span class="n">function</span>  <span class="c1"># Unbound method to the class AClass</span>
-</pre></div>
-</div>
-<p>The function references above can be called in other contexts:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">f1_func</span></code> works directly because already bound to <code class="docutils literal notranslate"><span class="pre">obj1</span></code></p></li>
-</ul>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f1_func</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="go">&lt;Object obj1&gt;.function(5)</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">f2_func</span></code> still needs a reference to an object because unbound</p></li>
-</ul>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f2_func</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
-<span class="go">&lt;Object obj2&gt;.function(5)</span>
+<p>Notice how the class name has been added in front of <code class="docutils literal notranslate"><span class="pre">__val</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">an_obj</span><span class="o">.</span><span class="n">_MyClass__val</span>
+<span class="go">5</span>
 </pre></div>
 </div>
 </div>
@@ -110,7 +83,7 @@ unbound method of the class <code class="docutils literal notranslate"><span cla
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Unbound and bound methods</a><ul>
+<li><a class="reference internal" href="#">Pseudoprivate class attributes</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature71"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature71</span></code></a></li>
 </ul>
 </li>
@@ -118,10 +91,10 @@ unbound method of the class <code class="docutils literal notranslate"><span cla
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature70.html"
-                        title="previous chapter">Pseudoprivate class attributes</a></p>
+                        title="previous chapter">Operator overloading: final <code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> class</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature72.html"
-                        title="next chapter">Inheritance attribute lister class</a></p>
+                        title="next chapter">Unbound and bound methods</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -153,13 +126,13 @@ unbound method of the class <code class="docutils literal notranslate"><span cla
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature72.html" title="Inheritance attribute lister class"
+          <a href="feature72.html" title="Unbound and bound methods"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature70.html" title="Pseudoprivate class attributes"
+          <a href="feature70.html" title="Operator overloading: final MyContainer class"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Unbound and bound methods</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Pseudoprivate class attributes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Built-in method resolution starts at the class &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Built-in operations cannot be delegated via __getattr__ &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Method resolution order (MRO)" href="feature77.html" />
-    <link rel="prev" title="Built-in operations cannot be delegated via __getattr__" href="feature75.html" /> 
+    <link rel="next" title="Built-in method resolution starts at the class" href="feature77.html" />
+    <link rel="prev" title="Type built-in function applied to classes and instances" href="feature75.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature77.html" title="Method resolution order (MRO)"
+          <a href="feature77.html" title="Built-in method resolution starts at the class"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature75.html" title="Built-in operations cannot be delegated via __getattr__"
+          <a href="feature75.html" title="Type built-in function applied to classes and instances"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Built-in method resolution starts at the class</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Built-in operations cannot be delegated via <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code></a></li> 
       </ul>
     </div>  
 
@@ -45,56 +45,52 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature76"></span><div class="section" id="built-in-method-resolution-starts-at-the-class">
-<h1>Built-in method resolution starts at the class<a class="headerlink" href="#built-in-method-resolution-starts-at-the-class" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature76"></span><div class="section" id="built-in-operations-cannot-be-delegated-via-getattr">
+<h1>Built-in operations cannot be delegated via <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code><a class="headerlink" href="#built-in-operations-cannot-be-delegated-via-getattr" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature76">
 <h2><a class="reference internal" href="#module-codesnippets.feature76" title="codesnippets.feature76"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature76</span></code></a><a class="headerlink" href="#codesnippets-feature76" title="Permalink to this headline">¶</a></h2>
-<p>Built-in method resolution starts at the class and skips the instance.</p>
-<p>This is equivalent to <code class="docutils literal notranslate"><span class="pre">type(my_obj).__xxxxx__(my_obj,...)</span></code>, which means
-that you have to override the built-in operations in the class itself.</p>
+<p>In a class, you cannot delegate built-in operations via <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code>.
+You have to override the built-in operations in the class itself.</p>
 <p>Consider the following class:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;a class&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">valstr</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">valstr</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attrstr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">attrstr</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>and the following object:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>When indexed, an exception is thrown since the instance has no <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> built-in defined:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> method forwards every undefined attribute fetch to the <code class="docutils literal notranslate"><span class="pre">self.data</span></code>
+object, but not for built-in operations like indexing:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 <span class="go">        --&gt; Exception: &#39;MyClass&#39; object is not subscriptable</span>
-<span class="go">        Instance has no __getitem__ built-in defined</span>
+<span class="go">        __getattr__ is not called!</span>
 </pre></div>
 </div>
-<p>But <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> can be added to the instance itself:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">my_getitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
-<span class="go">        return self.data[index]</span>
+<p>This is equivalent to <code class="docutils literal notranslate"><span class="pre">type(my_obj).__getitem__(my_obj,2)</span></code> and <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code>
+is not overridden in the class!</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> built-in method needs to be overridden in order to avoid such exception:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">valstr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">valstr</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attrstr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">attrstr</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span><span class="o">.</span><span class="fm">__getitem__</span> <span class="o">=</span> <span class="n">my_getitem</span>
+<p>The same object is created and indexed again:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>If the method is explicitely called, then it works:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">my_obj</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="go">l</span>
+<p>This works as expected:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">x_var</span> <span class="k">for</span> <span class="n">x_var</span> <span class="ow">in</span> <span class="n">my_obj</span><span class="p">]</span>
+<span class="go">[&#39;h&#39;, &#39;e&#39;, &#39;l&#39;, &#39;l&#39;, &#39;o&#39;]</span>
 </pre></div>
-</div>
-<p>But if it is called as a built-in operation, it fails because the
-instance is skipped and the operation is not overloaded in the class:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="go">        --&gt; Exception: &#39;MyClass&#39; object is not subscriptable</span>
-<span class="go">        __getitem__ is not called! Equivalent to type(my_obj).__getitem__(my_obj,idx)</span>
-<span class="go">        and __getitem__ is not overridden in the class!</span>
-</pre></div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> built-in method needs to be overridden in
-the class in order to avoid such exception.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature74.html"><span class="doc">Built-in operations cannot be delegated via __getattr__</span></a></p>
 </div>
 </div>
 </div>
@@ -108,7 +104,7 @@ the class in order to avoid such exception.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Built-in method resolution starts at the class</a><ul>
+<li><a class="reference internal" href="#">Built-in operations cannot be delegated via <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code></a><ul>
 <li><a class="reference internal" href="#codesnippets-feature76"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature76</span></code></a></li>
 </ul>
 </li>
@@ -116,10 +112,10 @@ the class in order to avoid such exception.</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature75.html"
-                        title="previous chapter">Built-in operations cannot be delegated via <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code></a></p>
+                        title="previous chapter">Type built-in function applied to classes and instances</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature77.html"
-                        title="next chapter">Method resolution order (MRO)</a></p>
+                        title="next chapter">Built-in method resolution starts at the class</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -151,13 +147,13 @@ the class in order to avoid such exception.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature77.html" title="Method resolution order (MRO)"
+          <a href="feature77.html" title="Built-in method resolution starts at the class"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature75.html" title="Built-in operations cannot be delegated via __getattr__"
+          <a href="feature75.html" title="Type built-in function applied to classes and instances"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Built-in method resolution starts at the class</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Built-in operations cannot be delegated via <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code></a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

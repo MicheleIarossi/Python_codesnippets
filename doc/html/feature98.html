@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Decorator implementation via classes &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Wrapper/proxy pattern with function decorator &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Decorator for a method of a class" href="feature99.html" />
-    <link rel="prev" title="Wrapper/proxy pattern with function decorator" href="feature97.html" /> 
+    <link rel="next" title="Decorator implementation via classes" href="feature99.html" />
+    <link rel="prev" title="Basic function decorator" href="feature97.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature99.html" title="Decorator for a method of a class"
+          <a href="feature99.html" title="Decorator implementation via classes"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature97.html" title="Wrapper/proxy pattern with function decorator"
+          <a href="feature97.html" title="Basic function decorator"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Decorator implementation via classes</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Wrapper/proxy pattern with function decorator</a></li> 
       </ul>
     </div>  
 
@@ -45,75 +45,61 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature98"></span><div class="section" id="decorator-implementation-via-classes">
-<h1>Decorator implementation via classes<a class="headerlink" href="#decorator-implementation-via-classes" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature98"></span><div class="section" id="wrapper-proxy-pattern-with-function-decorator">
+<h1>Wrapper/proxy pattern with function decorator<a class="headerlink" href="#wrapper-proxy-pattern-with-function-decorator" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature98">
 <h2><a class="reference internal" href="#module-codesnippets.feature98" title="codesnippets.feature98"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature98</span></code></a><a class="headerlink" href="#codesnippets-feature98" title="Permalink to this headline">¶</a></h2>
-<p>The following class implements a decorator by means of the <code class="docutils literal notranslate"><span class="pre">__call__</span></code> operator:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Decorator</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;implements a decorator&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a_func</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; inside Decorator.__init__() called on function </span><span class="si">{</span><span class="n">a_func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">func</span>  <span class="o">=</span> <span class="n">a_func</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">calls</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">calls</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; inside Decorator.__call__() calling </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
-              <span class="sa">f</span><span class="s2">&quot; for the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">calls</span><span class="si">}</span><span class="s2"> time&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<p>The decorator adds a wrapper around the real function call which happens inside the wrapper itself:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;decorator function&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        -&gt; inside decorator function...&quot;</span><span class="p">)</span>
+    <span class="n">calls</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        -&gt; inside decorator of function </span><span class="si">{</span><span class="n">a_func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">()&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;wrapper function inside the decorator&quot;&quot;&quot;</span>
+        <span class="k">nonlocal</span> <span class="n">calls</span>
+        <span class="n">calls</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; inside the wrapper function calling </span><span class="si">{</span><span class="n">a_func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">()&quot;</span>
+              <span class="sa">f</span><span class="s2">&quot; for the </span><span class="si">{</span><span class="n">calls</span><span class="si">}</span><span class="s2"> time&quot;</span><span class="p">)</span>
+        <span class="n">a_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
 </pre></div>
 </div>
-<p>This is the function to be decorated:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@Decorator</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@decorator</span>
 <span class="go">    def my_func(param_a,param_b):</span>
-<span class="go">        &quot;&quot;&quot;function to be decorated&quot;&quot;&quot;</span>
-<span class="go">        print(f&quot;        -&gt; inside my_func({param_a},{param_b})...&quot;)</span>
-<span class="go">        -&gt; inside Decorator.__init__() called on function my_func</span>
+<span class="go">        &quot;&quot;&quot;my decorated function&quot;&quot;&quot;</span>
+<span class="go">        print(f&quot;        -&gt; inside my function...&quot;)</span>
+<span class="go">        -&gt; inside decorator of function my_func()</span>
 </pre></div>
 </div>
-<p>When the decorator runs, the following happens:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_func</span> <span class="o">=</span> <span class="n">Decorator</span><span class="p">()</span>
+<p>When <code class="docutils literal notranslate"><span class="pre">my_func(a,b)</span></code> is called, it is the <code class="docutils literal notranslate"><span class="pre">wrapper()</span></code> that is actually called!</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_func</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">        -&gt; inside the wrapper function calling my_func() for the 1 time</span>
+<span class="go">        -&gt; inside my function...</span>
 </pre></div>
 </div>
-<p>The function <code class="docutils literal notranslate"><span class="pre">my_func</span></code> gets assigned an instance of the class Decorator.</p>
-<p>Now the function is called:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_func</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
-<span class="go">        -&gt; inside Decorator.__call__() calling my_func for the 1 time</span>
-<span class="go">        -&gt; inside my_func(6,4)...</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_func</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">        -&gt; inside the wrapper function calling my_func() for the 2 time</span>
+<span class="go">        -&gt; inside my function...</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_func</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
-<span class="go">        -&gt; inside Decorator.__call__() calling my_func for the 2 time</span>
-<span class="go">        -&gt; inside my_func(6,4)...</span>
-</pre></div>
-</div>
-<p>The function call triggers the <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method of the instance bound to <code class="docutils literal notranslate"><span class="pre">my_func()</span></code></p>
-<p>It works also for different functions because the decorator
-runs again on any new function definition:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@Decorator</span>
+<p>Works for different functions too:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@decorator</span>
 <span class="go">    def your_func(param_a,param_b):</span>
-<span class="go">        print(f&quot;        -&gt; inside your_func({param_a},{param_b})...&quot;)</span>
-<span class="go">        -&gt; inside Decorator.__init__() called on function your_func</span>
+<span class="go">        &quot;&quot;&quot;my decorated function&quot;&quot;&quot;</span>
+<span class="go">        print(f&quot;        -&gt; inside your function...&quot;)</span>
+<span class="go">        -&gt; inside decorator of function your_func()</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">your_func</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
-<span class="go">        -&gt; inside Decorator.__call__() calling your_func for the 1 time</span>
-<span class="go">        -&gt; inside your_func(7,5)...</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">your_func</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">        -&gt; inside the wrapper function calling your_func() for the 1 time</span>
+<span class="go">        -&gt; inside your function...</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_func</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
-<span class="go">        -&gt; inside Decorator.__call__() calling my_func for the 3 time</span>
-<span class="go">        -&gt; inside my_func(6,4)...</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">your_func</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">        -&gt; inside the wrapper function calling your_func() for the 2 time</span>
+<span class="go">        -&gt; inside your function...</span>
 </pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">your_func</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
-<span class="go">        -&gt; inside Decorator.__call__() calling your_func for the 2 time</span>
-<span class="go">        -&gt; inside your_func(7,5)...</span>
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature68.html"><span class="doc">Operator overloading: __call__ , __len__ , __bool__</span></a></p>
 </div>
 </div>
 </div>
@@ -127,7 +113,7 @@ runs again on any new function definition:</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Decorator implementation via classes</a><ul>
+<li><a class="reference internal" href="#">Wrapper/proxy pattern with function decorator</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature98"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature98</span></code></a></li>
 </ul>
 </li>
@@ -135,10 +121,10 @@ runs again on any new function definition:</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature97.html"
-                        title="previous chapter">Wrapper/proxy pattern with function decorator</a></p>
+                        title="previous chapter">Basic function decorator</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature99.html"
-                        title="next chapter">Decorator for a method of a <code class="docutils literal notranslate"><span class="pre">class</span></code></a></p>
+                        title="next chapter">Decorator implementation via classes</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -170,13 +156,13 @@ runs again on any new function definition:</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature99.html" title="Decorator for a method of a class"
+          <a href="feature99.html" title="Decorator implementation via classes"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature97.html" title="Wrapper/proxy pattern with function decorator"
+          <a href="feature97.html" title="Basic function decorator"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Decorator implementation via classes</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Wrapper/proxy pattern with function decorator</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

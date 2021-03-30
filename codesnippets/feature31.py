@@ -1,4 +1,4 @@
-##    Python codesnippets - How to avoid nested scopes
+##    Python codesnippets - The LEGB rule (nested scopes)
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,82 +19,65 @@
 #
 
 """
-How to avoid nested scopes
-==========================
+The LEGB rule (nested scopes)
+=============================
 
 :py:mod:`codesnippets.feature31`
 --------------------------------
 
-Remember that flat is better than nested!
+Remember that LEGB = Local, Enclosing, Global(Module), Built-in.
 
-Given the function definitions below:
+Given the following code:
 
 .. code-block:: Python
 
+    global_counter = 100                # global variable at module level
+
     def func1():
-        global_var = 200 # Shadows the global variable
-        func2(global_var)
+        global_counter = 200            # shadows the global variable
+        def func2():
+            print(global_counter)       # gets global_counter from the enclosing scope
+        func2()
 
-    def func2(x_value):
-        # prints 200
-        print(x_value)
-
-Forward referencing is used which is valid code,
-as long as the function ``func2`` is defined before the function ``func1`` is called.
-
-.. note:: Code inside a ``def`` is never evaluated until the function is called.
-
->>> global_var = 100 # global variable at module level
+In the function ``func1`` the local ``global_counter`` variable shadows the global
+``global_counter`` one, and the function ``func2`` gets the global counter
+from the enclosing scope.
 
 >>> func1()
 200
-
-The local variable ``global_var`` inside the function ``func1`` shadows the global one, but the
-function ``func2`` gets the value of the local global counter from its parameter istead of
-fetching it from a nested scope.
-
-.. seealso:: :doc:`The LEGB rule (nested scopes) <feature30>`
 """
 
 # global variable at module level
-global_var = 100
+global_counter = 100
 
 def func1():
     """shadows the global variable"""
     # Shadows the global variable
-    global_var = 200
-    # The local variable is passed along
-    func2(global_var)
-
-def func2(x_value):
-    """prints its parameter"""
-    # prints 200
-    print(x_value)
+    global_counter = 200
+    def func2():
+        """prints the local variable"""
+        # gets global_counter from the enclosing scope
+        print(global_counter)
+    func2()
 
 def feature31():
-    """How to avoid nested scopes"""
-    print('How to avoid nested scopes')
-    print('==========================\n')
+    """LEGB rule (nested scopes)"""
+    print('The LEGB rule (nested scopes)')
+    print('=============================\n')
     print(':py:mod:`codesnippets.feature31`')
     print('--------------------------------\n')
-    print('Remember that flat is better than nested!\n')
-    print('Given the function definitions below:\n')
+    print('Remember that LEGB = Local, Enclosing, Global(Module), Built-in.\n')
+    print('Given the following code:\n')
     print('.. code-block:: Python\n')
+    print('    global_counter = 100                # global variable at module level\n')
     print('    def func1():')
-    print('        global_var = 200 # Shadows the global variable')
-    print('        func2(global_var)\n')
-    print('    def func2(x_value):')
-    print('        # prints 200')
-    print('        print(x_value)\n')
-    print('Forward referencing is used which is valid code,')
-    print("as long as the function ``func2`` is defined before the function ``func1`` is called.\n")
-    print(".. note:: Code inside a ``def`` is never evaluated until the function is called.\n")
-    print('>>> global_var = 100 # global variable at module level\n')
+    print('        global_counter = 200            # shadows the global variable')
+    print('        def func2():')
+    print('            print(global_counter)       # gets global_counter from the enclosing scope')
+    print('        func2()')
+    print('\nIn the function ``func1`` the local ``global_counter`` variable shadows the global\n'
+          '``global_counter`` one, and the function ``func2`` gets the global '
+          'counter\nfrom the enclosing scope.\n')
     print('>>> func1()')
     func1()
-    print('\nThe local variable ``global_var`` inside the function ``func1`` '
-          'shadows the global one, but the\nfunction ``func2`` gets the value '
-          'of the local global counter from its parameter istead of\nfetching it '
-          'from a nested scope.')
-    print('\n.. seealso:: :doc:`The LEGB rule (nested scopes) <feature30>`')
     print(80*'-')

@@ -1,4 +1,4 @@
-##    Python codesnippets - Metaclass
+##    Python codesnippets - Class statement protocol
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,186 +19,91 @@
 #
 
 """
-Metaclass
-=========
+Class statement protocol
+========================
 
 :py:mod:`codesnippets.feature109`
 ---------------------------------
 
-Metaclasses are used for generating classes.
+Class objects are created by calling the ``type`` object:
 
-A Metaclass inherits from the ``type`` class:
+>>> MyClass = type(classname,superclasses,attributedict)
 
-.. code-block:: Python
+at the end of a class definition.
 
-    class MetaClass(type):
-        \"""a metaclass\"""
-        def __new__(cls,classname,superclass,classdict):
-            print(f"	-> Inside MetaClass.__new__:")
-            print(f"	-> cls        -> {cls}")
-            print(f"	-> classname  -> {classname}")
-            print(f"	-> superclass -> {superclass}")
-            print(f"	-> classdict  -> {classdict}")
-            return type.__new__(cls,classname,superclass,classdict)
-        def __init__(cls,classname,superclass,classdict):
-            print(f"	-> Inside MetaClass.__init__:")
-            print(f"	-> cls        -> {cls}")
-            print(f"	-> classname  -> {classname}")
-            print(f"	-> superclass -> {superclass}")
-            print(f"	-> classdict  -> {classdict}")
+The ``type`` object overloads the ``__call__`` operator and calls
+``type.__new__`` for creating the class object, and ``type.__init__``
+for initializing it.
 
-Base classes can be also combined with metaclasses:
+Given the method function definition below:
 
 .. code-block:: Python
 
-    class BaseClass:
-        \"""a base class\"""
-        def __init__(self,param=0):
-            print(f"	-> Inside BaseClass.__init__: param = {param}")
-            self.var_base = param
-        def method(self,param=0):
-            \"""a method\"""
-            print(f"	-> Inside BaseClass.method: param = {param}")
-            self.var_base += param
+    def a_method(self):
+	print(f"	-> Inside {self.__class__.__name__} -> a_method()...")
+	print(f"	-> Attribute self.name = {repr(self.name)}")
 
-A normal class managed by a metaclass:
+a ``class`` can be created dynamically like this:
 
->>> class NormalClass(BaseClass,metaclass=MetaClass):
-        \"""a normal class\"""
-        def __init__(self,param=0):
-            print(f"	-> Inside NormalClass.__init__: param = {param}")
-            self.var = param
-        def method(self,param=0):
-            \"""a method\"""
-            print(f"	-> Inside NormalClass.method: param = {param}")
-            self.var += self.var_base + param
-	-> Inside MetaClass.__new__:
-	-> cls        -> <class 'codesnippets.feature109.feature109.<locals>.MetaClass'>
-	-> classname  -> NormalClass
-	-> superclass -> (<class 'codesnippets.feature109.feature109.<locals>.BaseClass'>,)
-	-> classdict  -> {'__module__': 'codesnippets.feature109',
-	                  '__qualname__': 'feature109.<locals>.NormalClass',
-	                  '__init__': <function feature109.<locals>.NormalClass.__init__ at 0x7f8d794d2af0>,
-	                  'method': <function feature109.<locals>.NormalClass.method at 0x7f8d7949e4c0>}
-	-> Inside MetaClass.__init__:
-	-> cls        -> <class 'codesnippets.feature109.feature109.<locals>.NormalClass'>
-	-> classname  -> NormalClass
-	-> superclass -> (<class 'codesnippets.feature109.feature109.<locals>.BaseClass'>,)
-	-> classdict  -> {'__module__': 'codesnippets.feature109',
-	                  '__qualname__': 'feature109.<locals>.NormalClass',
-	                  '__init__': <function feature109.<locals>.NormalClass.__init__ at 0x7f8d794d2af0>,
-	                  'method': <function feature109.<locals>.NormalClass.method at 0x7f8d7949e4c0>}
+>>> MyClass = type('MyClass',(object,),{'name':'My class','a_method':a_method},
+                   '__module__':'codesnippets.feature109.feature109.<locals>')
 
-Creating an instance of ``NormalClass``:
+>>> an_obj = MyClass()
 
->>> obj = NormalClass()
-	-> Inside NormalClass.__init__: param = 2
-	-> Inside BaseClass.__init__: param = 0
+>>> an_obj.a_method()
+	-> Inside MyClass -> a_method()...
+	-> Attribute self.name = 'My class'
 
->>> obj.var
-2
+>>> MyClass.__module__
+codesnippets.feature109.feature109.<locals>
 
->>> obj.method(3)
-	-> Inside NormalClass.method: param = 3
+>>> dir(MyClass)
+['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__',
+'__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__',
+'__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
+'__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__',
+'__weakref__', 'a_method', 'name']
 
->>> obj.var
-5
-
-.. seealso:: :doc:`Class statement protocol<feature108>`
+.. seealso:: :doc:`Type<feature108>`
 """
 
 def feature109():
-    """Metaclass"""
-    print('Metaclass')
-    print('=========\n')
+    """Class statement protocol"""
+    print('Class statement protocol')
+    print('========================\n')
     print(':py:mod:`codesnippets.feature109`')
     print('---------------------------------\n')
-    print("Metaclasses are used for generating classes.\n")
-    print("A Metaclass inherits from the ``type`` class:\n")
+    print("Class objects are created by calling the ``type`` object:\n")
+    print(">>> MyClass = type(classname,superclasses,attributedict)\n")
+    print("at the end of a class definition.\n")
+    print("The ``type`` object overloads the ``__call__`` operator and calls")
+    print("``type.__new__`` for creating the class object, and ``type.__init__``")
+    print("for initializing it.\n")
+    print("Given the method function definition below:\n")
     print('.. code-block:: Python\n')
-    print("""    class MetaClass(type):
-        \\\"""a metaclass\\\"""
-        def __new__(cls,classname,superclass,classdict):
-            print(f"\t-> Inside MetaClass.__new__:")
-            print(f"\t-> cls        -> {cls}")
-            print(f"\t-> classname  -> {classname}")
-            print(f"\t-> superclass -> {superclass}")
-            print(f"\t-> classdict  -> {classdict}")
-            return type.__new__(cls,classname,superclass,classdict)
-        def __init__(cls,classname,superclass,classdict):
-            print(f"\t-> Inside MetaClass.__init__:")
-            print(f"\t-> cls        -> {cls}")
-            print(f"\t-> classname  -> {classname}")
-            print(f"\t-> superclass -> {superclass}")
-            print(f"\t-> classdict  -> {classdict}")
+    print("""    def a_method(self):
+	print(f"\t-> Inside {self.__class__.__name__} -> a_method()...")
+	print(f"\t-> Attribute self.name = {repr(self.name)}")
 	""")
-    class MetaClass(type):
-        """a metaclass"""
-        def __new__(cls,classname,superclass,classdict):
-            print(f"\t-> Inside MetaClass.__new__:")
-            print(f"\t-> cls        -> {cls}")
-            print(f"\t-> classname  -> {classname}")
-            print(f"\t-> superclass -> {superclass}")
-            print(f"\t-> classdict  -> {classdict}")
-            return type.__new__(cls,classname,superclass,classdict)
-        def __init__(cls,classname,superclass,classdict):
-            print(f"\t-> Inside MetaClass.__init__:")
-            print(f"\t-> cls        -> {cls}")
-            print(f"\t-> classname  -> {classname}")
-            print(f"\t-> superclass -> {superclass}")
-            print(f"\t-> classdict  -> {classdict}")
-    print("Base classes can be also combined with metaclasses:\n")
-    print('.. code-block:: Python\n')
-    print("""    class BaseClass:
-        \\\"""a base class\\\"""
-        def __init__(self,param=0):
-            print(f"\t-> Inside BaseClass.__init__: param = {param}")
-            self.var_base = param
-        def method(self,param=0):
-            \\\"""a method\\\"""
-            print(f"\t-> Inside BaseClass.method: param = {param}")
-            self.var_base += param
-        """)
-    class BaseClass:
-        """a base class"""
-        def __init__(self,param=0):
-            print(f"\t-> Inside BaseClass.__init__: param = {param}")
-            self.var_base = param
-        def method(self,param=0):
-            """a method"""
-            print(f"\t-> Inside BaseClass.method: param = {param}")
-            self.var_base += param
-    print("A normal class managed by a metaclass:\n")
-    print(""">>> class NormalClass(BaseClass,metaclass=MetaClass):
-        \\\"""a normal class\\\"""
-        def __init__(self,param=0):
-            print(f"\t-> Inside NormalClass.__init__: param = {param}")
-            self.var = param
-        def method(self,param=0):
-            \\\"""a method\\\"""
-            print(f"\t-> Inside NormalClass.method: param = {param}")
-            self.var += self.var_base + param""")
-    class NormalClass(BaseClass,metaclass=MetaClass):
-        """a normal class"""
-        def __init__(self,param=0):
-            print(f"\t-> Inside NormalClass.__init__: param = {param}")
-            BaseClass.__init__(self)
-            self.var = param
-        def method(self,param=0):
-            """a method"""
-            print(f"\t-> Inside NormalClass.method: param = {param}")
-            self.var += self.var_base + param
+    def a_method(self):
+        print(f"\t-> Inside {self.__class__.__name__} -> a_method()...")
+        print(f"\t-> Attribute self.name = {repr(self.name)}")
+    print("a ``class`` can be created dynamically like this:\n")
+    print(">>> MyClass = type('MyClass',(object,),{'name':'My class',"
+          "\n'a_method':a_method},'__module__':'codesnippets.feature109.feature109.<locals>')")
+    MyClass = type('MyClass',(object,),
+                   {'name':'My class','a_method':a_method,
+                    '__module__':'codesnippets.feature109.feature109.<locals>'})
     print()
-    print("Creating an instance of ``NormalClass``:\n")
-    print(">>> obj = NormalClass()")
-    obj = NormalClass(2)
-    print("\n>>> obj.var")
-    print(obj.var)
+    print(">>> an_obj = MyClass()\n")
+    an_obj = MyClass()
+    print(">>> an_obj.a_method()")
+    an_obj.a_method()
     print()
-    print(">>> obj.method(3)")
-    obj.method(3)
+    print(">>> MyClass.__module__")
+    print(MyClass.__module__)
     print()
-    print(">>> obj.var")
-    print(obj.var)
-    print('\n.. seealso:: :doc:`Class statement protocol<feature108>`')
+    print(">>> dir(MyClass)")
+    print(dir(MyClass))
+    print('\n.. seealso:: :doc:`Type<feature108>`')
     print(80*'-')

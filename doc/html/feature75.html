@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Built-in operations cannot be delegated via __getattr__ &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Type built-in function applied to classes and instances &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Built-in method resolution starts at the class" href="feature76.html" />
-    <link rel="prev" title="Type built-in function applied to classes and instances" href="feature74.html" /> 
+    <link rel="next" title="Built-in operations cannot be delegated via __getattr__" href="feature76.html" />
+    <link rel="prev" title="Usage of __getattr__ and __getattribute__" href="feature74.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature76.html" title="Built-in method resolution starts at the class"
+          <a href="feature76.html" title="Built-in operations cannot be delegated via __getattr__"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature74.html" title="Type built-in function applied to classes and instances"
+          <a href="feature74.html" title="Usage of __getattr__ and __getattribute__"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Built-in operations cannot be delegated via <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code></a></li> 
+        <li class="nav-item nav-item-this"><a href="">Type built-in function applied to classes and instances</a></li> 
       </ul>
     </div>  
 
@@ -45,51 +45,40 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature75"></span><div class="section" id="built-in-operations-cannot-be-delegated-via-getattr">
-<h1>Built-in operations cannot be delegated via <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code><a class="headerlink" href="#built-in-operations-cannot-be-delegated-via-getattr" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature75"></span><div class="section" id="type-built-in-function-applied-to-classes-and-instances">
+<h1>Type built-in function applied to classes and instances<a class="headerlink" href="#type-built-in-function-applied-to-classes-and-instances" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature75">
 <h2><a class="reference internal" href="#module-codesnippets.feature75" title="codesnippets.feature75"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature75</span></code></a><a class="headerlink" href="#codesnippets-feature75" title="Permalink to this headline">¶</a></h2>
-<p>In a class, you cannot delegate built-in operations via <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code>.
-You have to override the built-in operations in the class itself.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> built-in function returns an object decribing the type of the instance provided:</p>
+<ul class="simple">
+<li><p>when applied to an instance of a class, it provides a reference to the class</p></li>
+<li><p>when applied to a class, it provides a reference to a <code class="docutils literal notranslate"><span class="pre">type</span></code> object.</p></li>
+</ul>
 <p>Consider the following class:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;a class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">valstr</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">valstr</span>
-    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attrstr</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">attrstr</span><span class="p">)</span>
+    <span class="k">pass</span>
 </pre></div>
 </div>
-<p>and the following object:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> method forwards every undefined attribute fetch to the <code class="docutils literal notranslate"><span class="pre">self.data</span></code>
-object, but not for built-in operations like indexing:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="go">        --&gt; Exception: &#39;MyClass&#39; object is not subscriptable</span>
-<span class="go">        __getattr__ is not called!</span>
+<p><code class="docutils literal notranslate"><span class="pre">type</span></code> applied to an instance of a class provides a reference to that class:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">my_obj</span><span class="p">)</span>
+<span class="go">&lt;class &#39;codesnippets.feature76.feature76.&lt;locals&gt;.MyClass&#39;&gt;</span>
 </pre></div>
 </div>
-<p>This is equivalent to <code class="docutils literal notranslate"><span class="pre">type(my_obj).__getitem__(my_obj,2)</span></code> and <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code>
-is not overridden in the class!</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> built-in method needs to be overridden in order to avoid such exception:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">valstr</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">valstr</span>
-    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attrstr</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">attrstr</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+<p>The referenced class object is the same:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">id</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">my_obj</span><span class="p">))</span>
+<span class="go">0x7fa558a27650</span>
 </pre></div>
 </div>
-<p>The same object is created and indexed again:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">id</span><span class="p">(</span><span class="n">MyClass</span><span class="p">)</span>
+<span class="go">0x7fa558a27650</span>
 </pre></div>
 </div>
-<p>This works as expected:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">x_var</span> <span class="k">for</span> <span class="n">x_var</span> <span class="ow">in</span> <span class="n">my_obj</span><span class="p">]</span>
-<span class="go">[&#39;h&#39;, &#39;e&#39;, &#39;l&#39;, &#39;l&#39;, &#39;o&#39;]</span>
+<p><code class="docutils literal notranslate"><span class="pre">type</span></code> applied to a class object class provides a reference to a <code class="docutils literal notranslate"><span class="pre">type</span></code> object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">MyClass</span><span class="p">)</span>
+<span class="go">&lt;class &#39;type&#39;&gt;</span>
 </pre></div>
 </div>
 </div>
@@ -104,7 +93,7 @@ is not overridden in the class!</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Built-in operations cannot be delegated via <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code></a><ul>
+<li><a class="reference internal" href="#">Type built-in function applied to classes and instances</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature75"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature75</span></code></a></li>
 </ul>
 </li>
@@ -112,10 +101,10 @@ is not overridden in the class!</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature74.html"
-                        title="previous chapter">Type built-in function applied to classes and instances</a></p>
+                        title="previous chapter">Usage of <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> and <code class="docutils literal notranslate"><span class="pre">__getattribute__</span></code></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature76.html"
-                        title="next chapter">Built-in method resolution starts at the class</a></p>
+                        title="next chapter">Built-in operations cannot be delegated via <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code></a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -147,13 +136,13 @@ is not overridden in the class!</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature76.html" title="Built-in method resolution starts at the class"
+          <a href="feature76.html" title="Built-in operations cannot be delegated via __getattr__"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature74.html" title="Type built-in function applied to classes and instances"
+          <a href="feature74.html" title="Usage of __getattr__ and __getattribute__"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Built-in operations cannot be delegated via <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code></a></li> 
+        <li class="nav-item nav-item-this"><a href="">Type built-in function applied to classes and instances</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

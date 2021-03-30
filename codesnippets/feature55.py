@@ -1,4 +1,4 @@
-##    Python codesnippets - Relative import from a module package
+##    Python codesnippets - Absolute import from a module package
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,13 +19,14 @@
 #
 
 """
-Relative import from a module package
+Absolute import from a module package
 =====================================
 
 :py:mod:`codesnippets.feature55`
 --------------------------------
 
-Intrapackage imports work if the relative import syntax is used.
+Intrapackage imports follow the rule of the absolute path import
+if relative import is not used!
 
 In the following the ``.`` is the current working directory (CWD):
 
@@ -33,55 +34,55 @@ In the following the ``.`` is the current working directory (CWD):
 
 ``./pkg/tools.py`` is the ``tools`` module in the ``./pkg`` folder; defines ``MY_X = 2``
 
-``./pkg/utilr.py`` is the ``utilr``  module in the ``./pkg`` folder importing ``tools``
-with relative syntax
+``./pkg/util.py`` is the ``util``  module in the ``./pkg`` folder importing ``tools``
+with absolute syntax
 
 The question is which ``tools`` module gets imported when the next import statement is run:
 
->>> import pkg.utilr
+>>> import pkg.util
 
-	This is the ``utilr`` module inside ``./pkg`` .
+	This is the ``util`` module inside ``./pkg`` .
 
 	In the following code the ``tools`` module is imported, but
-	**relative** import takes place here:
-	the ``tools`` module from the ``./pkg`` directory is imported,
-	not the one in the CWD ``./tool.py`` !
+	**absolute** import takes place here:
+	the ``tools`` module from the CWD is imported,
+	not the one relative to the package ``./pkg/tools.py`` !
 
 		.. code-block:: Python
 
-			from . import tools    # relative import syntax
+			import tools  # absolute import syntax
 
-		This is the ``tools`` module inside ``./pkg``
+		Ths is the ``tools`` module in the CWD ``.``
 
 		.. code-block:: Python
 
-			MY_X = 2
+			MY_X = 1
 
->>> pkg.utilr.tools.MY_X
-2
+>>> pkg.util.tools.MY_X
+1
 
-.. seealso:: :doc:`Absolute import from a module package<feature54>`
+.. seealso:: :doc:`Relative import from a module package<feature56>`
 """
-
 import importlib
 
 def feature55():
-    """Relative import from a module package"""
-    print('Relative import from a module package')
+    """Absolute import from a module package"""
+    print('Absolute import from a module package')
     print('=====================================\n')
     print(':py:mod:`codesnippets.feature55`')
     print('--------------------------------\n')
-    print('Intrapackage imports work if the relative import syntax is used.\n')
+    print('Intrapackage imports follow the rule of the absolute path import')
+    print('if relative import is not used!\n')
     print('In the following the ``.`` is the current working directory (CWD):\n')
     print('``./tools.py`` is the ``tools`` module in the CWD; defines ``MY_X = 1``\n')
     print('``./pkg/tools.py`` is the ``tools`` module in the ``./pkg`` folder; defines ``MY_X = 2``\n')
-    print('``./pkg/utilr.py`` is the ``utilr``  module in the ``./pkg`` folder importing ``tools``'
-          '\nwith relative syntax\n')
+    print('``./pkg/util.py`` is the ``util``  module in the ``./pkg`` folder importing ``tools``'
+          '\nwith absolute syntax\n')
     print('The question is which ``tools`` module gets imported when the next '
           'import statement is run:\n')
-    print('>>> import pkg.utilr\n')
-    utilr = importlib.import_module('.utilr','codesnippets.pkg')
-    print(">>> pkg.utilr.tools.MY_X")
-    print(utilr.tools.MY_X)
-    print('\n.. seealso:: :doc:`Absolute import from a module package<feature54>`')
+    print('>>> import pkg.util\n')
+    util = importlib.import_module('.util','codesnippets.pkg')
+    print(">>> pkg.util.tools.MY_X")
+    print(util.tools.MY_X)
+    print('\n.. seealso:: :doc:`Relative import from a module package<feature56>`')
     print(80*'-')

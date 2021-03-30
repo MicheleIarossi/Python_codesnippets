@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pseudoprivate class attributes &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Operator overloading: final MyContainer class &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Unbound and bound methods" href="feature71.html" />
-    <link rel="prev" title="Operator overloading: final MyContainer class" href="feature69.html" /> 
+    <link rel="next" title="Pseudoprivate class attributes" href="feature71.html" />
+    <link rel="prev" title="Operator overloading: __call__ , __len__ , __bool__" href="feature69.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature71.html" title="Unbound and bound methods"
+          <a href="feature71.html" title="Pseudoprivate class attributes"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature69.html" title="Operator overloading: final MyContainer class"
+          <a href="feature69.html" title="Operator overloading: __call__ , __len__ , __bool__"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Pseudoprivate class attributes</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Operator overloading: final <code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> class</a></li> 
       </ul>
     </div>  
 
@@ -45,31 +45,173 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature70"></span><div class="section" id="pseudoprivate-class-attributes">
-<h1>Pseudoprivate class attributes<a class="headerlink" href="#pseudoprivate-class-attributes" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature70"></span><div class="section" id="operator-overloading-final-mycontainer-class">
+<h1>Operator overloading: final <code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> class<a class="headerlink" href="#operator-overloading-final-mycontainer-class" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature70">
 <h2><a class="reference internal" href="#module-codesnippets.feature70" title="codesnippets.feature70"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature70</span></code></a><a class="headerlink" href="#codesnippets-feature70" title="Permalink to this headline">¶</a></h2>
-<p>If attributes in a class hierarchy have the same names, then some
-unintended attribute hiding might occur.
-Pseudoprivate class attributes solve this problem by adding
-the name of the class in front of the attribute name:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;my class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">val</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__val</span> <span class="o">=</span> <span class="n">val</span>
+<p>This is the final form of the <code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> class:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyContainer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;my container class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__init__&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:]</span>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;MyClass(val=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__val</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__repr__&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;MyContainer(data=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__add__&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_val</span><span class="o">+</span><span class="n">y_val</span> <span class="k">for</span> <span class="p">(</span><span class="n">x_val</span><span class="p">,</span><span class="n">y_val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span><span class="n">other</span><span class="o">.</span><span class="n">_data</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">MyContainer</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__sub__&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_val</span><span class="o">-</span><span class="n">y_val</span> <span class="k">for</span> <span class="p">(</span><span class="n">x_val</span><span class="p">,</span><span class="n">y_val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span><span class="n">other</span><span class="o">.</span><span class="n">_data</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">MyContainer</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__contains__&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__iter__&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">v_val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">v_val</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__getitem__&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__setitem__&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__call__&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_val</span><span class="o">*</span><span class="n">value</span> <span class="k">for</span> <span class="n">x_val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">MyContainer</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__len__&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__bool__&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">an_obj</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">an_obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-<span class="go">[&#39;_MyClass__val&#39;]</span>
+<p><code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> instances are created as usual:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container1</span> <span class="o">=</span> <span class="n">MyContainer</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="go">        -&gt; MyContainer.__init__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">container1</span>
+<span class="go">        -&gt; MyContainer.__repr__</span>
+<span class="go">MyContainer(data=[0, 1, 2, 3, 4, 5])</span>
 </pre></div>
 </div>
-<p>Notice how the class name has been added in front of <code class="docutils literal notranslate"><span class="pre">__val</span></code>:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">an_obj</span><span class="o">.</span><span class="n">_MyClass__val</span>
-<span class="go">5</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container2</span> <span class="o">=</span> <span class="n">MyContainer</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">19</span><span class="p">])</span>
+<span class="go">        -&gt; MyContainer.__init__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">container2</span>
+<span class="go">        -&gt; MyContainer.__repr__</span>
+<span class="go">MyContainer(data=[8, 3, 14, 5, 10, 19])</span>
 </pre></div>
+</div>
+<p>Containers can be added:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span> <span class="o">=</span> <span class="n">container1</span> <span class="o">+</span> <span class="n">container2</span>
+<span class="go">        -&gt; MyContainer.__add__</span>
+<span class="go">        -&gt; MyContainer.__init__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span>
+<span class="go">        -&gt; MyContainer.__repr__</span>
+<span class="go">MyContainer(data=[8, 4, 16, 8, 14, 24])</span>
+</pre></div>
+</div>
+<p>Containers can be subtracted:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span> <span class="o">=</span> <span class="n">container2</span> <span class="o">-</span> <span class="n">container1</span>
+<span class="go">        -&gt; MyContainer.__sub__</span>
+<span class="go">        -&gt; MyContainer.__init__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span>
+<span class="go">        -&gt; MyContainer.__repr__</span>
+<span class="go">MyContainer(data=[8, 2, 12, 2, 6, 14])</span>
+</pre></div>
+</div>
+<p>Containers can be indexed (read and write):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">31</span>
+<span class="go">        -&gt; MyContainer.__setitem__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span>
+<span class="go">        -&gt; MyContainer.__repr__</span>
+<span class="go">MyContainer(data=[8, 2, 12, 2, 6, 31])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">        -&gt; MyContainer.__getitem__</span>
+<span class="go">12</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">__iter__</span></code> operator is used in all iteration context.</p>
+</div>
+<p>For example:</p>
+<ul class="simple">
+<li><p>list comprehension</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">elem</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">container3</span><span class="p">]</span>
+<span class="go">        -&gt; MyContainer.__iter__</span>
+<span class="go">[8, 2, 12, 2, 6, 31]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">map</span></code> call</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">container3</span><span class="p">))</span>
+<span class="go">        -&gt; MyContainer.__iter__</span>
+<span class="go">[&#39;8&#39;, &#39;2&#39;, &#39;12&#39;, &#39;2&#39;, &#39;6&#39;, &#39;31&#39;]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>sequence assignments</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">a_val</span><span class="p">,</span><span class="n">b_val</span><span class="p">,</span><span class="n">c_val</span><span class="p">,</span><span class="n">d_val</span><span class="p">,</span><span class="n">e_val</span><span class="p">,</span><span class="n">f_val</span><span class="p">)</span> <span class="o">=</span> <span class="n">container3</span>
+<span class="go">        -&gt; MyContainer.__iter__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_val</span><span class="p">,</span><span class="n">b_val</span><span class="p">,</span><span class="n">d_val</span><span class="p">,</span><span class="n">e_val</span><span class="p">,</span><span class="n">f_val</span>
+<span class="go">(8, 2, 12, 2, 6, 31)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">list()</span></code>, <code class="docutils literal notranslate"><span class="pre">tuple()</span></code>, etc.</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">container3</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">container3</span><span class="p">)</span>
+<span class="go">        -&gt; MyContainer.__len__</span>
+<span class="go">        -&gt; MyContainer.__len__</span>
+<span class="go">        -&gt; MyContainer.__iter__</span>
+<span class="go">        -&gt; MyContainer.__len__</span>
+<span class="go">        -&gt; MyContainer.__iter__</span>
+<span class="go">([8, 2, 12, 2, 6, 31], (8, 2, 12, 2, 6, 31))</span>
+</pre></div>
+</div>
+<p>When membership of an element is tested, the <code class="docutils literal notranslate"><span class="pre">__contains__</span></code> operator of <code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> is called:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="mi">9</span> <span class="ow">in</span> <span class="n">container1</span>
+<span class="go">        -&gt; MyContainer.__contains__</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">3</span> <span class="ow">in</span> <span class="n">container1</span>
+<span class="go">        -&gt; MyContainer.__contains__</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Instances can be called like functions and the behaviour can be coded in the <code class="docutils literal notranslate"><span class="pre">__call__</span></code> operator:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container1</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">        -&gt; MyContainer.__call__</span>
+<span class="go">        -&gt; MyContainer.__init__</span>
+<span class="go">        -&gt; MyContainer.__repr__</span>
+<span class="go">MyContainer(data=[0, 3, 6, 9, 12, 15])</span>
+</pre></div>
+</div>
+<p>If a length of an instance is needed, this can be coded inside <code class="docutils literal notranslate"><span class="pre">__len__</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">container1</span><span class="p">)</span>
+<span class="go">        -&gt; MyContainer.__len__</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+<p>A boolean value is generated by calling <code class="docutils literal notranslate"><span class="pre">__bool__</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bool</span><span class="p">(</span><span class="n">container1</span><span class="p">)</span>
+<span class="go">        -&gt; MyContainer.__bool__</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If no <code class="docutils literal notranslate"><span class="pre">__bool__</span></code> operator is overloaded, Python calls <code class="docutils literal notranslate"><span class="pre">__len__</span></code> to infer a boolean
+value of the object: positive length means the instance is true.</p>
 </div>
 </div>
 </div>
@@ -83,7 +225,7 @@ the name of the class in front of the attribute name:</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Pseudoprivate class attributes</a><ul>
+<li><a class="reference internal" href="#">Operator overloading: final <code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> class</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature70"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature70</span></code></a></li>
 </ul>
 </li>
@@ -91,10 +233,10 @@ the name of the class in front of the attribute name:</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature69.html"
-                        title="previous chapter">Operator overloading: final <code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> class</a></p>
+                        title="previous chapter">Operator overloading: <code class="docutils literal notranslate"><span class="pre">__call__</span></code> , <code class="docutils literal notranslate"><span class="pre">__len__</span></code> , <code class="docutils literal notranslate"><span class="pre">__bool__</span></code></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature71.html"
-                        title="next chapter">Unbound and bound methods</a></p>
+                        title="next chapter">Pseudoprivate class attributes</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -126,13 +268,13 @@ the name of the class in front of the attribute name:</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature71.html" title="Unbound and bound methods"
+          <a href="feature71.html" title="Pseudoprivate class attributes"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature69.html" title="Operator overloading: final MyContainer class"
+          <a href="feature69.html" title="Operator overloading: __call__ , __len__ , __bool__"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Pseudoprivate class attributes</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Operator overloading: final <code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> class</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

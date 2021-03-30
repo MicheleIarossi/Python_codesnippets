@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Slots &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Tracing instance attributes &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Static methods via built-in function staticmethod()" href="feature80.html" />
-    <link rel="prev" title="Tracing instance attributes" href="feature78.html" /> 
+    <link rel="next" title="Slots" href="feature80.html" />
+    <link rel="prev" title="Method resolution order (MRO)" href="feature78.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature80.html" title="Static methods via built-in function staticmethod()"
+          <a href="feature80.html" title="Slots"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature78.html" title="Tracing instance attributes"
+          <a href="feature78.html" title="Method resolution order (MRO)"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Slots</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Tracing instance attributes</a></li> 
       </ul>
     </div>  
 
@@ -45,19 +45,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature79"></span><div class="section" id="slots">
-<h1>Slots<a class="headerlink" href="#slots" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature79"></span><div class="section" id="tracing-instance-attributes">
+<h1>Tracing instance attributes<a class="headerlink" href="#tracing-instance-attributes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature79">
 <h2><a class="reference internal" href="#module-codesnippets.feature79" title="codesnippets.feature79"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature79</span></code></a><a class="headerlink" href="#codesnippets-feature79" title="Permalink to this headline">¶</a></h2>
-<p>When <code class="docutils literal notranslate"><span class="pre">__slots__</span></code> are used, an instance of a class has no <code class="docutils literal notranslate"><span class="pre">__dict__</span></code> attribute,
-therefore saving memory. The attributes are not physically saved in the
-namespace of the instance dictionary.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Multiple inheritance doesn’t work with slots.</p>
-</div>
-<p>The same tracer function from <a class="reference internal" href="#"><span class="doc">Tracing instance attributes</span></a> is used here
-again where the class attribute <code class="docutils literal notranslate"><span class="pre">__mro__</span></code> is used for tracing the attributes of an instance:</p>
+<p>The class attribute <code class="docutils literal notranslate"><span class="pre">__mro__</span></code> can be used for tracing the attributes of an instance:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">trace_attributes</span><span class="p">(</span><span class="n">an_obj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;prints all the attributes of an instance&quot;&quot;&quot;</span>
     <span class="n">allattr</span>  <span class="o">=</span> <span class="nb">dir</span><span class="p">(</span><span class="n">an_obj</span><span class="p">)</span>
@@ -75,7 +67,6 @@ again where the class attribute <code class="docutils literal notranslate"><span
 <p>Given the following hierarchy of classes:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ClassA</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;a class&quot;&quot;&quot;</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;b_val&#39;</span><span class="p">,</span><span class="s1">&#39;c_val&#39;</span><span class="p">,</span><span class="s1">&#39;d_val&#39;</span><span class="p">]</span>
     <span class="n">a_val</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">b_val</span>  <span class="o">=</span> <span class="mi">2</span>
@@ -86,7 +77,6 @@ again where the class attribute <code class="docutils literal notranslate"><span
 
 <span class="k">class</span> <span class="nc">ClassB</span><span class="p">(</span><span class="n">ClassA</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;a derived class&quot;&quot;&quot;</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;f_val&#39;</span><span class="p">,</span><span class="s1">&#39;g_val&#39;</span><span class="p">]</span>
     <span class="n">e_val</span>  <span class="o">=</span> <span class="mi">5</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ClassA</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -95,22 +85,21 @@ again where the class attribute <code class="docutils literal notranslate"><span
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;ClassB()&#39;</span>
 
-<span class="k">class</span> <span class="nc">ClassC</span><span class="p">(</span><span class="n">ClassB</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ClassC</span><span class="p">(</span><span class="n">ClassA</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;another derived class&quot;&quot;&quot;</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;i_val&#39;</span><span class="p">,</span><span class="s1">&#39;j_val&#39;</span><span class="p">]</span>
     <span class="n">h_val</span>  <span class="o">=</span> <span class="mi">8</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">ClassB</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">ClassA</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">i_val</span>  <span class="o">=</span> <span class="mi">9</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">j_val</span>  <span class="o">=</span> <span class="mi">10</span>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;ClassC()&#39;</span>
 
-<span class="k">class</span> <span class="nc">ClassD</span><span class="p">(</span><span class="n">ClassC</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ClassD</span><span class="p">(</span><span class="n">ClassB</span><span class="p">,</span><span class="n">ClassC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;multiple inheritance class&quot;&quot;&quot;</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;l_val&#39;</span><span class="p">,</span><span class="s1">&#39;m_val&#39;</span><span class="p">]</span>
     <span class="n">k_val</span>  <span class="o">=</span> <span class="mi">11</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ClassB</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">ClassC</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">l_val</span>  <span class="o">=</span> <span class="mi">12</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">m_val</span>  <span class="o">=</span> <span class="mi">13</span>
@@ -123,21 +112,22 @@ again where the class attribute <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">obj_d</span><span class="p">)</span>
-<span class="go">[&#39;__class__&#39;, &#39;__delattr__&#39;, &#39;__dir__&#39;, &#39;__doc__&#39;, &#39;__eq__&#39;, &#39;__format__&#39;, &#39;__ge__&#39;,</span>
-<span class="go">&#39;__getattribute__&#39;, &#39;__gt__&#39;, &#39;__hash__&#39;, &#39;__init__&#39;, &#39;__init_subclass__&#39;, &#39;__le__&#39;,</span>
-<span class="go">&#39;__lt__&#39;, &#39;__module__&#39;, &#39;__ne__&#39;, &#39;__new__&#39;, &#39;__reduce__&#39;, &#39;__reduce_ex__&#39;, &#39;__repr__&#39;,</span>
-<span class="go">&#39;__setattr__&#39;, &#39;__sizeof__&#39;, &#39;__slots__&#39;, &#39;__str__&#39;, &#39;__subclasshook__&#39;, &#39;a_val&#39;, &#39;b_val&#39;,</span>
-<span class="go">&#39;c_val&#39;, &#39;d_val&#39;, &#39;e_val&#39;, &#39;f_val&#39;, &#39;g_val&#39;, &#39;h_val&#39;, &#39;i_val&#39;, &#39;j_val&#39;, &#39;k_val&#39;, &#39;l_val&#39;, &#39;m_val&#39;]</span>
+<span class="go">[&#39;__class__&#39;, &#39;__delattr__&#39;, &#39;__dict__&#39;, &#39;__dir__&#39;, &#39;__doc__&#39;, &#39;__eq__&#39;, &#39;__format__&#39;, &#39;__ge__&#39;,</span>
+<span class="go">&#39;__getattribute__&#39;, &#39;__gt__&#39;, &#39;__hash__&#39;, &#39;__init__&#39;, &#39;__init_subclass__&#39;, &#39;__le__&#39;, &#39;__lt__&#39;,</span>
+<span class="go">&#39;__module__&#39;, &#39;__ne__&#39;, &#39;__new__&#39;, &#39;__reduce__&#39;, &#39;__reduce_ex__&#39;, &#39;__repr__&#39;, &#39;__setattr__&#39;,</span>
+<span class="go">&#39;__sizeof__&#39;, &#39;__str__&#39;, &#39;__subclasshook__&#39;, &#39;__weakref__&#39;, &#39;a_val&#39;, &#39;b_val&#39;, &#39;c_val&#39;, &#39;d_val&#39;,</span>
+<span class="go">&#39;e_val&#39;, &#39;f_val&#39;, &#39;g_val&#39;, &#39;h_val&#39;, &#39;i_val&#39;, &#39;j_val&#39;, &#39;k_val&#39;, &#39;l_val&#39;, &#39;m_val&#39;]</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_d</span><span class="o">.</span><span class="vm">__slots__</span>
-<span class="go">[&#39;l_val&#39;, &#39;m_val&#39;]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_d</span><span class="o">.</span><span class="vm">__dict__</span>
+<span class="go">{&#39;b_val&#39;: 2, &#39;c_val&#39;: 3, &#39;d_val&#39;: 4, &#39;f_val&#39;: 6, &#39;g_val&#39;: 7,</span>
+<span class="go">&#39;i_val&#39;: 9, &#39;j_val&#39;: 10, &#39;l_val&#39;: 12, &#39;m_val&#39;: 13}</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_d</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__mro__</span>
-<span class="go">(&lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassD&#39;&gt;,</span>
-<span class="go">&lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassC&#39;&gt;,</span>
+<span class="go">&lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassD&#39;&gt;,</span>
 <span class="go">&lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassB&#39;&gt;,</span>
+<span class="go">&lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassC&#39;&gt;,</span>
 <span class="go">&lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassA&#39;&gt;,</span>
 <span class="go">&lt;class &#39;object&#39;&gt;)</span>
 </pre></div>
@@ -146,6 +136,7 @@ again where the class attribute <code class="docutils literal notranslate"><span
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">trace_attributes</span><span class="p">(</span><span class="n">obj_d</span><span class="p">)</span>
 <span class="go">           __class__ : &lt;class &#39;object&#39;&gt;</span>
 <span class="go">         __delattr__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">            __dict__ : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassA&#39;&gt;</span>
 <span class="go">             __dir__ : &lt;class &#39;object&#39;&gt;</span>
 <span class="go">             __doc__ : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassD&#39;&gt;</span>
 <span class="go">              __eq__ : &lt;class &#39;object&#39;&gt;</span>
@@ -166,28 +157,29 @@ again where the class attribute <code class="docutils literal notranslate"><span
 <span class="go">            __repr__ : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassD&#39;&gt;</span>
 <span class="go">         __setattr__ : &lt;class &#39;object&#39;&gt;</span>
 <span class="go">          __sizeof__ : &lt;class &#39;object&#39;&gt;</span>
-<span class="go">           __slots__ : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassD&#39;&gt;</span>
 <span class="go">             __str__ : &lt;class &#39;object&#39;&gt;</span>
 <span class="go">    __subclasshook__ : &lt;class &#39;object&#39;&gt;</span>
+<span class="go">         __weakref__ : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassA&#39;&gt;</span>
 <span class="go">               a_val : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassA&#39;&gt; (1)</span>
-<span class="go">               b_val : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassA&#39;&gt; (2)</span>
-<span class="go">               c_val : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassA&#39;&gt; (3)</span>
-<span class="go">               d_val : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassA&#39;&gt; (4)</span>
+<span class="go">               b_val : ClassD() (2)</span>
+<span class="go">               c_val : ClassD() (3)</span>
+<span class="go">               d_val : ClassD() (4)</span>
 <span class="go">               e_val : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassB&#39;&gt; (5)</span>
-<span class="go">               f_val : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassB&#39;&gt; (6)</span>
-<span class="go">               g_val : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassB&#39;&gt; (7)</span>
+<span class="go">               f_val : ClassD() (6)</span>
+<span class="go">               g_val : ClassD() (7)</span>
 <span class="go">               h_val : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassC&#39;&gt; (8)</span>
-<span class="go">               i_val : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassC&#39;&gt; (9)</span>
-<span class="go">               j_val : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassC&#39;&gt; (10)</span>
+<span class="go">               i_val : ClassD() (9)</span>
+<span class="go">               j_val : ClassD() (10)</span>
 <span class="go">               k_val : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassD&#39;&gt; (11)</span>
-<span class="go">               l_val : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassD&#39;&gt; (12)</span>
-<span class="go">               m_val : &lt;class &#39;codesnippets.feature79.feature79.&lt;locals&gt;.ClassD&#39;&gt; (13)</span>
+<span class="go">               l_val : ClassD() (12)</span>
+<span class="go">               m_val : ClassD() (13)</span>
 </pre></div>
 </div>
-<p>Notice how the slot attributes belong to the class.</p>
+<p>Notice how only the class attributes belong to their respective classes, and all the
+other attributes belong to the instance.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature78.html"><span class="doc">Tracing instance attributes</span></a></p>
+<p><a class="reference internal" href="feature78.html"><span class="doc">Method resolution order (MRO)</span></a></p>
 </div>
 </div>
 </div>
@@ -201,7 +193,7 @@ again where the class attribute <code class="docutils literal notranslate"><span
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Slots</a><ul>
+<li><a class="reference internal" href="#">Tracing instance attributes</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature79"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature79</span></code></a></li>
 </ul>
 </li>
@@ -209,10 +201,10 @@ again where the class attribute <code class="docutils literal notranslate"><span
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature78.html"
-                        title="previous chapter">Tracing instance attributes</a></p>
+                        title="previous chapter">Method resolution order (MRO)</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature80.html"
-                        title="next chapter">Static methods via built-in function staticmethod()</a></p>
+                        title="next chapter">Slots</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -244,13 +236,13 @@ again where the class attribute <code class="docutils literal notranslate"><span
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature80.html" title="Static methods via built-in function staticmethod()"
+          <a href="feature80.html" title="Slots"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature78.html" title="Tracing instance attributes"
+          <a href="feature78.html" title="Method resolution order (MRO)"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Slots</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Tracing instance attributes</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

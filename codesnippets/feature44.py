@@ -1,4 +1,4 @@
-##    Python codesnippets - Avoiding calls by breadth-first scanning
+##    Python codesnippets - Avoiding recursive calls by depth-first scanning
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,20 +19,20 @@
 #
 
 """
-Avoiding recursive calls by breadth-first scanning
-==================================================
+Avoiding recursive calls by depth-first scanning
+================================================
 
 :py:mod:`codesnippets.feature44`
 --------------------------------
 
-This functions sums up all the elements in a list and
+This function sums up all the elements in a list and
 in its contained sublists.
-Single elements are summed up first and sublists are scanned later (queued).
+Sublists are scanned immediately (stacked) and then single elements are summed up.
 
 .. code-block:: Python
 
     def sumtree(lst):
-        # Breadth-first, explicit queue
+        # Depth-first, explicit stack
         total = 0
         # Start with copy of top level
         items = list(lst)
@@ -42,28 +42,29 @@ Single elements are summed up first and sublists are scanned later (queued).
             if not isinstance(front, list):
                 # Add numbers directly
                 total += front
+                print(front)
             else:
-                # Append all in nested list
-                items.extend(front)
+                # Prepend all in nested list
+                items[:0] = front
         return total
 
->>> lst = [1, [2, [3, 4], 5], 6, [7, 8]]               # Arbitrary nesting
+>>> lst = [1, [2, [3, 4], 5], 6, [7, 8]]          # Arbitrary nesting
 
->>> sumtree(lst)                                       # Prints 36
+>>> sumtree(lst)                                  # Prints 36
 1
-6
 2
-5
-7
-8
 3
 4
+5
+6
+7
+8
 36
 """
 
 def sumtree(lst):
-    # Breadth-first, explicit queue
-    """sums up all the elements in a list and in its sublists by breadth-first scanning"""
+    # Depth-first, explicit stack
+    """sums up all the elements in a list and in its sublists by depth-first scanning"""
     total = 0
     # Start with copy of top level
     items = list(lst)
@@ -75,22 +76,22 @@ def sumtree(lst):
             total += front
             print(front)
         else:
-            # <== Append all in nested list
-            items.extend(front)
+            # Prepend all in nested list
+            items[:0] = front
     return total
 
 def feature44():
-    """Avoiding recursive calls by breadth-first scanning"""
-    print('Avoiding recursive calls by breadth-first scanning')
-    print('==================================================\n')
+    """Avoiding recursive calls by depth-first scanning"""
+    print('Avoiding recursive calls by depth-first scanning')
+    print('================================================\n')
     print(':py:mod:`codesnippets.feature44`')
     print('--------------------------------\n')
-    print('This functions sums up all the elements in a list and')
+    print('This function sums up all the elements in a list and')
     print('in its contained sublists.')
-    print('Single elements are summed up first and sublists are scanned later (queued).\n')
+    print('Sublists are scanned immediately (stacked) and then single elements are summed up.\n')
     print('.. code-block:: Python\n')
     print('    def sumtree(lst):')
-    print('        # Breadth-first, explicit queue')
+    print('        # Depth-first, explicit stack')
     print('        total = 0')
     print('        # Start with copy of top level')
     print('        items = list(lst)')
@@ -100,9 +101,10 @@ def feature44():
     print('            if not isinstance(front, list):')
     print('                # Add numbers directly')
     print('                total += front')
+    print('                print(front)')
     print('            else:')
-    print('                # Append all in nested list')
-    print('                items.extend(front)')
+    print('                # Prepend all in nested list')
+    print('                items[:0] = front')
     print('        return total\n')
     print('>>> lst = [1, [2, [3, 4], 5], 6, [7, 8]]          # Arbitrary nesting\n')
     # Arbitrary nesting

@@ -1,4 +1,4 @@
-##    Python codesnippets - Bytes, bytearray and string
+##    Python codesnippets - String and byte literals
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,52 +19,55 @@
 #
 
 """
-Bytes, bytearray and string
-===========================
+String and byte literals
+========================
 
 :py:mod:`codesnippets.feature91`
 --------------------------------
 
-``bytes`` and ``bytearray`` are sequences of integers.
-``str`` is a sequence of characters:
+In bytes literals only ``\\x`` escapes can be used!
 
->>> b_byte = b'pippolone'
+>>> b_str = b'\\xae\\xeb\\x56\\xa4\\x89'
 
->>> list(b_byte)
-[112, 105, 112, 112, 111, 108, 111, 110, 101]
+>>> s_str = b_str.decode('latin-1')
+>>> s_str
+®ëV¤
 
->>> b_bytearray = bytearray(b_byte)
+In strings you can use hex and unicode escape characters:
 
->>> list(b_bytearray)
-[112, 105, 112, 112, 111, 108, 111, 110, 101]
+>>> s_str_utf16 = '\\u00ae\\u00eb\\u0056\\u00a4\\u0089'
+>>> s_str_utf16
+®ëV¤
 
->>> s_str = 'pippolone'
-
->>> list(s_str)
-['p', 'i', 'p', 'p', 'o', 'l', 'o', 'n', 'e']
-
-.. note:: ``bytearray`` is a mutable variant of ``bytes``.
+>>> s_str_utf32 = '\\U000000ae\\U000000eb\\U00000056\\U000000a4\\U00000089'
+>>> s_str_utf32
+®ëV¤
 """
 
 def feature91():
-    """Bytes, bytearray and string"""
-    print('Bytes, bytearray and string')
-    print('===========================\n')
+    """String and byte literals"""
+    print('String and byte literals')
+    print('========================\n')
     print(':py:mod:`codesnippets.feature91`')
     print('--------------------------------\n')
-    print("``bytes`` and ``bytearray`` are sequences of integers.")
-    print("``str`` is a sequence of characters:\n")
-    print(">>> b_byte = b'pippolone'")
-    b_byte = b'pippolone'
-    print("\n>>> list(b_byte)")
-    print(list(b_byte))
-    print("\n>>> b_bytearray = bytearray(b_byte)")
-    b_bytearray = bytearray(b_byte)
-    print("\n>>> list(b_bytearray)")
-    print(list(b_bytearray))
-    print("\n>>> s_str = 'pippolone'")
-    s_str = 'pippolone'
-    print("\n>>> list(s_str)")
-    print(list(s_str))
-    print('\n.. note:: ``bytearray`` is a mutable variant of ``bytes``.')
+    print("In bytes literals only ``\\\\x`` escapes can be used!")
+    print()
+    print(r">>> b_str = b'\\xae\\xeb\\x56\\xa4\\x89'")
+    b_str = b'\xae\xeb\x56\xa4\x89'
+    print()
+    print(">>> s_str = b_str.decode('latin-1')")
+    s_str = b_str.decode('latin-1')
+    print(">>> s_str")
+    print(s_str)
+    print()
+    print("In strings you can use hex and unicode escape characters:\n")
+    print(r">>> s_str_utf16 = '\\u00ae\\u00eb\\u0056\\u00a4\\u0089'")
+    s_str_utf16 = "\u00ae\u00eb\u0056\u00a4\u0089"
+    print(">>> s_str_utf16")
+    print(s_str_utf16)
+    print()
+    print(r">>> s_str_utf32 = '\\U000000ae\\U000000eb\\U00000056\\U000000a4\\U00000089'")
+    s_str_utf32 = "\U000000ae\U000000eb\U00000056\U000000a4\U00000089"
+    print(">>> s_str_utf32")
+    print(s_str_utf32)
     print(80*'-')

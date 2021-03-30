@@ -1,4 +1,4 @@
-##    Python codesnippets - The property protocol
+##    Python codesnippets - Bytes, bytearray and string
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,107 +19,52 @@
 #
 
 """
-The property protocol
-=====================
+Bytes, bytearray and string
+===========================
 
 :py:mod:`codesnippets.feature92`
 --------------------------------
 
-The property protocol lets you run your own access functions when access operations
-are invoced on a given attribute (read, write, deletion):
+``bytes`` and ``bytearray`` are sequences of integers.
+``str`` is a sequence of characters:
 
-.. code-block:: Python
+>>> b_byte = b'pippolone'
 
-    class Car:
-        \"""a car class\"""
-        def __init__(self,model):
-            print("	-> Car.__init__: creating an instance of the Car class...")
-            self._model = model
-        def get_model(self):
-            \"""returns the car model\"""
-            print("	-> Car.get_model: getter function called...")
-            return self._model
-        def set_model(self,name):
-            \"""sets the car brand name\"""
-            print("	-> Car.set_model: setter function called...")
-            self._model = name
-        def del_model(self):
-            \"""deletes the car model attribute\"""
-            print("	-> Car.del_model: delete function called...")
-            del self._model
-        model = property(get_model,set_model,del_model,"the car model name")
+>>> list(b_byte)
+[112, 105, 112, 112, 111, 108, 111, 110, 101]
 
->>> a_bmw = Car('BMW 3')
-	-> Car.__init__: creating an instance of the Car class...
+>>> b_bytearray = bytearray(b_byte)
 
->>> a_bmw.model = 'BMW 5'
-	-> Car.set_model: setter function called...
+>>> list(b_bytearray)
+[112, 105, 112, 112, 111, 108, 111, 110, 101]
 
->>> print(a_bmw.model)
-	-> Car.get_model: getter function called...
-BMW 5
->>> help(Car.model)
-Help on property:
-    the car model name
+>>> s_str = 'pippolone'
 
->>> del a_bmw.model
-	-> Car.del_model: delete function called...
+>>> list(s_str)
+['p', 'i', 'p', 'p', 'o', 'l', 'o', 'n', 'e']
+
+.. note:: ``bytearray`` is a mutable variant of ``bytes``.
 """
 
 def feature92():
-    """The property protocol"""
-    print('The property protocol')
-    print('=====================\n')
+    """Bytes, bytearray and string"""
+    print('Bytes, bytearray and string')
+    print('===========================\n')
     print(':py:mod:`codesnippets.feature92`')
     print('--------------------------------\n')
-    print('The property protocol lets you run your own access functions when access operations')
-    print('are invoced on a given attribute (read, write, deletion):\n')
-    print('.. code-block:: Python\n')
-    print("""    class Car:
-        \\\"""a car class\\\"""
-        def __init__(self,model):
-            print("\t-> Car.__init__: creating an instance of the Car class...")
-            self._model = model
-        def get_model(self):
-            \\\"""returns the car model\\\"""
-            print("\t-> Car.get_model: getter function called...")
-            return self._model
-        def set_model(self,name):
-            \\\"""sets the car brand name\\\"""
-            print("\t-> Car.set_model: setter function called...")
-            self._model = name
-        def del_model(self):
-            \\\"""deletes the car model attribute\\\"""
-            print("\t-> Car.del_model: delete function called...")
-            del self._model
-        model = property(get_model,set_model,del_model,"the car model name")
-        """)
-    class Car:
-        """a car class"""
-        def __init__(self,model):
-            print("\t-> Car.__init__: creating an instance of the Car class...")
-            self._model = model
-        def get_model(self):
-            """returns the car model"""
-            print("\t-> Car.get_model: getter function called...")
-            return self._model
-        def set_model(self,name):
-            """sets the car brand name"""
-            print("\t-> Car.set_model: setter function called...")
-            self._model = name
-        def del_model(self):
-            """deletes the car model attribute"""
-            print("\t-> Car.del_model: delete function called...")
-            del self._model
-        model = property(get_model,set_model,del_model,"the car model name")
-    print(">>> a_bmw = Car('BMW 3')")
-    a_bmw = Car('BMW')
-    print("\n>>> a_bmw.model = 'BMW 5'")
-    a_bmw.model = 'BMW 5'
-    print("\n>>> print(a_bmw.model)")
-    print(a_bmw.model)
-    print(">>> help(Car.model)")
-    help(Car.model)
-    print(">>> del a_bmw.model")
-    del a_bmw.model
+    print("``bytes`` and ``bytearray`` are sequences of integers.")
+    print("``str`` is a sequence of characters:\n")
+    print(">>> b_byte = b'pippolone'")
+    b_byte = b'pippolone'
+    print("\n>>> list(b_byte)")
+    print(list(b_byte))
+    print("\n>>> b_bytearray = bytearray(b_byte)")
+    b_bytearray = bytearray(b_byte)
+    print("\n>>> list(b_bytearray)")
+    print(list(b_bytearray))
+    print("\n>>> s_str = 'pippolone'")
+    s_str = 'pippolone'
+    print("\n>>> list(s_str)")
+    print(list(s_str))
+    print('\n.. note:: ``bytearray`` is a mutable variant of ``bytes``.')
     print(80*'-')

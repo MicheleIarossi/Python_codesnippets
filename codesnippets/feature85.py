@@ -1,4 +1,4 @@
-##    Python codesnippets - Exception hierarchies
+##    Python codesnippets - Exception handling
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,154 +19,97 @@
 #
 
 """
-Exception hierarchies
-=====================
+Exception handling
+==================
 
 :py:mod:`codesnippets.feature85`
 --------------------------------
 
-Exception hierarchies can be created by inheriting from
-the ``Exception`` base class, and in turn by inheriting from
-specialized exception classes:
+``try`` -> ``except`` -> ``else`` -> ``finally``
 
-.. code-block:: Python
+The ``else`` part is run ONLY if no exception occurs,
+and the ``finally`` part is run in any case.
 
-    class MotorError(Exception):
-        \"""a motor exception class\"""
-        def __str__(self):
-            exc_str = Exception.__str__(self)
-            return "Exception -> MotorError. " + exc_str
+.. note:: Exceptions always catch (and raise!) a class instance object.
 
-    class IgnitionError(MotorError):
-        \"""an ignition motor exception class\"""
-        def __str__(self):
-            exc_str = Exception.__str__(self)
-            return "Exception -> IgnitionError. " + exc_str
+>>> a_str = 'test'
 
-    class TransmissionError(MotorError):
-        \"""a transmission motor exception class\"""
-        def __str__(self):
-            exc_str = Exception.__str__(self)
-            return "Exception -> TransmissionError. " + exc_str
-
-With the base exception, a family of exceptions can be caught.
-The call to ``sys.exc_info()`` returns a list of the exception class,
-the exception instance itself, and the traceback:
-
->>> import sys
 >>> try:
-        raise TransmissionError('Error transmitting data!') # Needs an istance!
-    except MotorError as exc:
-        print(sys.exc_info())
-        print(exc)
+        a_chr = a_str[5]
+        print('selected a_chr = ' + a_chr)
+    except IndexError as exc:
+        print('-> Exception: ' + str(exc))
+        print(dir(exc))
+    else:
+        print('-> else: no exception')
     finally:
-        print("End of the try block...")
-(<class 'codesnippets.feature85.feature85.<locals>.TransmissionError'>,
-TransmissionError('Error transmitting data!'),
-<traceback object at 0x7fcead50f200>)
-Exception -> TransmissionError. Error transmitting data!
-End of the try block...
+        print('-> finally: leaving the try statement')
+-> Exception: string index out of range
+-> finally: leaving the try statement
 
-With the specialized exceptions, specific error causes are cought.
-They have to precede the base exception in the exception list:
-
->>> import sys
 >>> try:
-        raise IgnitionError('Error motor ignition!') # Needs an istance!
-    except IgnitionError as exc:
-        print(exc)
-    except MotorError as exc:
-        print(sys.exc_info())
-        print(exc)
+        a_chr = a_str[3]
+        print('selected a_chr = ' + a_chr)
+    except IndexError as exc:
+        print('-> Exception: ' + str(exc))
+        print(dir(exc))
+    else:
+        print('-> else: no exception')
     finally:
-        print("End of the try block...")
-Exception -> IgnitionError. Error motor ignition!
-End of the try block...
+        print('-> finally: leaving the try statement')
+selected a_chr = t
+-> else: no exception
+-> finally: leaving the try statement
 """
 
-import sys
-
 def feature85():
-    """Exception hierarchies"""
-    print('Exception hierarchies')
-    print('=====================\n')
+    """Exception handling"""
+    print('Exception handling')
+    print('==================\n')
     print(':py:mod:`codesnippets.feature85`')
     print('--------------------------------\n')
-    print("Exception hierarchies can be created by inheriting from")
-    print("the ``Exception`` base class, and in turn by inheriting from")
-    print("specialized exception classes:\n")
-    print('.. code-block:: Python\n')
-    print("""    class MotorError(Exception):
-        \\\"""a motor exception class\\\"""
-        def __str__(self):
-            exc_str = Exception.__str__(self)
-            return "Exception -> MotorError. " + exc_str
-          """)
-    class MotorError(Exception):
-        """a motor exception class"""
-        def __str__(self):
-            exc_str = Exception.__str__(self)
-            return "Exception -> MotorError. " + exc_str
-    print("""    class IgnitionError(MotorError):
-        \\\"""an ignition motor exception class\\\"""
-        def __str__(self):
-            exc_str = Exception.__str__(self)
-            return "Exception -> IgnitionError. " + exc_str
-          """)
-    class IgnitionError(MotorError):
-        """an ignition motor exception class"""
-        def __str__(self):
-            exc_str = Exception.__str__(self)
-            return "Exception -> IgnitionError. " + exc_str
-    print("""    class TransmissionError(MotorError):
-        \\\"""a transmission motor exception class\\\"""
-        def __str__(self):
-            exc_str = Exception.__str__(self)
-            return "Exception -> TransmissionError. " + exc_str
-          """)
-    class TransmissionError(MotorError):
-        """a transmission motor exception class"""
-        def __str__(self):
-            exc_str = Exception.__str__(self)
-            return "Exception -> TransmissionError. " + exc_str
-    print("With the base exception, a family of exceptions can be caught.")
-    print("The call to ``sys.exc_info()`` returns a list of the exception class,")
-    print("the exception instance itself, and the traceback:\n")
-    print(">>> import sys")
+    print("``try`` -> ``except`` -> ``else`` -> ``finally``\n")
+    print("The ``else`` part is run ONLY if no exception occurs,")
+    print("and the ``finally`` part is run in any case.\n")
+    print(".. note:: Exceptions always catch (and raise!) a class instance object.\n")
+    print(">>> a_str = 'test'\n")
+    a_str = 'test'
     print(""">>> try:
-        raise TransmissionError('Error transmitting data!') # Needs an istance!
-    except MotorError as exc:
-        print(sys.exc_info())
-        print(exc)
+        a_chr = a_str[5]
+        print('selected a_chr = ' + a_chr)
+    except IndexError as exc:
+        print('-> Exception: ' + str(exc))
+        print(dir(exc))
+    else:
+        print('-> else: no exception')
     finally:
-        print("End of the try block...")""")
+        print('-> finally: leaving the try statement')""")
     try:
-        raise TransmissionError('Error transmitting data!') # Needs an istance!
-    except MotorError as exc:
-        print(sys.exc_info())
-        print(exc)
+        a_chr = a_str[5]
+        print('selected a_chr = ' + a_chr)
+    except IndexError as exc:
+        print('-> Exception: ' + str(exc))
+    else:
+        print('-> else: no exception')
     finally:
-        print("End of the try block...")
-    print()
-    print("With the specialized exceptions, specific error causes are cought.")
-    print("They have to precede the base exception in the exception list:\n")
-    print(">>> import sys")
+        print('-> finally: leaving the try statement\n')
     print(""">>> try:
-        raise IgnitionError('Error motor ignition!') # Needs an istance!
-    except IgnitionError as exc:
-        print(exc)
-    except MotorError as exc:
-        print(sys.exc_info())
-        print(exc)
+        a_chr = a_str[3]
+        print('selected a_chr = ' + a_chr)
+    except IndexError as exc:
+        print('-> Exception: ' + str(exc))
+        print(dir(exc))
+    else:
+        print('-> else: no exception')
     finally:
-        print("End of the try block...")""")
+        print('-> finally: leaving the try statement')""")
     try:
-        raise IgnitionError('Error motor ignition!') # Needs an istance!
-    except IgnitionError as exc:
-        print(exc)
-    except MotorError as exc:
-        print(sys.exc_info())
-        print(exc)
+        a_chr = a_str[3]
+        print('selected a_chr = ' + a_chr)
+    except IndexError as exc:
+        print('-> Exception: ' + str(exc))
+    else:
+        print('-> else: no exception')
     finally:
-        print("End of the try block...")
+        print('-> finally: leaving the try statement')
     print(80*'-')

@@ -35,7 +35,7 @@ A filter (condition) can also be specified:
 >>> a_str = [a_chr*4 for a_chr in 'MIKE' if a_chr != 'I']
 ['MMMM', 'KKKK', 'EEEE']
 
-.. seealso:: :doc:`Lambda functions, map() and list comprehension<feature46>`
+.. seealso:: :doc:`Lambda functions, map() and list comprehension<feature47>`
 """
 
 def feature8():
@@ -52,5 +52,5 @@ def feature8():
     print(">>> a_str = [a_chr*4 for a_chr in 'MIKE' if a_chr != 'I']")
     a_str = [a_chr*4 for a_chr in 'MIKE' if a_chr != 'I']
     print(a_str)
-    print('\n.. seealso:: :doc:`Lambda functions, map() and list comprehension<feature46>`')
+    print('\n.. seealso:: :doc:`Lambda functions, map() and list comprehension<feature47>`')
     print(80*'-')

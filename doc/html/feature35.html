@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Accessing non-local variables &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Factory function with lambda and defaults &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="State retention using mutable list" href="feature36.html" />
-    <link rel="prev" title="Factory function with lambda and defaults" href="feature34.html" /> 
+    <link rel="next" title="Accessing non-local variables" href="feature36.html" />
+    <link rel="prev" title="Factory function with lambda" href="feature34.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature36.html" title="State retention using mutable list"
+          <a href="feature36.html" title="Accessing non-local variables"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature34.html" title="Factory function with lambda and defaults"
+          <a href="feature34.html" title="Factory function with lambda"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Accessing non-local variables</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Factory function with <code class="docutils literal notranslate"><span class="pre">lambda</span></code> and defaults</a></li> 
       </ul>
     </div>  
 
@@ -45,48 +45,64 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature35"></span><div class="section" id="accessing-non-local-variables">
-<h1>Accessing non-local variables<a class="headerlink" href="#accessing-non-local-variables" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature35"></span><div class="section" id="factory-function-with-lambda-and-defaults">
+<h1>Factory function with <code class="docutils literal notranslate"><span class="pre">lambda</span></code> and defaults<a class="headerlink" href="#factory-function-with-lambda-and-defaults" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature35">
 <h2><a class="reference internal" href="#module-codesnippets.feature35" title="codesnippets.feature35"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature35</span></code></a><a class="headerlink" href="#codesnippets-feature35" title="Permalink to this headline">¶</a></h2>
-<p>With <code class="docutils literal notranslate"><span class="pre">nonlocal</span></code> a nested function can get write access to variables
-of enclosing scopes.
-Such variables must be already existing variables: it is not possible
-to create a local variable as <code class="docutils literal notranslate"><span class="pre">global</span></code> does for module scope variables!</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">enclosing_func</span><span class="p">(</span><span class="n">n_value</span><span class="p">,</span><span class="n">s_str</span><span class="p">):</span>
-    <span class="n">c_value</span> <span class="o">=</span> <span class="n">n_value</span> <span class="c1"># local variable initilized here</span>
-    <span class="k">def</span> <span class="nf">enclosed_func1</span><span class="p">(</span><span class="n">s1_str</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">enclosed_func2</span><span class="p">(</span><span class="n">s2_str</span><span class="p">):</span>
-            <span class="k">nonlocal</span> <span class="n">c_value</span> <span class="c1"># refers to the nonlocal &#39;c_value&#39; variable</span>
-            <span class="n">c_value</span> <span class="o">+=</span> <span class="mi">1</span> <span class="c1"># write access!</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">s1_str</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">s2_str</span><span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c_value</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">enclosed_func2</span>
-    <span class="k">return</span> <span class="n">enclosed_func1</span><span class="p">(</span><span class="n">s_str</span><span class="p">)</span>
+<p>The following function is a factory function that returns a list of power functions:</p>
+<p><span class="math notranslate nohighlight">\(f(x) = x^k\)</span> where <span class="math notranslate nohighlight">\(k=0,1,...,n-1\)</span>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pow_funcs_maker</span><span class="p">(</span><span class="n">n_value</span><span class="p">):</span>
+    <span class="n">funcs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">exp_val</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_value</span><span class="p">):</span>
+        <span class="n">funcs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="k">lambda</span> <span class="n">x_value</span><span class="p">,</span> <span class="n">pow_val</span><span class="o">=</span><span class="n">exp_val</span><span class="p">:</span> <span class="n">x_value</span><span class="o">**</span><span class="n">pow_val</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">funcs</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hello_func</span> <span class="o">=</span> <span class="n">enclosing_func</span><span class="p">(</span><span class="mi">33</span><span class="p">,</span><span class="s1">&#39;Hello&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bye_func</span> <span class="o">=</span> <span class="n">enclosing_func</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="s1">&#39;Bye&#39;</span><span class="p">)</span>
+<p>It uses <code class="docutils literal notranslate"><span class="pre">lambda</span></code> function syntax with a default parameter <code class="docutils literal notranslate"><span class="pre">exp_value</span></code> that is evaluated
+at function definition (not later when the function is called!) and
+set equal to the index <code class="docutils literal notranslate"><span class="pre">exp_val</span></code> of the loop.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pow_funcs</span> <span class="o">=</span> <span class="n">pow_funcs_maker</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hello_func</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="go">Hello:a 34</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hello_func</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
-<span class="go">Hello:b 35</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hello_func</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">)</span>
-<span class="go">Hello:c 36</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pow_funcs</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pow_funcs</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pow_funcs</span><span class="p">[</span><span class="mi">2</span><span class="p">](</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">4</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bye_func</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>
-<span class="go">Bye:e 101</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bye_func</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
-<span class="go">Bye:f 102</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bye_func</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
-<span class="go">Bye:g 103</span>
+<p>Without a default parameter in the <code class="docutils literal notranslate"><span class="pre">lambda</span></code> function definitions, when
+the power functions are later called, they would all
+retain the value of the index variable <code class="docutils literal notranslate"><span class="pre">exp_val</span></code> at the end of the loop: all
+power functions would be the same!</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">wrong_pow_funcs_maker</span><span class="p">(</span><span class="n">n_value</span><span class="p">):</span>
+    <span class="n">funcs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">exp_val</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_value</span><span class="p">):</span>
+        <span class="n">funcs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="k">lambda</span> <span class="n">x_value</span><span class="p">:</span> <span class="n">x_value</span><span class="o">**</span><span class="n">exp_val</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">funcs</span>
 </pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pow_funcs</span> <span class="o">=</span> <span class="n">wrong_pow_funcs_maker</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pow_funcs</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pow_funcs</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pow_funcs</span><span class="p">[</span><span class="mi">2</span><span class="p">](</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All the <code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions keep a reference to the loop variable <code class="docutils literal notranslate"><span class="pre">exp_val</span></code>.
+When the functions are later called, due to state retention, they all reference <code class="docutils literal notranslate"><span class="pre">exp_val</span></code>
+with the last value reached in the loop!</p>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature29.html"><span class="doc">Accessing global variables</span></a></p>
+<p><a class="reference internal" href="feature46.html"><span class="doc">Lambda functions</span></a></p>
 </div>
 </div>
 </div>
@@ -100,7 +116,7 @@ to create a local variable as <code class="docutils literal notranslate"><span c
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Accessing non-local variables</a><ul>
+<li><a class="reference internal" href="#">Factory function with <code class="docutils literal notranslate"><span class="pre">lambda</span></code> and defaults</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature35"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature35</span></code></a></li>
 </ul>
 </li>
@@ -108,10 +124,10 @@ to create a local variable as <code class="docutils literal notranslate"><span c
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature34.html"
-                        title="previous chapter">Factory function with <code class="docutils literal notranslate"><span class="pre">lambda</span></code> and defaults</a></p>
+                        title="previous chapter">Factory function with <code class="docutils literal notranslate"><span class="pre">lambda</span></code></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature36.html"
-                        title="next chapter">State retention using mutable list</a></p>
+                        title="next chapter">Accessing non-local variables</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -143,13 +159,13 @@ to create a local variable as <code class="docutils literal notranslate"><span c
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature36.html" title="State retention using mutable list"
+          <a href="feature36.html" title="Accessing non-local variables"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature34.html" title="Factory function with lambda and defaults"
+          <a href="feature34.html" title="Factory function with lambda"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Accessing non-local variables</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Factory function with <code class="docutils literal notranslate"><span class="pre">lambda</span></code> and defaults</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

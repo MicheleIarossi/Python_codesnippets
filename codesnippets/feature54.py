@@ -1,4 +1,4 @@
-##    Python codesnippets - Absolute import from a module package
+##    Python codesnippets - Module packages
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,70 +19,41 @@
 #
 
 """
-Absolute import from a module package
-=====================================
+Module packages
+===============
 
 :py:mod:`codesnippets.feature54`
 --------------------------------
 
-Intrapackage imports follow the rule of the absolute path import
-if relative import is not used!
+Packages work like modules but the path must be given as well.
+A file ``__init__.py`` must be located in all the subdirectories.
+This file is loaded and run the very first time a package is included:
 
-In the following the ``.`` is the current working directory (CWD):
+>>> import system1.utilities
+>>> import system2.utilities
 
-``./tools.py`` is the ``tools`` module in the CWD; defines ``MY_X = 1``
-
-``./pkg/tools.py`` is the ``tools`` module in the ``./pkg`` folder; defines ``MY_X = 2``
-
-``./pkg/util.py`` is the ``util``  module in the ``./pkg`` folder importing ``tools``
-with absolute syntax
-
-The question is which ``tools`` module gets imported when the next import statement is run:
-
->>> import pkg.util
-
-	This is the ``util`` module inside ``./pkg`` .
-
-	In the following code the ``tools`` module is imported, but
-	**absolute** import takes place here:
-	the ``tools`` module from the CWD is imported,
-	not the one relative to the package ``./pkg/tools.py`` !
-
-		.. code-block:: Python
-
-			import tools  # absolute import syntax
-
-		Ths is the ``tools`` module in the CWD ``.``
-
-		.. code-block:: Python
-
-			MY_X = 1
-
->>> pkg.util.tools.MY_X
-1
-
-.. seealso:: :doc:`Relative import from a module package<feature55>`
+>>> system1.utilities.print_string('Hello')
+Hello
+>>> system2.utilities.print_string('Hello')
+Hello
 """
-import importlib
+
+import codesnippets.system1.utilities
+import codesnippets.system2.utilities
 
 def feature54():
-    """Absolute import from a module package"""
-    print('Absolute import from a module package')
-    print('=====================================\n')
+    """Module packages"""
+    print('Module packages')
+    print('===============\n')
     print(':py:mod:`codesnippets.feature54`')
     print('--------------------------------\n')
-    print('Intrapackage imports follow the rule of the absolute path import')
-    print('if relative import is not used!\n')
-    print('In the following the ``.`` is the current working directory (CWD):\n')
-    print('``./tools.py`` is the ``tools`` module in the CWD; defines ``MY_X = 1``\n')
-    print('``./pkg/tools.py`` is the ``tools`` module in the ``./pkg`` folder; defines ``MY_X = 2``\n')
-    print('``./pkg/util.py`` is the ``util``  module in the ``./pkg`` folder importing ``tools``'
-          '\nwith absolute syntax\n')
-    print('The question is which ``tools`` module gets imported when the next '
-          'import statement is run:\n')
-    print('>>> import pkg.util\n')
-    util = importlib.import_module('.util','codesnippets.pkg')
-    print(">>> pkg.util.tools.MY_X")
-    print(util.tools.MY_X)
-    print('\n.. seealso:: :doc:`Relative import from a module package<feature55>`')
+    print('Packages work like modules but the path must be given as well.')
+    print('A file ``__init__.py`` must be located in all the subdirectories.')
+    print('This file is loaded and run the very first time a package is included:\n')
+    print('>>> import system1.utilities')
+    print('>>> import system2.utilities\n')
+    print(">>> system1.utilities.print_string('Hello')")
+    codesnippets.system1.utilities.print_string('Hello')
+    print(">>> system2.utilities.print_string('Hello')")
+    codesnippets.system2.utilities.print_string('Hello')
     print(80*'-')

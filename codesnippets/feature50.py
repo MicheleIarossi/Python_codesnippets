@@ -1,4 +1,4 @@
-##    Python codesnippets - Module import
+##    Python codesnippets - Module import information
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,91 +19,61 @@
 #
 
 """
-Module import
-=============
+Module import information
+=========================
 
 :py:mod:`codesnippets.feature50`
 --------------------------------
 
-When an ``import`` statement is run, the module is compiled and the module code is run:
+The ``sys`` module provides important information concerning for example:
 
->>> import module1
+* the path used for searching Python modules,
+* the dictonary of imported modules.
 
-A module object is created:
+>>> import sys
 
->>> module1
-<module 'codesnippets.module1'
-from '/Users/miia/Programming/LearningPython/Python_codesnippets/codesnippets/module1.py'>
+The path used for searching Python modules is given by ``sys.path``:
 
-Its global variables become its attributes:
+>>> sys.path
+['/Users/miia/Programming/LearningPython/Python_codesnippets',
+'/Library/Frameworks/Python.framework/Versions/3.9/bin', '/Users/miia/Programming/LearningPython',
+'/Library/Frameworks/Python.framework/Versions/3.9/lib/python39.zip',
+'/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9',
+'/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/lib-dynload',
+'/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages']
 
->>> module1.A_VARIABLE
-1
+The dictionary of imported modules is given by ``sys.modules`` (only 10 items are shown here):
 
-The attributes can be changed:
+>>> list(sys.modules.items())[:10]
+[('sys', <module 'sys' (built-in)>), ('builtins', <module 'builtins' (built-in)>),
+('_frozen_importlib', <module 'importlib._bootstrap' (frozen)>),
+('_imp', <module '_imp' (built-in)>),
+('_thread', <module '_thread' (built-in)>), ('_warnings', <module '_warnings' (built-in)>),
+('_weakref', <module '_weakref' (built-in)>),
+('_frozen_importlib_external', <module 'importlib._bootstrap_external' (frozen)>),
+('posix', <module 'posix' (built-in)>), ('_io', <module 'io' (built-in)>)]
 
->>> module1.A_VARIABLE = 2
->>> module1.A_VARIABLE
-2
-
-But when an ``import`` statement is rerun, the module is NOT imported again:
-
->>> import module1
-
-The attribute ``A_VARIABLE`` is unchanged, the module code has not been rerun!
-
->>> module1.A_VARIABLE
-2
-
-Module namespaces are stored internally as dictionary objects, e.g. ``module1.__dict__`` :
-
->>> list(name for name in module1.__dict__ if not name.startswith('__'))
-['a_function', 'A_VARIABLE', 'A_LIST']
-
->>> dir(module1)
-['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__',
-'__package__', '__spec__', 'a_function', 'A_VARIABLE', 'A_LIST']
-
-.. note:: If you wish to rerun this example, you need to restart the Python shell.
-
-.. seealso:: :doc:`dir() on an integer variable<feature1>`
+.. seealso:: :doc:`Module attribute access<feature57>`
 """
 
-import importlib
+import sys
 
 def feature50():
-    """Module import"""
-    print('Module import')
-    print('=============\n')
+    """Module import information"""
+    print('Module import information')
+    print('=========================\n')
     print(':py:mod:`codesnippets.feature50`')
     print('--------------------------------\n')
-    print("When an ``import`` statement is run, the module is compiled and the module "
-          "code is run:\n")
-    print('>>> import module1')
-    module1 = importlib.import_module('.module1','codesnippets')
-    print("\nA module object is created:\n")
-    print('>>> module1')
-    print(module1)
-    print("\nIts global variables become its attributes:\n")
-    print('>>> module1.A_VARIABLE')
-    print(module1.A_VARIABLE)
-    print("\nThe attributes can be changed:\n")
-    print(">>> module1.A_VARIABLE = 2")
-    module1.A_VARIABLE = 2
-    print('>>> module1.A_VARIABLE')
-    print(module1.A_VARIABLE)
-    print("\nBut when an ``import`` statement is rerun, the module is NOT imported again:\n")
-    print('>>> import module1')
-    module1 = importlib.import_module('.module1','codesnippets')
-    print("\nThe attribute ``A_VARIABLE`` is unchanged, the module code has not been rerun!\n")
-    print(">>> module1.A_VARIABLE")
-    print(module1.A_VARIABLE)
-    print("\nModule namespaces are stored internally as dictionary "
-          "objects, e.g. ``module1.__dict__`` :\n")
-    print(">>> list(name for name in module1.__dict__ if not name.startswith('__'))")
-    print(list(name for name in module1.__dict__ if not name.startswith('__')))
-    print("\n>>> dir(module1)")
-    print(dir(module1))
-    print("\n.. note:: If you wish to rerun this example, you need to restart the Python shell.")
-    print('\n.. seealso:: :doc:`dir() on an integer variable<feature1>`')
+    print('The ``sys`` module provides important information concerning for example:\n')
+    print('* the path used for searching Python modules,')
+    print('* the dictonary of imported modules.\n')
+    print('>>> import sys\n')
+    print('The path used for searching Python modules is given by ``sys.path``:\n')
+    print('>>> sys.path')
+    print(sys.path)
+    print('\nThe dictionary of imported modules is given by ``sys.modules`` (only 10 items '
+          'are shown here):\n')
+    print('>>> list(sys.modules.items())[:10]')
+    print(list(sys.modules.items())[:10])
+    print('\n.. seealso:: :doc:`Module attribute access<feature57>`')
     print(80*'-')

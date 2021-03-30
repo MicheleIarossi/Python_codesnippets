@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Expression generators &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Function generators &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Module import information" href="feature49.html" />
-    <link rel="prev" title="Function generators" href="feature47.html" /> 
+    <link rel="next" title="Expression generators" href="feature49.html" />
+    <link rel="prev" title="lambda functions, map() and list comprehension" href="feature47.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature49.html" title="Module import information"
+          <a href="feature49.html" title="Expression generators"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature47.html" title="Function generators"
+          <a href="feature47.html" title="lambda functions, map() and list comprehension"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Expression generators</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Function generators</a></li> 
       </ul>
     </div>  
 
@@ -45,34 +45,46 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature48"></span><div class="section" id="expression-generators">
-<h1>Expression generators<a class="headerlink" href="#expression-generators" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature48"></span><div class="section" id="function-generators">
+<h1>Function generators<a class="headerlink" href="#function-generators" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature48">
 <h2><a class="reference internal" href="#module-codesnippets.feature48" title="codesnippets.feature48"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature48</span></code></a><a class="headerlink" href="#codesnippets-feature48" title="Permalink to this headline">¶</a></h2>
-<p>An expression generator returns results one at a time.
-It must be coded inside parentheses:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g_expr</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_var</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x_var</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<p>A function generator returns results one at a time:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func_gen_numbers</span><span class="p">(</span><span class="n">n_value</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">a_value</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_value</span><span class="p">):</span>
+       <span class="k">yield</span> <span class="n">a_value</span>
 </pre></div>
 </div>
-<p>An expression generator is its own iterator:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">iter</span><span class="p">(</span><span class="n">g_expr</span><span class="p">)</span> <span class="ow">is</span> <span class="n">g_expr</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g_func</span> <span class="o">=</span> <span class="n">func_gen_numbers</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A function generator is its own iterator:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">iter</span><span class="p">(</span><span class="n">g_func</span><span class="p">)</span> <span class="ow">is</span> <span class="n">g_func</span>
 <span class="go">True</span>
 </pre></div>
 </div>
 <p>By calling <code class="docutils literal notranslate"><span class="pre">next()</span></code> it provides results one at a time:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g_expr</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g_func</span><span class="p">)</span>
 <span class="go">0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g_expr</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g_func</span><span class="p">)</span>
 <span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g_expr</span><span class="p">)</span>
-<span class="go">4</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g_expr</span><span class="p">)</span>
-<span class="go">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g_func</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g_func</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>Assignment unpacking can be used as well:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="o">*</span><span class="n">rest</span> <span class="o">=</span> <span class="n">func_gen_numbers</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">rest</span>
+<span class="go">(0, 1, [2, 3, 4, 5, 6])</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature26.html"><span class="doc">The iteration protocol</span></a></p>
+<p><a class="reference internal" href="feature27.html"><span class="doc">The iteration protocol</span></a>, <a class="reference internal" href="feature16.html"><span class="doc">More assignment unpacking</span></a></p>
 </div>
 </div>
 </div>
@@ -86,7 +98,7 @@ It must be coded inside parentheses:</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Expression generators</a><ul>
+<li><a class="reference internal" href="#">Function generators</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature48"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature48</span></code></a></li>
 </ul>
 </li>
@@ -94,10 +106,10 @@ It must be coded inside parentheses:</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature47.html"
-                        title="previous chapter">Function generators</a></p>
+                        title="previous chapter"><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions, <code class="docutils literal notranslate"><span class="pre">map()</span></code> and <code class="docutils literal notranslate"><span class="pre">list</span></code> comprehension</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature49.html"
-                        title="next chapter">Module import information</a></p>
+                        title="next chapter">Expression generators</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -129,13 +141,13 @@ It must be coded inside parentheses:</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature49.html" title="Module import information"
+          <a href="feature49.html" title="Expression generators"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature47.html" title="Function generators"
+          <a href="feature47.html" title="lambda functions, map() and list comprehension"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Expression generators</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Function generators</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -1,4 +1,4 @@
-##    Python codesnippets - Function generators
+##    Python codesnippets - lambda functions, map() and list comprehension
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,85 +19,57 @@
 #
 
 """
-Function generators
-===================
+
+``lambda`` functions, ``map()`` and ``list`` comprehension
+==========================================================
 
 :py:mod:`codesnippets.feature47`
 --------------------------------
 
-A function generator returns results one at a time:
+The combination of ``lambda`` function plus ``map()`` for creating a ``list`` represents
+an alternative to the ``list`` comprehension pattern.
 
-.. code-block:: Python
+The following expressions are equivalent:
 
-    def func_gen_numbers(n_value):
-        for a_value in range(n_value):
-           yield a_value
+>>> [x_var**2 for x_var in range(10)]
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 
->>> g_func = func_gen_numbers(5)
+>>> list(map(lambda x_var: x_var**2, range(10))
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 
-A function generator is its own iterator:
+The ``filter()`` built-in function is used if filtering is required.\n
+The following expressions are equivalent as well:
 
->>> iter(g_func) is g_func
-True
+>>> [x_var**2 for x_var in range(10)] if x_var%2 != 0
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 
-By calling ``next()`` it provides results one at a time:
+>>> list(map(lambda x_var: x_var**2, filter(lambda x_var: x_var!=0, range(10))))
+[1, 4, 9, 16, 25, 36, 49, 64, 81]
 
-
->>> next(g_func)
-0
->>> next(g_func)
-1
->>> next(g_func)
-2
->>> next(g_func)
-3
-
-Assignment unpacking can be used as well:
-
->>> first, second, *rest = func_gen_numbers(7)
-
->>> first, second, rest
-(0, 1, [2, 3, 4, 5, 6])
-
-.. seealso:: :doc:`The iteration protocol<feature26>`, :doc:`More assignment unpacking<feature16>`
+.. seealso:: :doc:`List comprehension<feature8>`,
+	:doc:`map() on the elements of a list<feature9>`
 """
 
-def func_gen_numbers(n_value):
-    """function generator"""
-    for a_value in range(n_value):
-        yield a_value
-
-
 def feature47():
-    """Function generators"""
-    print('Function generators')
-    print('===================\n')
+    """Lambda functions, map() and list comprehension"""
+    print('``lambda`` functions, ``map()`` and ``list`` comprehension')
+    print('==========================================================\n')
     print(':py:mod:`codesnippets.feature47`')
     print('--------------------------------\n')
-    print('A function generator returns results one at a time:\n')
-    print('.. code-block:: Python\n')
-    print('    def func_gen_numbers(n_value):')
-    print('        for a_value in range(n_value):')
-    print('           yield a_value\n')
-    print('>>> g_func = func_gen_numbers(5)\n')
-    g_func = func_gen_numbers(5)
-    print('A function generator is its own iterator:\n')
-    print('>>> iter(g_func) is g_func')
-    print(iter(g_func) is g_func)
-    print('\nBy calling ``next()`` it provides results one at a time:\n')
-    print('\n>>> next(g_func)')
-    print(next(g_func))
-    print('>>> next(g_func)')
-    print(next(g_func))
-    print('>>> next(g_func)')
-    print(next(g_func))
-    print('>>> next(g_func)')
-    print(next(g_func))
-    print("\nAssignment unpacking can be used as well:\n")
-    first, second, *rest = func_gen_numbers(7)
-    print('>>> first, second, *rest = func_gen_numbers(7)\n')
-    print('>>> first, second, rest')
-    print((first, second, rest))
-    print('\n.. seealso:: :doc:`The iteration protocol<feature26>`, '
-          ':doc:`More assignment unpacking<feature16>`')
+    print('The combination of ``lambda`` function plus ``map()`` '
+          'for creating a ``list`` represents\nan alternative to '
+          'the ``list`` comprehension pattern.\n')
+    print('The following expressions are equivalent:\n')
+    print('>>> [x_var**2 for x_var in range(10)]')
+    print([x_var**2 for x_var in range(10)])
+    print('\n>>> list(map(lambda x_var: x_var**2, range(10))')
+    print(list(map(lambda x_var: x_var**2, range(10))))
+    print('\nThe ``filter()`` built-in function is used if filtering is required.\\n')
+    print('The following expressions are equivalent as well:\n')
+    print('>>> [x_var**2 for x_var in range(10)] if x_var%2 != 0')
+    print([x_var**2 for x_var in range(10)])
+    print('\n>>> list(map(lambda x_var: x_var**2, filter(lambda x_var: x_var!=0, range(10))))')
+    print(list(map(lambda x_var: x_var**2, filter(lambda x_var: x_var!=0, range(10)))))
+    print('\n.. seealso:: :doc:`List comprehension<feature8>`,'
+          '\n\t:doc:`map() on the elements of a list<feature9>`')
     print(80*'-')

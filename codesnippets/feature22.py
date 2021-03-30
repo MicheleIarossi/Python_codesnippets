@@ -1,5 +1,5 @@
-##    Python codesnippets - Parallel traversals with zip()
-##    Copyright (C) 2021  Michele Iarossi  (micheleiarossi@gmail.com)
+##    Python codesnippets - Ternary expression
+##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
 ##    it under the terms of the GNU General Public License as published by
@@ -19,57 +19,36 @@
 #
 
 """
-Parallel traversals with ``zip()``
-==================================
+Ternary expression
+==================
 
 :py:mod:`codesnippets.feature22`
 --------------------------------
 
-Three lists can be traversed in parallel with ``zip()``:
+Saves lines when typing code:
 
->>> lst1, lst2, lst3 = (1,2,3), (4,5,6), (7,8,9)
+>>> a_str = 't' if 'spam' else 'f'
+>>> a_str
+t
 
->>> for (a_value,b_value,c_value) in zip(lst1,lst2,lst3):
-        print(a_value,b_value,c_value)
-1 4 7
-2 5 8
-3 6 9
-
-If the lists have different length, use ``itertools.zip_longest()``:
-
->>> lst1, lst2, lst3 = (1,2), (3,4,5), (6,7,8,9)
-
->>> for (a_value,b_value,c_value) in itertools.zip_longest(lst1,lst2,lst3,fillvalue=0):
-        print(a_value,b_value,c_value)
-1 3 6
-2 4 7
-0 5 8
-0 0 9
+>>> a_str = 't' if '' else 'f'
+>>> a_str
+f
 """
 
-import itertools
-
 def feature22():
-    """Parallel traversals with zip()"""
-    print('Parallel traversals with ``zip()``')
-    print('==================================\n')
+    """Ternary expression"""
+    print("Ternary expression")
+    print('==================\n')
     print(':py:mod:`codesnippets.feature22`')
     print('--------------------------------\n')
-    print('Three lists can be traversed in parallel with ``zip()``:\n')
-    print('>>> lst1, lst2, lst3 = (1,2,3), (4,5,6), (7,8,9)')
-    print('\n>>> for (a_value,b_value,c_value) in zip(lst1,lst2,lst3):')
-    print('        print(a_value,b_value,c_value)')
-    lst1, lst2, lst3 = (1,2,3), (4,5,6), (7,8,9)
-    for (a_value,b_value,c_value) in zip(lst1,lst2,lst3):
-        print(a_value,b_value,c_value)
-    print()
-    print('If the lists have different length, use ``itertools.zip_longest()``:')
-    print()
-    print('>>> lst1, lst2, lst3 = (1,2), (3,4,5), (6,7,8,9)')
-    print('\n>>> for (a_value,b_value,c_value) in '
-          'itertools.zip_longest(lst1,lst2,lst3,fillvalue=0):')
-    print('        print(a_value,b_value,c_value)')
-    lst1, lst2, lst3 = (1,2), (3,4,5), (6,7,8,9)
-    for (a_value,b_value,c_value) in itertools.zip_longest(lst1,lst2,lst3,fillvalue=0):
-        print(a_value,b_value,c_value)
+    print("Saves lines when typing code:\n")
+    print(">>> a_str = 't' if 'spam' else 'f'")
+    print(">>> a_str")
+    a_str = 't' if 'spam' else 'f'
+    print(a_str)
+    print("\n>>> a_str = 't' if '' else 'f'")
+    print(">>> a_str")
+    a_str = 't' if '' else 'f'
+    print(a_str)
     print(80*'-')

@@ -1,4 +1,4 @@
-##    Python codesnippets - String and byte literals
+##    Python codesnippets - Unicode text
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,55 +19,76 @@
 #
 
 """
-String and byte literals
-========================
+Unicode text
+============
 
 :py:mod:`codesnippets.feature90`
 --------------------------------
 
-In bytes literals only ``\\x`` escapes can be used!
+Unicode escapes can be used.
 
->>> b_str = b'\\xae\\xeb\\x56\\xa4\\x89'
+.. note:: ASCII encoding works only if 7 bit representation is possible!
 
->>> s_str = b_str.decode('latin-1')
->>> s_str
-®ëV¤
+>>> a_str = '\u00d3\u00e8'
+>>> a_str
+Óè
 
-In strings you can use hex and unicode escape characters:
+>>> len(a_str)
+2
 
->>> s_str_utf16 = '\\u00ae\\u00eb\\u0056\\u00a4\\u0089'
->>> s_str_utf16
-®ëV¤
+>>> a_str_enc = a_str.encode('utf-8')
 
->>> s_str_utf32 = '\\U000000ae\\U000000eb\\U00000056\\U000000a4\\U00000089'
->>> s_str_utf32
-®ëV¤
+>>> list(a_str_enc)
+[195, 147, 195, 168]
+
+>>> len(a_str_enc)
+4
+
+ASCII encoding fails in this case because 7 bits are not enough!
+
+>>> list(a_str.encode('ascii'))
+UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-1: ordinal not in range(128)
+
+Decoding provides the original string:
+
+>>> a_str_enc.decode('utf-8')
+Óè
+>>> a_str == a_str_enc.decode('utf-8')
+True
 """
 
 def feature90():
-    """String and byte literals"""
-    print('String and byte literals')
-    print('========================\n')
+    """Unicode text"""
+    print('Unicode text')
+    print('============\n')
     print(':py:mod:`codesnippets.feature90`')
     print('--------------------------------\n')
-    print("In bytes literals only ``\\\\x`` escapes can be used!")
+    print("Unicode escapes can be used.\n")
+    print(".. note:: ASCII encoding works only if 7 bit representation is possible!\n")
+    print(r">>> a_str = '\u00d3\u00e8'")
+    a_str = '\u00d3\u00e8'
+    print(">>> a_str")
+    print(a_str)
+    print("\n>>> len(a_str)")
+    print(len(a_str))
+    print("\n>>> a_str_enc = a_str.encode('utf-8')")
+    a_str_enc = a_str.encode('utf-8')
+    print("\n>>> list(a_str_enc)")
+    print(list(a_str_enc))
+    print("\n>>> len(a_str_enc)")
+    print(len(a_str_enc))
     print()
-    print(r">>> b_str = b'\\xae\\xeb\\x56\\xa4\\x89'")
-    b_str = b'\xae\xeb\x56\xa4\x89'
-    print()
-    print(">>> s_str = b_str.decode('latin-1')")
-    s_str = b_str.decode('latin-1')
-    print(">>> s_str")
-    print(s_str)
-    print()
-    print("In strings you can use hex and unicode escape characters:\n")
-    print(r">>> s_str_utf16 = '\\u00ae\\u00eb\\u0056\\u00a4\\u0089'")
-    s_str_utf16 = "\u00ae\u00eb\u0056\u00a4\u0089"
-    print(">>> s_str_utf16")
-    print(s_str_utf16)
-    print()
-    print(r">>> s_str_utf32 = '\\U000000ae\\U000000eb\\U00000056\\U000000a4\\U00000089'")
-    s_str_utf32 = "\U000000ae\U000000eb\U00000056\U000000a4\U00000089"
-    print(">>> s_str_utf32")
-    print(s_str_utf32)
+    print('ASCII encoding fails in this case because 7 bits are not enough!\n')
+    print(">>> list(a_str.encode('ascii'))")
+    try:
+        print(list(a_str.encode('ascii')))
+    except UnicodeEncodeError as exc:
+        print(exc.__class__.__name__ + ': ' + str(exc))
+    finally:
+        print()
+    print('Decoding provides the original string:\n')
+    print(">>> a_str_enc.decode('utf-8')")
+    print(a_str_enc.decode('utf-8'))
+    print(">>> a_str == a_str_enc.decode('utf-8')")
+    print(a_str == a_str_enc.decode('utf-8'))
     print(80*'-')

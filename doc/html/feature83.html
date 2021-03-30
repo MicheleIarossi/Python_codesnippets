@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Constructor calls with multiple inheritance &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Usage of super() in diamond class trees &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Exception handling" href="feature84.html" />
-    <link rel="prev" title="Usage of super() in diamond class trees" href="feature82.html" /> 
+    <link rel="next" title="Constructor calls with multiple inheritance" href="feature84.html" />
+    <link rel="prev" title="Static methods via function decorator @staticmethod" href="feature82.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature84.html" title="Exception handling"
+          <a href="feature84.html" title="Constructor calls with multiple inheritance"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature82.html" title="Usage of super() in diamond class trees"
+          <a href="feature82.html" title="Static methods via function decorator @staticmethod"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Constructor calls with multiple inheritance</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Usage of super() in diamond class trees</a></li> 
       </ul>
     </div>  
 
@@ -45,12 +45,14 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature83"></span><div class="section" id="constructor-calls-with-multiple-inheritance">
-<h1>Constructor calls with multiple inheritance<a class="headerlink" href="#constructor-calls-with-multiple-inheritance" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature83"></span><div class="section" id="usage-of-super-in-diamond-class-trees">
+<h1>Usage of super() in diamond class trees<a class="headerlink" href="#usage-of-super-in-diamond-class-trees" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature83">
 <h2><a class="reference internal" href="#module-codesnippets.feature83" title="codesnippets.feature83"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature83</span></code></a><a class="headerlink" href="#codesnippets-feature83" title="Permalink to this headline">¶</a></h2>
-<p>If no constructor is provided, Python calls the lowest and leftmost
-constructor that is present in the inheritance hierarchy!</p>
+<p>Each <code class="docutils literal notranslate"><span class="pre">super()</span></code> call selects the method from a next class that implements the
+requested method following it in the MRO ordering of the class of the
+<code class="docutils literal notranslate"><span class="pre">self</span></code> subject of the method call. This selection process chooses
+the first class following the calling class having the requested method.</p>
 <p>Given the following hierarchy of classes:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ClassA</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;a class&quot;&quot;&quot;</span>
@@ -63,6 +65,7 @@ constructor that is present in the inheritance hierarchy!</p>
     <span class="sd">&quot;&quot;&quot;a derived class&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; ClassB.__init__&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;ClassB()&#39;</span>
 
@@ -70,28 +73,51 @@ constructor that is present in the inheritance hierarchy!</p>
     <span class="sd">&quot;&quot;&quot;another derived class&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; ClassC.__init__&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;ClassC()&#39;</span>
 
-<span class="k">class</span> <span class="nc">ClassD</span><span class="p">(</span><span class="n">ClassB</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;yet another derived class&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">ClassD</span><span class="p">(</span><span class="n">ClassB</span><span class="p">,</span><span class="n">ClassC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;multiple inheritance class&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; ClassD.__init__&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;ClassD()&#39;</span>
-
-<span class="k">class</span> <span class="nc">ClassE</span><span class="p">(</span><span class="n">ClassC</span><span class="p">,</span><span class="n">ClassD</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;multiple inheritance class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;ClassE()&#39;</span>
 </pre></div>
 </div>
-<p>and an instance of <code class="docutils literal notranslate"><span class="pre">ClassE</span></code>:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_e</span> <span class="o">=</span> <span class="n">ClassE</span><span class="p">()</span>
+<p>and an instance of <code class="docutils literal notranslate"><span class="pre">ClassD</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_d</span> <span class="o">=</span> <span class="n">ClassD</span><span class="p">()</span>
+<span class="go">        -&gt; ClassD.__init__</span>
+<span class="go">        -&gt; ClassB.__init__</span>
 <span class="go">        -&gt; ClassC.__init__</span>
+<span class="go">        -&gt; ClassA.__init__</span>
 </pre></div>
 </div>
-<p>Notice that only the construtor of the <code class="docutils literal notranslate"><span class="pre">ClassC</span></code> is called!</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ClassD</span><span class="o">.</span><span class="vm">__mro__</span>
+<span class="go">(&lt;class &#39;codesnippets.feature83.feature83.&lt;locals&gt;.ClassD&#39;&gt;,</span>
+<span class="go">&lt;class &#39;codesnippets.feature83.feature83.&lt;locals&gt;.ClassB&#39;&gt;,</span>
+<span class="go">&lt;class &#39;codesnippets.feature83.feature83.&lt;locals&gt;.ClassC&#39;&gt;,</span>
+<span class="go">&lt;class &#39;codesnippets.feature83.feature83.&lt;locals&gt;.ClassA&#39;&gt;,</span>
+<span class="go">&lt;class &#39;object&#39;&gt;)</span>
+</pre></div>
+</div>
+<p>When the constructor of <code class="docutils literal notranslate"><span class="pre">classD</span></code> is called, <code class="docutils literal notranslate"><span class="pre">self</span></code> is an instance of the <code class="docutils literal notranslate"><span class="pre">classD</span></code>, so
+the MRO of the <code class="docutils literal notranslate"><span class="pre">classD</span></code> is considered as printed above, in all the calls.</p>
+<p>When the constructor of <code class="docutils literal notranslate"><span class="pre">classD</span></code> calls <code class="docutils literal notranslate"><span class="pre">super().__init__()</span></code> then the next class in
+the MRO following the <code class="docutils literal notranslate"><span class="pre">classD</span></code> that has an <code class="docutils literal notranslate"><span class="pre">__init__</span></code> function is called.
+In this case it is the <code class="docutils literal notranslate"><span class="pre">classB</span></code>.</p>
+<p>When the constructor of the <code class="docutils literal notranslate"><span class="pre">classB</span></code> calls <code class="docutils literal notranslate"><span class="pre">super().__init__()</span></code> then the next class in
+the MRO following the <code class="docutils literal notranslate"><span class="pre">classB</span></code> that has an <code class="docutils literal notranslate"><span class="pre">__init__</span></code> function is called.
+In this case it is the <code class="docutils literal notranslate"><span class="pre">classC</span></code>.</p>
+<p>When the constructor of the <code class="docutils literal notranslate"><span class="pre">classC</span></code> calls <code class="docutils literal notranslate"><span class="pre">super().__init__()</span></code> then the next class in
+the MRO following the <code class="docutils literal notranslate"><span class="pre">classC</span></code> that has an <code class="docutils literal notranslate"><span class="pre">__init__</span></code> function is called.
+In this case it is the <code class="docutils literal notranslate"><span class="pre">classA</span></code>.</p>
+<p>The constructor of the <code class="docutils literal notranslate"><span class="pre">classA</span></code> has no <code class="docutils literal notranslate"><span class="pre">super</span></code> call and so the chain stops.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="feature78.html"><span class="doc">Method resolution order (MRO)</span></a></p>
+</div>
 </div>
 </div>
 
@@ -104,7 +130,7 @@ constructor that is present in the inheritance hierarchy!</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Constructor calls with multiple inheritance</a><ul>
+<li><a class="reference internal" href="#">Usage of super() in diamond class trees</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature83"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature83</span></code></a></li>
 </ul>
 </li>
@@ -112,10 +138,10 @@ constructor that is present in the inheritance hierarchy!</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature82.html"
-                        title="previous chapter">Usage of super() in diamond class trees</a></p>
+                        title="previous chapter">Static methods via function decorator &#64;staticmethod</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature84.html"
-                        title="next chapter">Exception handling</a></p>
+                        title="next chapter">Constructor calls with multiple inheritance</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -147,13 +173,13 @@ constructor that is present in the inheritance hierarchy!</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature84.html" title="Exception handling"
+          <a href="feature84.html" title="Constructor calls with multiple inheritance"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature82.html" title="Usage of super() in diamond class trees"
+          <a href="feature82.html" title="Static methods via function decorator @staticmethod"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Constructor calls with multiple inheritance</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Usage of super() in diamond class trees</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

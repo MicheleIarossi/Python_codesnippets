@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Side effects when importing modules &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Module import &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Module reload" href="feature52.html" />
-    <link rel="prev" title="Module import" href="feature50.html" /> 
+    <link rel="next" title="Side effects when importing modules" href="feature52.html" />
+    <link rel="prev" title="Module import information" href="feature50.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature52.html" title="Module reload"
+          <a href="feature52.html" title="Side effects when importing modules"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature50.html" title="Module import"
+          <a href="feature50.html" title="Module import information"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Side effects when importing modules</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Module import</a></li> 
       </ul>
     </div>  
 
@@ -45,45 +45,48 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature51"></span><div class="section" id="side-effects-when-importing-modules">
-<h1>Side effects when importing modules<a class="headerlink" href="#side-effects-when-importing-modules" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature51"></span><div class="section" id="module-import">
+<h1>Module import<a class="headerlink" href="#module-import" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature51">
 <h2><a class="reference internal" href="#module-codesnippets.feature51" title="codesnippets.feature51"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature51</span></code></a><a class="headerlink" href="#codesnippets-feature51" title="Permalink to this headline">¶</a></h2>
-<p>Subtle side effects might occur when <code class="docutils literal notranslate"><span class="pre">from</span></code> is used:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">module1</span> <span class="kn">import</span> <span class="n">A_VARIABLE</span><span class="p">,</span><span class="n">A_LIST</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">from</span></code> performs an implicit assignment, but <code class="docutils literal notranslate"><span class="pre">A_VARIABLE</span></code> is an immutable type and
-it is not shared with <code class="docutils literal notranslate"><span class="pre">module1</span></code>, whereas <code class="docutils literal notranslate"><span class="pre">A_LIST</span></code> is mutable and the
-reference is shared with <code class="docutils literal notranslate"><span class="pre">module1</span></code>:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A_VARIABLE</span>
-<span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">A_LIST</span>
-<span class="go">[4, 5, 6]</span>
-</pre></div>
-</div>
-<p>The following code changes <code class="docutils literal notranslate"><span class="pre">A_VARIABLE</span></code> and <code class="docutils literal notranslate"><span class="pre">A_LIST</span></code> (a mutable object):</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A_VARIABLE</span> <span class="o">=</span> <span class="mi">7</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A_LIST</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">A_LIST</span>
-<span class="go">[8, 5, 6]</span>
-</pre></div>
-</div>
-<p>By importing again the module, the module’s code is <strong>not</strong> rerun:</p>
+<p>When an <code class="docutils literal notranslate"><span class="pre">import</span></code> statement is run, the module is compiled and the module code is run:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">module1</span>
 </pre></div>
 </div>
-<p>Here <code class="docutils literal notranslate"><span class="pre">module1.A_VARIABLE</span></code> is a different object than <code class="docutils literal notranslate"><span class="pre">A_VARIABLE</span></code>:</p>
+<p>A module object is created:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span>
+<span class="go">&lt;module &#39;codesnippets.module1&#39;</span>
+<span class="go">from &#39;/Users/miia/Programming/LearningPython/Python_codesnippets/codesnippets/module1.py&#39;&gt;</span>
+</pre></div>
+</div>
+<p>Its global variables become its attributes:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="n">A_VARIABLE</span>
 <span class="go">1</span>
 </pre></div>
 </div>
-<p>But <code class="docutils literal notranslate"><span class="pre">module1.A_LIST</span></code> and <code class="docutils literal notranslate"><span class="pre">A_LIST</span></code> share the same object and the same
-referenced object was changed before!</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="n">A_LIST</span>
-<span class="go">[8, 5, 6]</span>
+<p>The attributes can be changed:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="n">A_VARIABLE</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="n">A_VARIABLE</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>But when an <code class="docutils literal notranslate"><span class="pre">import</span></code> statement is rerun, the module is NOT imported again:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">module1</span>
+</pre></div>
+</div>
+<p>The attribute <code class="docutils literal notranslate"><span class="pre">A_VARIABLE</span></code> is unchanged, the module code has not been rerun!</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="n">A_VARIABLE</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>Module namespaces are stored internally as dictionary objects, e.g. <code class="docutils literal notranslate"><span class="pre">module1.__dict__</span></code> :</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">module1</span><span class="o">.</span><span class="vm">__dict__</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">))</span>
+<span class="go">[&#39;a_function&#39;, &#39;A_VARIABLE&#39;, &#39;A_LIST&#39;]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">module1</span><span class="p">)</span>
+<span class="go">[&#39;__builtins__&#39;, &#39;__cached__&#39;, &#39;__doc__&#39;, &#39;__file__&#39;, &#39;__loader__&#39;, &#39;__name__&#39;,</span>
+<span class="go">&#39;__package__&#39;, &#39;__spec__&#39;, &#39;a_function&#39;, &#39;A_VARIABLE&#39;, &#39;A_LIST&#39;]</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -92,7 +95,7 @@ referenced object was changed before!</p>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature18.html"><span class="doc">Side effects in assignments</span></a></p>
+<p><a class="reference internal" href="feature1.html"><span class="doc">dir() on an integer variable</span></a></p>
 </div>
 </div>
 </div>
@@ -106,7 +109,7 @@ referenced object was changed before!</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Side effects when importing modules</a><ul>
+<li><a class="reference internal" href="#">Module import</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature51"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature51</span></code></a></li>
 </ul>
 </li>
@@ -114,10 +117,10 @@ referenced object was changed before!</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature50.html"
-                        title="previous chapter">Module import</a></p>
+                        title="previous chapter">Module import information</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature52.html"
-                        title="next chapter">Module reload</a></p>
+                        title="next chapter">Side effects when importing modules</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -149,13 +152,13 @@ referenced object was changed before!</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature52.html" title="Module reload"
+          <a href="feature52.html" title="Side effects when importing modules"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature50.html" title="Module import"
+          <a href="feature50.html" title="Module import information"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Side effects when importing modules</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Module import</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

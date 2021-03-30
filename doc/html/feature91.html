@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bytes, bytearray and string &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>String and byte literals &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="The property protocol" href="feature92.html" />
-    <link rel="prev" title="String and byte literals" href="feature90.html" /> 
+    <link rel="next" title="Bytes, bytearray and string" href="feature92.html" />
+    <link rel="prev" title="Unicode text" href="feature90.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature92.html" title="The property protocol"
+          <a href="feature92.html" title="Bytes, bytearray and string"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature90.html" title="String and byte literals"
+          <a href="feature90.html" title="Unicode text"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Bytes, bytearray and string</a></li> 
+        <li class="nav-item nav-item-this"><a href="">String and byte literals</a></li> 
       </ul>
     </div>  
 
@@ -45,36 +45,29 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature91"></span><div class="section" id="bytes-bytearray-and-string">
-<h1>Bytes, bytearray and string<a class="headerlink" href="#bytes-bytearray-and-string" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature91"></span><div class="section" id="string-and-byte-literals">
+<h1>String and byte literals<a class="headerlink" href="#string-and-byte-literals" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature91">
 <h2><a class="reference internal" href="#module-codesnippets.feature91" title="codesnippets.feature91"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature91</span></code></a><a class="headerlink" href="#codesnippets-feature91" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">bytes</span></code> and <code class="docutils literal notranslate"><span class="pre">bytearray</span></code> are sequences of integers.
-<code class="docutils literal notranslate"><span class="pre">str</span></code> is a sequence of characters:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b_byte</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;pippolone&#39;</span>
+<p>In bytes literals only <code class="docutils literal notranslate"><span class="pre">\x</span></code> escapes can be used!</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b_str</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xae\xeb\x56\xa4\x89</span><span class="s1">&#39;</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b_byte</span><span class="p">)</span>
-<span class="go">[112, 105, 112, 112, 111, 108, 111, 110, 101]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s_str</span> <span class="o">=</span> <span class="n">b_str</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;latin-1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s_str</span>
+<span class="go">®ëV¤</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b_bytearray</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">b_byte</span><span class="p">)</span>
+<p>In strings you can use hex and unicode escape characters:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s_str_utf16</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\u00ae\u00eb\u0056\u00a4\u0089</span><span class="s1">&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s_str_utf16</span>
+<span class="go">®ëV¤</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">b_bytearray</span><span class="p">)</span>
-<span class="go">[112, 105, 112, 112, 111, 108, 111, 110, 101]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s_str_utf32</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\U000000ae\U000000eb\U00000056\U000000a4\U00000089</span><span class="s1">&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s_str_utf32</span>
+<span class="go">®ëV¤</span>
 </pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s_str</span> <span class="o">=</span> <span class="s1">&#39;pippolone&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">s_str</span><span class="p">)</span>
-<span class="go">[&#39;p&#39;, &#39;i&#39;, &#39;p&#39;, &#39;p&#39;, &#39;o&#39;, &#39;l&#39;, &#39;o&#39;, &#39;n&#39;, &#39;e&#39;]</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">bytearray</span></code> is a mutable variant of <code class="docutils literal notranslate"><span class="pre">bytes</span></code>.</p>
 </div>
 </div>
 </div>
@@ -88,7 +81,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Bytes, bytearray and string</a><ul>
+<li><a class="reference internal" href="#">String and byte literals</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature91"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature91</span></code></a></li>
 </ul>
 </li>
@@ -96,10 +89,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature90.html"
-                        title="previous chapter">String and byte literals</a></p>
+                        title="previous chapter">Unicode text</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature92.html"
-                        title="next chapter">The property protocol</a></p>
+                        title="next chapter">Bytes, bytearray and string</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -131,13 +124,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature92.html" title="The property protocol"
+          <a href="feature92.html" title="Bytes, bytearray and string"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature90.html" title="String and byte literals"
+          <a href="feature90.html" title="Unicode text"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Bytes, bytearray and string</a></li> 
+        <li class="nav-item nav-item-this"><a href="">String and byte literals</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

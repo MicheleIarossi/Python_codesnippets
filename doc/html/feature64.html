@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Operator overloading: add, sub, and basic indexing &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Class interface techniques &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Operator overloading: iteration protocol" href="feature65.html" />
-    <link rel="prev" title="Class interface techniques" href="feature63.html" /> 
+    <link rel="next" title="Operator overloading: add, sub, and basic indexing" href="feature65.html" />
+    <link rel="prev" title="More on class introspection tools: __class__ , __bases__ , __dict__" href="feature63.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature65.html" title="Operator overloading: iteration protocol"
+          <a href="feature65.html" title="Operator overloading: add, sub, and basic indexing"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature63.html" title="Class interface techniques"
+          <a href="feature63.html" title="More on class introspection tools: __class__ , __bases__ , __dict__"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Operator overloading: add, sub, and basic indexing</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Class interface techniques</a></li> 
       </ul>
     </div>  
 
@@ -45,167 +45,93 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature64"></span><div class="section" id="operator-overloading-add-sub-and-basic-indexing">
-<h1>Operator overloading: add, sub, and basic indexing<a class="headerlink" href="#operator-overloading-add-sub-and-basic-indexing" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature64"></span><div class="section" id="class-interface-techniques">
+<h1>Class interface techniques<a class="headerlink" href="#class-interface-techniques" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature64">
 <h2><a class="reference internal" href="#module-codesnippets.feature64" title="codesnippets.feature64"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature64</span></code></a><a class="headerlink" href="#codesnippets-feature64" title="Permalink to this headline">¶</a></h2>
-<p>This is an example of a container class that implements also the:</p>
+<p>There are different inheritance patterns available for adding new features to derived classes:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">__add__</span></code> operator, which is called when class instances are added <code class="docutils literal notranslate"><span class="pre">+</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">__sub__</span></code> operator, which is called when class instances are subtracted <code class="docutils literal notranslate"><span class="pre">-</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">__getitem__</span></code>, <code class="docutils literal notranslate"><span class="pre">__setitem__</span></code> operators, which are called when class
-instances are indexed <code class="docutils literal notranslate"><span class="pre">[]</span></code></p></li>
+<li><p>Inheritor,</p></li>
+<li><p>Replacer,</p></li>
+<li><p>Extender,</p></li>
+<li><p>Provider.</p></li>
 </ul>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyContainer</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;my container class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__init__&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:]</span>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__repr__&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s1">&#39;MyContainer(data=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__add__&#39;</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_val</span><span class="o">+</span><span class="n">y_val</span> <span class="k">for</span> <span class="p">(</span><span class="n">x_val</span><span class="p">,</span><span class="n">y_val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span><span class="n">other</span><span class="o">.</span><span class="n">_data</span><span class="p">)]</span>
-        <span class="k">return</span> <span class="n">MyContainer</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">other</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__sub__&#39;</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_val</span><span class="o">-</span><span class="n">y_val</span> <span class="k">for</span> <span class="p">(</span><span class="n">x_val</span><span class="p">,</span><span class="n">y_val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span><span class="n">other</span><span class="o">.</span><span class="n">_data</span><span class="p">)]</span>
-        <span class="k">return</span> <span class="n">MyContainer</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__getitem__&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__setitem__&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+<p>Given the following base class:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Super</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;a base class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;a default method&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    -&gt; In Super.method&#39;</span><span class="p">)</span>           <span class="c1"># Default behavior</span>
+    <span class="k">def</span> <span class="nf">delegate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;another method&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="p">()</span>                      <span class="c1"># Expected to be defined</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> instances are created as usual:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container1</span> <span class="o">=</span> <span class="n">MyContainer</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
-<span class="go">        -&gt; MyContainer.__init__</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">container1</span>
-<span class="go">        -&gt; MyContainer.__repr__</span>
-<span class="go">MyContainer(data=[0, 1, 2, 3, 4, 5])</span>
+<p>This is the default behaviour of the base class above:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sup</span> <span class="o">=</span> <span class="n">Super</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sup</span><span class="o">.</span><span class="n">method</span><span class="p">()</span>
+<span class="go">        -&gt; In Super.method</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container2</span> <span class="o">=</span> <span class="n">MyContainer</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">19</span><span class="p">])</span>
-<span class="go">        -&gt; MyContainer.__init__</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">container2</span>
-<span class="go">        -&gt; MyContainer.__repr__</span>
-<span class="go">MyContainer(data=[8, 3, 14, 5, 10, 19])</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">Inheritor</span></code> just derives the methods from the base class as they are:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<p>Containers can be added:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span> <span class="o">=</span> <span class="n">container1</span> <span class="o">+</span> <span class="n">container2</span>
-<span class="go">        -&gt; MyContainer.__add__</span>
-<span class="go">        -&gt; MyContainer.__init__</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span>
-<span class="go">        -&gt; MyContainer.__repr__</span>
-<span class="go">MyContainer(data=[8, 4, 16, 8, 14, 24])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Inheritor</span><span class="p">(</span><span class="n">Super</span><span class="p">):</span>                    <span class="c1"># Inherit method verbatim</span>
+<span class="go">        &quot;&quot;&quot;a derived class&quot;&quot;&quot;</span>
+<span class="go">        pass</span>
 </pre></div>
 </div>
-<p>Containers can be subtracted:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span> <span class="o">=</span> <span class="n">container2</span> <span class="o">-</span> <span class="n">container1</span>
-<span class="go">        -&gt; MyContainer.__sub__</span>
-<span class="go">        -&gt; MyContainer.__init__</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span>
-<span class="go">        -&gt; MyContainer.__repr__</span>
-<span class="go">MyContainer(data=[8, 2, 12, 2, 6, 14])</span>
+<p>The behaviour is the same as the <code class="docutils literal notranslate"><span class="pre">Super</span></code> class:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">inh</span> <span class="o">=</span> <span class="n">Inheritor</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inh</span><span class="o">.</span><span class="n">method</span><span class="p">()</span>
+<span class="go">        -&gt; In Super.method</span>
 </pre></div>
 </div>
-<p>Containers can be indexed (read and write):</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">31</span>
-<span class="go">        -&gt; MyContainer.__setitem__</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span>
-<span class="go">        -&gt; MyContainer.__repr__</span>
-<span class="go">MyContainer(data=[8, 2, 12, 2, 6, 31])</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">Replacer</span></code> redefines methods from the base class:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Replacer</span><span class="p">(</span><span class="n">Super</span><span class="p">):</span>                     <span class="c1"># Replace method completely</span>
+    <span class="sd">&quot;&quot;&quot;derived class replacing a method&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;new method&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    -&gt; In Replacer.method&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">container3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">12</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">method</span></code> call is completely replaced by <code class="docutils literal notranslate"><span class="pre">Replacer</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rep</span> <span class="o">=</span> <span class="n">Replacer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rep</span><span class="o">.</span><span class="n">method</span><span class="p">()</span>
+<span class="go">        -&gt; In Replacer.method</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Index operators are also used in all iteration context.</p>
-</div>
-<p>For example:</p>
-<ul class="simple">
-<li><p>membership test</p></li>
-</ul>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="mi">31</span> <span class="ow">in</span> <span class="n">container3</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">True</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">Extender</span></code> extends methods from the base class:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Extender</span><span class="p">(</span><span class="n">Super</span><span class="p">):</span>                     <span class="c1"># Extend method behavior</span>
+    <span class="sd">&quot;&quot;&quot;extends the base class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;extends base method function&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    -&gt; Starting Extender.method&#39;</span><span class="p">)</span>
+        <span class="n">Super</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    -&gt; Ending Extender.method&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>list comprehension</p></li>
-</ul>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">elem</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">container3</span><span class="p">]</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">[8, 2, 12, 2, 6, 31]</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">method</span></code> call references <code class="docutils literal notranslate"><span class="pre">Super.method()</span></code> and extends it:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ext</span> <span class="o">=</span> <span class="n">Extender</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ext</span><span class="o">.</span><span class="n">method</span><span class="p">()</span>
+<span class="go">        -&gt; Starting Extender.method</span>
+<span class="go">        -&gt; In Super.method</span>
+<span class="go">        -&gt; Ending Extender.method</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">map</span></code> call</p></li>
-</ul>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">container3</span><span class="p">))</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">[&#39;8&#39;, &#39;2&#39;, &#39;12&#39;, &#39;2&#39;, &#39;6&#39;, &#39;31&#39;]</span>
+<p>Finally, the <code class="docutils literal notranslate"><span class="pre">Provider</span></code> provides the missing method in the base class:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Provider</span><span class="p">(</span><span class="n">Super</span><span class="p">):</span>                     <span class="c1"># Fill in a required method</span>
+    <span class="sd">&quot;&quot;&quot;provides missing method in the base class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;missing method&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    -&gt; In Provider.action&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>sequence assignments</p></li>
-</ul>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">a_val</span><span class="p">,</span><span class="n">b_val</span><span class="p">,</span><span class="n">c_val</span><span class="p">,</span><span class="n">d_val</span><span class="p">,</span><span class="n">e_val</span><span class="p">,</span><span class="n">f_val</span><span class="p">)</span> <span class="o">=</span> <span class="n">container3</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a_val</span><span class="p">,</span><span class="n">b_val</span><span class="p">,</span><span class="n">d_val</span><span class="p">,</span><span class="n">e_val</span><span class="p">,</span><span class="n">f_val</span>
-<span class="go">(8, 2, 12, 2, 6, 31)</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">list()</span></code>, <code class="docutils literal notranslate"><span class="pre">tuple()</span></code>, etc.</p></li>
-</ul>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">container3</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">container3</span><span class="p">)</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">        -&gt; MyContainer.__getitem__</span>
-<span class="go">([8, 2, 12, 2, 6, 31], (8, 2, 12, 2, 6, 31))</span>
+<p>The method <code class="docutils literal notranslate"><span class="pre">Super.delegate()</span></code> needs an <code class="docutils literal notranslate"><span class="pre">action()</span></code> method provided by the <code class="docutils literal notranslate"><span class="pre">Provider</span></code> class:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pro</span> <span class="o">=</span> <span class="n">Provider</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pro</span><span class="o">.</span><span class="n">delegate</span><span class="p">()</span>
+<span class="go">        -&gt; In Provider.action</span>
 </pre></div>
 </div>
 </div>
@@ -220,7 +146,7 @@ instances are indexed <code class="docutils literal notranslate"><span class="pr
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Operator overloading: add, sub, and basic indexing</a><ul>
+<li><a class="reference internal" href="#">Class interface techniques</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature64"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature64</span></code></a></li>
 </ul>
 </li>
@@ -228,10 +154,10 @@ instances are indexed <code class="docutils literal notranslate"><span class="pr
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature63.html"
-                        title="previous chapter">Class interface techniques</a></p>
+                        title="previous chapter">More on class introspection tools: <code class="docutils literal notranslate"><span class="pre">__class__</span></code> , <code class="docutils literal notranslate"><span class="pre">__bases__</span></code> , <code class="docutils literal notranslate"><span class="pre">__dict__</span></code></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature65.html"
-                        title="next chapter">Operator overloading: iteration protocol</a></p>
+                        title="next chapter">Operator overloading: add, sub, and basic indexing</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -263,13 +189,13 @@ instances are indexed <code class="docutils literal notranslate"><span class="pr
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature65.html" title="Operator overloading: iteration protocol"
+          <a href="feature65.html" title="Operator overloading: add, sub, and basic indexing"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature63.html" title="Class interface techniques"
+          <a href="feature63.html" title="More on class introspection tools: __class__ , __bases__ , __dict__"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Operator overloading: add, sub, and basic indexing</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Class interface techniques</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

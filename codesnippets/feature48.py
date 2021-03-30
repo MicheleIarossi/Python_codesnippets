@@ -1,4 +1,4 @@
-##    Python codesnippets - Expression generators
+##    Python codesnippets - Function generators
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,57 +19,85 @@
 #
 
 """
-Expression generators
-=====================
+Function generators
+===================
 
 :py:mod:`codesnippets.feature48`
 --------------------------------
 
-An expression generator returns results one at a time.
-It must be coded inside parentheses:
+A function generator returns results one at a time:
 
->>> g_expr = (x_var**2 for x_var in range(5))
+.. code-block:: Python
 
-An expression generator is its own iterator:
+    def func_gen_numbers(n_value):
+        for a_value in range(n_value):
+           yield a_value
 
->>> iter(g_expr) is g_expr
+>>> g_func = func_gen_numbers(5)
+
+A function generator is its own iterator:
+
+>>> iter(g_func) is g_func
 True
 
 By calling ``next()`` it provides results one at a time:
 
->>> next(g_expr)
-0
->>> next(g_expr)
-1
->>> next(g_expr)
-4
->>> next(g_expr)
-9
 
-.. seealso:: :doc:`The iteration protocol<feature26>`
+>>> next(g_func)
+0
+>>> next(g_func)
+1
+>>> next(g_func)
+2
+>>> next(g_func)
+3
+
+Assignment unpacking can be used as well:
+
+>>> first, second, *rest = func_gen_numbers(7)
+
+>>> first, second, rest
+(0, 1, [2, 3, 4, 5, 6])
+
+.. seealso:: :doc:`The iteration protocol<feature27>`, :doc:`More assignment unpacking<feature16>`
 """
 
+def func_gen_numbers(n_value):
+    """function generator"""
+    for a_value in range(n_value):
+        yield a_value
+
+
 def feature48():
-    """Expression generators"""
-    print('Expression generators')
-    print('=====================\n')
+    """Function generators"""
+    print('Function generators')
+    print('===================\n')
     print(':py:mod:`codesnippets.feature48`')
     print('--------------------------------\n')
-    print('An expression generator returns results one at a time.')
-    print('It must be coded inside parentheses:\n')
-    print('>>> g_expr = (x_var**2 for x_var in range(5))')
-    g_expr = (x_var**2 for x_var in range(5))
-    print('\nAn expression generator is its own iterator:\n')
-    print('>>> iter(g_expr) is g_expr')
-    print(iter(g_expr) is g_expr)
+    print('A function generator returns results one at a time:\n')
+    print('.. code-block:: Python\n')
+    print('    def func_gen_numbers(n_value):')
+    print('        for a_value in range(n_value):')
+    print('           yield a_value\n')
+    print('>>> g_func = func_gen_numbers(5)\n')
+    g_func = func_gen_numbers(5)
+    print('A function generator is its own iterator:\n')
+    print('>>> iter(g_func) is g_func')
+    print(iter(g_func) is g_func)
     print('\nBy calling ``next()`` it provides results one at a time:\n')
-    print('>>> next(g_expr)')
-    print(next(g_expr))
-    print('>>> next(g_expr)')
-    print(next(g_expr))
-    print('>>> next(g_expr)')
-    print(next(g_expr))
-    print('>>> next(g_expr)')
-    print(next(g_expr))
-    print('\n.. seealso:: :doc:`The iteration protocol<feature26>`')
+    print('\n>>> next(g_func)')
+    print(next(g_func))
+    print('>>> next(g_func)')
+    print(next(g_func))
+    print('>>> next(g_func)')
+    print(next(g_func))
+    print('>>> next(g_func)')
+    print(next(g_func))
+    print("\nAssignment unpacking can be used as well:\n")
+    first, second, *rest = func_gen_numbers(7)
+    print('>>> first, second, *rest = func_gen_numbers(7)\n')
+    print('>>> first, second, rest')
+    print((first, second, rest))
+    print('\n.. seealso:: :doc:`The iteration protocol<feature27>`, '
+          ':doc:`More assignment unpacking<feature16>`')
     print(80*'-')

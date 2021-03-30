@@ -31,7 +31,7 @@ an iterable that is passed to ``list()`` for producing the sequence values:
 >>> res = list(map(abs, [-1,-2,0,1,2]))
 [1, 2, 0, 1, 2]
 
-.. seealso:: :doc:`Lambda functions, map() and list comprehension<feature46>`
+.. seealso:: :doc:`Lambda functions, map() and list comprehension<feature47>`
 """
 
 def feature9():
@@ -45,5 +45,5 @@ def feature9():
     print('>>> res = list(map(abs, [-1,-2,0,1,2]))')
     res = list(map(abs, [-1,-2,0,1,2]))
     print(res)
-    print('\n.. seealso:: :doc:`Lambda functions, map() and list comprehension<feature46>`')
+    print('\n.. seealso:: :doc:`Lambda functions, map() and list comprehension<feature47>`')
     print(80*'-')

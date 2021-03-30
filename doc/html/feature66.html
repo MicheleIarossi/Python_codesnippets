@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Operator overloading: iteration protocol via function generator &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Operator overloading: iteration protocol &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Operator overloading: specific membership with __contains__" href="feature67.html" />
-    <link rel="prev" title="Operator overloading: iteration protocol" href="feature65.html" /> 
+    <link rel="next" title="Operator overloading: iteration protocol via function generator" href="feature67.html" />
+    <link rel="prev" title="Operator overloading: add, sub, and basic indexing" href="feature65.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature67.html" title="Operator overloading: specific membership with __contains__"
+          <a href="feature67.html" title="Operator overloading: iteration protocol via function generator"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature65.html" title="Operator overloading: iteration protocol"
+          <a href="feature65.html" title="Operator overloading: add, sub, and basic indexing"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Operator overloading: iteration protocol via function generator</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Operator overloading: iteration protocol</a></li> 
       </ul>
     </div>  
 
@@ -45,15 +45,18 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature66"></span><div class="section" id="operator-overloading-iteration-protocol-via-function-generator">
-<h1>Operator overloading: iteration protocol via function generator<a class="headerlink" href="#operator-overloading-iteration-protocol-via-function-generator" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature66"></span><div class="section" id="operator-overloading-iteration-protocol">
+<h1>Operator overloading: iteration protocol<a class="headerlink" href="#operator-overloading-iteration-protocol" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature66">
 <h2><a class="reference internal" href="#module-codesnippets.feature66" title="codesnippets.feature66"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature66</span></code></a><a class="headerlink" href="#codesnippets-feature66" title="Permalink to this headline">¶</a></h2>
-<p>In the following, the <code class="docutils literal notranslate"><span class="pre">MyContainerClass</span></code> from <a class="reference internal" href="feature64.html"><span class="doc">Operator overloading:
-add, sub, and basic indexing</span></a> is adapted for supporting the
-iteration protocol via function generators. By implementing the <code class="docutils literal notranslate"><span class="pre">__iter__</span></code> operator
-and by returning a function generator, which is an iterator, the class
-can still use the iteration protocol:</p>
+<p>In order to support the iteration protocol in a given class, the:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">__iter__</span></code> operator needs to be implemented and it must return an iterator class</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__next__</span></code> operator needs to be implemented in the iterator class</p></li>
+</ul>
+<p>In the following, the <code class="docutils literal notranslate"><span class="pre">MyContainerClass</span></code> from <a class="reference internal" href="feature65.html"><span class="doc">Operator overloading: add, sub, and basic
+indexing</span></a> is adapted for supporting the iteration protocol. By implementing the
+<code class="docutils literal notranslate"><span class="pre">__iter__</span></code> operator instead of <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> , the class can return an iterator class instance:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyContainer</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;my container class&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
@@ -72,14 +75,35 @@ can still use the iteration protocol:</p>
         <span class="k">return</span> <span class="n">MyContainer</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__iter__&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">v_val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">v_val</span>
+        <span class="k">return</span> <span class="n">MyContainerIterator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__getitem__&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
     <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainer.__setitem__&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+</pre></div>
+</div>
+<p>In the iterator class <code class="docutils literal notranslate"><span class="pre">MyContainerIterator</span></code> the <code class="docutils literal notranslate"><span class="pre">__next__</span></code> operator is used for scanning
+each element one by one. Once the elements are exhausted, the <code class="docutils literal notranslate"><span class="pre">StopIteration</span></code>
+exception is raised:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyContainerIterator</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;a container iterator class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainerIterator.__init__&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span>  <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainerIterator.__next__&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">value</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;overloads repr operator&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     -&gt; MyContainerIterator.__repr__&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;MyContainerIterator(data=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">MyContainer</span></code> instances are created as usual:</p>
@@ -90,19 +114,22 @@ can still use the iteration protocol:</p>
 <span class="go">MyContainer(data=[0, 1, 2, 3, 4, 5])</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">iter</span></code> built-in function is applied now to <code class="docutils literal notranslate"><span class="pre">container1</span></code> for getting
-a function generator back:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">iter</span></code> built-in function is applied now to <code class="docutils literal notranslate"><span class="pre">container1</span></code> for getting an iterator object back:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">iterator_container1</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">container1</span><span class="p">)</span>
+<span class="go">        -&gt; MyContainer.__iter__</span>
+<span class="go">        -&gt; MyContainerIterator.__init__</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">iterator_container1</span><span class="p">),</span> <span class="nb">next</span><span class="p">(</span><span class="n">iterator_container1</span><span class="p">),</span> <span class="nb">next</span><span class="p">(</span><span class="n">iterator_container1</span><span class="p">)</span>
-<span class="go">        -&gt; MyContainer.__iter__</span>
+<span class="go">        -&gt; MyContainerIterator.__next__</span>
+<span class="go">        -&gt; MyContainerIterator.__next__</span>
+<span class="go">        -&gt; MyContainerIterator.__next__</span>
 <span class="go">0 1 2</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature47.html"><span class="doc">Function generators</span></a></p>
+<p><a class="reference internal" href="feature27.html"><span class="doc">The iteration protocol</span></a></p>
 </div>
 </div>
 </div>
@@ -116,7 +143,7 @@ a function generator back:</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Operator overloading: iteration protocol via function generator</a><ul>
+<li><a class="reference internal" href="#">Operator overloading: iteration protocol</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature66"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature66</span></code></a></li>
 </ul>
 </li>
@@ -124,10 +151,10 @@ a function generator back:</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature65.html"
-                        title="previous chapter">Operator overloading: iteration protocol</a></p>
+                        title="previous chapter">Operator overloading: add, sub, and basic indexing</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature67.html"
-                        title="next chapter">Operator overloading: specific membership with <code class="docutils literal notranslate"><span class="pre">__contains__</span></code></a></p>
+                        title="next chapter">Operator overloading: iteration protocol via function generator</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -159,13 +186,13 @@ a function generator back:</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature67.html" title="Operator overloading: specific membership with __contains__"
+          <a href="feature67.html" title="Operator overloading: iteration protocol via function generator"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature65.html" title="Operator overloading: iteration protocol"
+          <a href="feature65.html" title="Operator overloading: add, sub, and basic indexing"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Operator overloading: iteration protocol via function generator</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Operator overloading: iteration protocol</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

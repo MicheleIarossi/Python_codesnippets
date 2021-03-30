@@ -1,4 +1,4 @@
-##    Python codesnippets - Built-in operations cannot be delegated via __getattr__
+##    Python codesnippets - Type built-in function applied to classes and instances
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,120 +19,75 @@
 #
 
 """
-Built-in operations cannot be delegated via ``__getattr__``
-===========================================================
+Type built-in function applied to classes and instances
+=======================================================
 
 :py:mod:`codesnippets.feature75`
 --------------------------------
 
-In a class, you cannot delegate built-in operations via ``__getattr__``.
-You have to override the built-in operations in the class itself.
+The ``type`` built-in function returns an object decribing the type of the instance provided:
+
+* when applied to an instance of a class, it provides a reference to the class
+* when applied to a class, it provides a reference to a ``type`` object.
 
 Consider the following class:
 
 .. code-block:: Python
 
     class MyClass:
-        \"""a class\"""
-        def __init__(self,valstr):
-            self.data = valstr
-        def __getattr__(self,attrstr):
-            return getattr(self.data,attrstr)
+        pass
 
-and the following object:
+>>> my_obj = MyClass()
 
->>> my_obj = MyClass('hello')
+``type`` applied to an instance of a class provides a reference to that class:
 
-The ``__getattr__`` method forwards every undefined attribute fetch to the ``self.data``
-object, but not for built-in operations like indexing:
+>>> type(my_obj)
+<class 'codesnippets.feature76.feature76.<locals>.MyClass'>
 
->>> my_obj[2]
-	--> Exception: 'MyClass' object is not subscriptable
-	__getattr__ is not called!
+The referenced class object is the same:
 
-This is equivalent to ``type(my_obj).__getitem__(my_obj,2)`` and ``__getitem__``
-is not overridden in the class!
+>>> id(type(my_obj))
+0x7fa558a27650
 
-The ``__getitem__`` built-in method needs to be overridden in order to avoid such exception:
+>>> id(MyClass)
+0x7fa558a27650
 
-.. code-block:: Python
+``type`` applied to a class object class provides a reference to a ``type`` object:
 
-    class MyClass:
-        def __init__(self,valstr):
-            self.data = valstr
-        def __getattr__(self,attrstr):
-            return getattr(self.data,attrstr)
-        def __getitem__(self,index):
-            return self.data[index]
-
-The same object is created and indexed again:
-
->>> my_obj = MyClass('hello')
-
-This works as expected:
-
->>> [x_var for x_var in my_obj]
-['h', 'e', 'l', 'l', 'o']"""
+>>> type(MyClass)
+<class 'type'>
+"""
 
 def feature75():
-    """Built-in operations cannot be delegated via __getattr__"""
-    print('Built-in operations cannot be delegated via ``__getattr__``')
-    print('===========================================================\n')
+    """Type built-in function applied to classes and instances"""
+    print('Type built-in function applied to classes and instances')
+    print('=======================================================\n')
     print(':py:mod:`codesnippets.feature75`')
     print('--------------------------------\n')
-    print('In a class, you cannot delegate built-in operations via ``__getattr__``.')
-    print('You have to override the built-in operations in the class itself.\n')
+
+    print("The ``type`` built-in function returns an object decribing "
+        "the type of the instance provided:\n")
+    print('* when applied to an instance of a class, it provides a reference to the class')
+    print('* when applied to a class, it provides a reference to a ``type`` object.\n')
     print('Consider the following class:\n')
     print('.. code-block:: Python\n')
     print("""    class MyClass:
-        \\\"""my class\\\"""
-        def __init__(self,valstr):
-            self.data = valstr
-        def __getattr__(self,attrstr):
-            return getattr(self.data,attrstr)
+        pass
         """)
     class MyClass:
         """my class"""
-        def __init__(self,valstr):
-            self.data = valstr
-        def __getattr__(self,attrstr):
-            return getattr(self.data,attrstr)
-    print('and the following object:\n')
-    print(">>> my_obj = MyClass('hello')")
-    my_obj = MyClass('hello')
-    print('\nThe ``__getattr__`` method forwards every undefined attribute fetch '
-          'to the ``self.data``\nobject, but not for built-in operations like indexing:\n')
-    print(">>> my_obj[2]")
-    try:
-        print(my_obj[2])
-    except TypeError as exc:
-        print('\t--> Exception: ' + str(exc))
-        print('\t__getattr__ is not called!\n')
-    print('This is equivalent to ``type(my_obj).__getitem__(my_obj,2)`` '
-          'and ``__getitem__``\nis not overridden in the class!\n')
-    print("The ``__getitem__`` built-in method needs to be overridden in order to "
-        "avoid such exception:\n")
-    print('.. code-block:: Python\n')
-    print("""    class MyClass:
-        def __init__(self,valstr):
-            self.data = valstr
-        def __getattr__(self,attrstr):
-            return getattr(self.data,attrstr)
-        def __getitem__(self,index):
-            return self.data[index]
-        """)
-    class MyClass:
-        """a class"""
-        def __init__(self,valstr):
-            self.data = valstr
-        def __getattr__(self,attrstr):
-            return getattr(self.data,attrstr)
-        def __getitem__(self,index):
-            return self.data[index]
-    print('The same object is created and indexed again:\n')
-    print(">>> my_obj = MyClass('hello')")
-    my_obj = MyClass('hello')
-    print('\nThis works as expected:\n')
-    print(">>> [x_var for x_var in my_obj]")
-    print([x_var for x_var in my_obj])
+        pass
+    print(">>> my_obj = MyClass()")
+    my_obj = MyClass()
+    print('\n``type`` applied to an instance of a class provides a reference to that class:\n')
+    print(">>> type(my_obj)")
+    print(type(my_obj))
+    print('\nThe referenced class object is the same:\n')
+    print(">>> id(type(my_obj))")
+    print(f'0x{id(type(my_obj)):x}')
+    print("\n>>> id(MyClass)")
+    print(f'0x{id(MyClass):x}')
+    print('\n``type`` applied to a class object class provides a reference to a ``type`` object:\n')
+    print(">>> type(MyClass)")
+    print(type(MyClass))
     print(80*'-')

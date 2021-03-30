@@ -1,4 +1,4 @@
-##    Python codesnippets - The LEGB rule (nested scopes)
+##    Python codesnippets - Accessing global variables
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,65 +19,161 @@
 #
 
 """
-The LEGB rule (nested scopes)
-=============================
+Accessing global variables
+==========================
 
 :py:mod:`codesnippets.feature30`
 --------------------------------
 
-Remember that LEGB = Local, Enclosing, Global(Module), Built-in.
+There are 3 possibilities:
 
-Given the following code:
+#. via ``global`` declaration,
+#. via attribute and module import,
+#. via attribute and module object.
 
-.. code-block:: Python
+The following code has to run inside a file: ::
 
-    global_counter = 100                # global variable at module level
+    import sys\n
+    global_counter = 321\n
+    def func_only_reads():
+        \"""only reads the global counter\"""
+        # Read access possible: LEGB rule applies!
+        local_counter = global_counter\n
+    def func_writes():
+        \"""writes the global counter\"""
+        # Required for write access
+        global global_counter
+        global_counter += 1
+        # global can even create a new global variable
+        global new_global_counter
+        new_global_counter = 2\n
+    def func_import():
+        \"""accesses the global counter as an attribute of the module\"""
+        import codesnippets.feature30
+        # Access as attribute of the module
+        codesnippets.feature30.global_counter = 350\n
+    def func_mod_obj():
+        \"""accesses the global counter via the 'sys.modules' dictionary\"""
+        modobj = sys.modules['codesnippets.feature30']
+        # Access as attribute of a module object
+        modobj.global_counter = 370
 
-    def func1():
-        global_counter = 200            # shadows the global variable
-        def func2():
-            print(global_counter)       # gets global_counter from the enclosing scope
-        func2()
+Global scope gives read access:
 
-In the function ``func1`` the local ``global_counter`` variable shadows the global
-``global_counter`` one, and the function ``func2`` gets the global counter
-from the enclosing scope.
+>>> func_only_reads()
+>>> global_counter
+321
 
->>> func1()
-200
+``global`` declaration needed for write access:
+
+>>> func_writes()
+>>> global_counter
+322
+
+Access as attribute of an imported module:
+
+>>> func_import()
+>>> global_counter
+350
+
+Access as attribute of a module object:
+
+>>> func_mod_obj()
+>>> global_counter
+370
+
+.. note:: ``func_writes()`` creates a new global variable via the ``global`` declaration:
+
+>>> NEW_global_counter
+2
+
+.. seealso:: :doc:`The LEGB rule (nested scopes) <feature31>`
 """
 
-# global variable at module level
-global_counter = 100
+import sys
 
-def func1():
-    """shadows the global variable"""
-    # Shadows the global variable
-    global_counter = 200
-    def func2():
-        """prints the local variable"""
-        # gets global_counter from the enclosing scope
-        print(global_counter)
-    func2()
+global_counter = 321
+def func_only_reads():
+    """only reads the global counter"""
+    # Read access possible: LEGB rule applies!
+    local_counter = global_counter
+def func_writes():
+    """writes the global counter"""
+    # Required for write access
+    global global_counter
+    global_counter += 1
+    # global can even create a new global variable
+    global new_global_counter
+    new_global_counter = 2
+def func_import():
+    """accesses the global counter as an attribute of the module"""
+    import codesnippets.feature30
+    # Access as attribute of the module
+    codesnippets.feature30.global_counter = 350
+def func_mod_obj():
+    """accesses the global counter via the 'sys.modules' dictionary"""
+    modobj = sys.modules['codesnippets.feature30']
+    # Access as attribute of a module object
+    modobj.global_counter = 370
 
 def feature30():
-    """LEGB rule (nested scopes)"""
-    print('The LEGB rule (nested scopes)')
-    print('=============================\n')
+    """Accessing global variables"""
+    print('Accessing global variables')
+    print('==========================\n')
     print(':py:mod:`codesnippets.feature30`')
     print('--------------------------------\n')
-    print('Remember that LEGB = Local, Enclosing, Global(Module), Built-in.\n')
-    print('Given the following code:\n')
-    print('.. code-block:: Python\n')
-    print('    global_counter = 100                # global variable at module level\n')
-    print('    def func1():')
-    print('        global_counter = 200            # shadows the global variable')
-    print('        def func2():')
-    print('            print(global_counter)       # gets global_counter from the enclosing scope')
-    print('        func2()')
-    print('\nIn the function ``func1`` the local ``global_counter`` variable shadows the global\n'
-          '``global_counter`` one, and the function ``func2`` gets the global '
-          'counter\nfrom the enclosing scope.\n')
-    print('>>> func1()')
-    func1()
+    print('There are 3 possibilities:\n')
+    print('#. via ``global`` declaration,')
+    print('#. via attribute and module import,')
+    print('#. via attribute and module object.\n')
+    print('The following code has to run inside a file: ::\n')
+    print('    import sys\\n')
+    print('    global_counter = 321\\n')
+    print('    def func_only_reads():')
+    print("        \\\"\"\"only reads the global counter\\\"\"\"")
+    print('        # Read access possible: LEGB rule applies!')
+    print('        local_counter = global_counter\\n')
+    print('    def func_writes():')
+    print("        \\\"\"\"writes the global counter\\\"\"\"")
+    print('        # Required for write access')
+    print('        global global_counter')
+    print('        global_counter += 1')
+    print('        # global can even create a new global variable')
+    print('        global new_global_counter')
+    print('        new_global_counter = 2\\n')
+    print('    def func_import():')
+    print("        \\\"\"\"accesses the global counter as an attribute of the module\\\"\"\"")
+    print('        import codesnippets.feature30')
+    print('        # Access as attribute of the module')
+    print('        codesnippets.feature30.global_counter = 350\\n')
+    print('    def func_mod_obj():')
+    print("        \\\"\"\"accesses the global counter via the 'sys.modules' dictionary\\\"\"\"")
+    print("        modobj = sys.modules['codesnippets.feature30']")
+    print('        # Access as attribute of a module object')
+    print('        modobj.global_counter = 370')
+    print('\nGlobal scope gives read access:\n')
+    print('>>> func_only_reads()')
+    print('>>> global_counter')
+    func_only_reads()
+    print(global_counter)
+    print('\n``global`` declaration needed for write access:\n')
+    print('>>> func_writes()')
+    func_writes()
+    print('>>> global_counter')
+    print(global_counter)
+    print('\nAccess as attribute of an imported module:\n')
+    print('>>> func_import()')
+    func_import()
+    print('>>> global_counter')
+    print(global_counter)
+    print('\nAccess as attribute of a module object:\n')
+    print('>>> func_mod_obj()')
+    func_mod_obj()
+    print('>>> global_counter')
+    print(global_counter)
+    print("\n.. note:: ``func_writes()`` creates a new global variable via the ``global`` "
+          "declaration:\n")
+    print('>>> new_global_counter')
+    print(new_global_counter)
+    print('\n.. seealso:: :doc:`The LEGB rule (nested scopes) <feature31>`')
     print(80*'-')

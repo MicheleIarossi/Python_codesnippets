@@ -1,4 +1,4 @@
-##    Python codesnippets - State retention using mutable list
+##    Python codesnippets - Accessing non-local variables
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,84 +19,97 @@
 #
 
 """
-State retention using mutable list
-==================================
+Accessing non-local variables
+=============================
 
 :py:mod:`codesnippets.feature36`
 --------------------------------
 
-The function below calls methods of a ``list`` to perform in-place changes.
-
-.. note:: In-place object changes do not classify as local.
+With ``nonlocal`` a nested function can get write access to variables
+of enclosing scopes.
+Such variables must be already existing variables: it is not possible
+to create a local variable as ``global`` does for module scope variables!
 
 .. code-block:: Python
 
-    def func_factory(start):
-        def nested_func(label):
-            print(label, state[0])
-            # hack: in-place object changes do not classify as local
-            state[0] += 1
-        # defines a mutable list
-        state = [start]
-        return nested_func
+    def enclosing_func(n_value,s_str):
+        c_value = n_value # local variable initilized here
+        def enclosed_func1(s1_str):
+            def enclosed_func2(s2_str):
+                nonlocal c_value # refers to the nonlocal 'c_value' variable
+                c_value += 1 # write access!
+                print(s1_str + ':' + s2_str+ ' ' + str(c_value))
+            return enclosed_func2
+        return enclosed_func1(s_str)
 
->>> func = func_factory(23)
+>>> hello_func = enclosing_func(33,'Hello')
+>>> bye_func = enclosing_func(100,'Bye')
 
->>> func('one')
-one 23
->>> func('two')
-two 24
+>>> hello_func('a')
+Hello:a 34
+>>> hello_func('b')
+Hello:b 35
+>>> hello_func('c')
+Hello:c 36
 
->>> new_func = func_factory(46)
+>>> bye_func('e')
+Bye:e 101
+>>> bye_func('f')
+Bye:f 102
+>>> bye_func('g')
+Bye:g 103
 
->>> new_func('three')
-three 46
->>> new_func('four')
-four 47
-
-.. seealso:: :doc:`Accessing non-local variables<feature35>`
+.. seealso:: :doc:`Accessing global variables<feature30>`
 """
 
-def func_factory(start):
-    """factory function returning a function working on a mutable list"""
-    def nested_func(label):
-        """nested function increasing the state"""
-        print(label, state[0])
-        # hack: in-place object changes do not classify as local
-        state[0] += 1
-    # defines a mutable list
-    state = [start]
-    return nested_func
+def enclosing_func(n_value,s_str):
+    """factory function returning an enclosed function accessing a nonlocal variable"""
+    c_value = n_value # local variable initilized here
+    def enclosed_func1(s1_str):
+        """first level of enclosed function"""
+        def enclosed_func2(s2_str):
+            """function accessing nonlocal variable"""
+            nonlocal c_value # refers to the nonlocal 'c_value' variable
+            c_value += 1 # write access!
+            print(s1_str + ":" + s2_str + " " + str(c_value))
+        return enclosed_func2
+    return enclosed_func1(s_str)
 
 def feature36():
-    """State retention using mutable list"""
-    print('State retention using mutable list')
-    print('==================================\n')
+    """Accessing non-local variables"""
+    print('Accessing non-local variables')
+    print('=============================\n')
     print(':py:mod:`codesnippets.feature36`')
     print('--------------------------------\n')
-    print('The function below calls methods of a ``list`` to perform in-place changes.\n')
-    print('.. note:: In-place object changes do not classify as local.\n')
+    print("With ``nonlocal`` a nested function can get write access to variables")
+    print('of enclosing scopes.')
+    print('Such variables must be already existing variables: it is not possible')
+    print('to create a local variable as ``global`` does for module scope variables!\n')
     print('.. code-block:: Python\n')
-    print('    def func_factory(start):')
-    print('        def nested_func(label):')
-    print('            print(label, state[0])')
-    print('            # hack: in-place object changes do not classify as local')
-    print('            state[0] += 1')
-    print('        # defines a mutable list')
-    print('        state = [start]')
-    print('        return nested_func')
-    print()
-    print('>>> func = func_factory(23)\n')
-    func = func_factory(23)
-    print(">>> func('one')")
-    func('one')
-    print(">>> func('two')")
-    func('two')
-    print('\n>>> new_func = func_factory(46)\n')
-    new_func = func_factory(46)
-    print(">>> new_func('three')")
-    new_func("three")
-    print(">>> new_func('four')")
-    new_func("four")
-    print('\n.. seealso:: :doc:`Accessing non-local variables<feature35>`')
+    print('    def enclosing_func(n_value,s_str):')
+    print('        c_value = n_value # local variable initilized here')
+    print('        def enclosed_func1(s1_str):')
+    print('            def enclosed_func2(s2_str):')
+    print("                nonlocal c_value # refers to the nonlocal 'c_value' variable")
+    print('                c_value += 1 # write access!')
+    print("                print(s1_str + ':' + s2_str+ ' ' + str(c_value))")
+    print('            return enclosed_func2')
+    print('        return enclosed_func1(s_str)\n')
+    print(">>> hello_func = enclosing_func(33,'Hello')")
+    hello_func = enclosing_func(33,"Hello")
+    print(">>> bye_func = enclosing_func(100,'Bye')\n")
+    bye_func = enclosing_func(100,"Bye")
+    print(">>> hello_func('a')")
+    hello_func("a")
+    print(">>> hello_func('b')")
+    hello_func("b")
+    print(">>> hello_func('c')")
+    hello_func("c")
+    print("\n>>> bye_func('e')")
+    bye_func("e")
+    print(">>> bye_func('f')")
+    bye_func("f")
+    print(">>> bye_func('g')")
+    bye_func("g")
+    print('\n.. seealso:: :doc:`Accessing global variables<feature30>`')
     print(80*'-')

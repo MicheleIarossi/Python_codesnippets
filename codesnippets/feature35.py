@@ -1,4 +1,4 @@
-##    Python codesnippets - Accessing non-local variables
+##    Python codesnippets - Factory function with lambda and defaults
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,97 +19,126 @@
 #
 
 """
-Accessing non-local variables
-=============================
+Factory function with ``lambda`` and defaults
+=============================================
 
 :py:mod:`codesnippets.feature35`
 --------------------------------
 
-With ``nonlocal`` a nested function can get write access to variables
-of enclosing scopes.
-Such variables must be already existing variables: it is not possible
-to create a local variable as ``global`` does for module scope variables!
+The following function is a factory function that returns a list of power functions:
+
+:math:`f(x) = x^k` where :math:`k=0,1,...,n-1`.
 
 .. code-block:: Python
 
-    def enclosing_func(n_value,s_str):
-        c_value = n_value # local variable initilized here
-        def enclosed_func1(s1_str):
-            def enclosed_func2(s2_str):
-                nonlocal c_value # refers to the nonlocal 'c_value' variable
-                c_value += 1 # write access!
-                print(s1_str + ':' + s2_str+ ' ' + str(c_value))
-            return enclosed_func2
-        return enclosed_func1(s_str)
+    def pow_funcs_maker(n_value):
+        funcs = []
+        for exp_val in range(n_value):
+            funcs.append((lambda x_value, pow_val=exp_val: x_value**pow_val))
+        return funcs
 
->>> hello_func = enclosing_func(33,'Hello')
->>> bye_func = enclosing_func(100,'Bye')
+It uses ``lambda`` function syntax with a default parameter ``exp_value`` that is evaluated
+at function definition (not later when the function is called!) and
+set equal to the index ``exp_val`` of the loop.
 
->>> hello_func('a')
-Hello:a 34
->>> hello_func('b')
-Hello:b 35
->>> hello_func('c')
-Hello:c 36
+>>> pow_funcs = pow_funcs_maker(3)
 
->>> bye_func('e')
-Bye:e 101
->>> bye_func('f')
-Bye:f 102
->>> bye_func('g')
-Bye:g 103
+>>> pow_funcs[0](2)
+1
+>>> pow_funcs[1](2)
+2
+>>> pow_funcs[2](2)
+4
 
-.. seealso:: :doc:`Accessing global variables<feature29>`
+Without a default parameter in the ``lambda`` function definitions, when
+the power functions are later called, they would all
+retain the value of the index variable ``exp_val`` at the end of the loop: all
+power functions would be the same!
+
+.. code-block:: Python
+
+    def wrong_pow_funcs_maker(n_value):
+        funcs = []
+        for exp_val in range(n_value):
+            funcs.append((lambda x_value: x_value**exp_val))
+        return funcs
+
+>>> pow_funcs = wrong_pow_funcs_maker(3)
+
+>>> pow_funcs[0](2)
+4
+>>> pow_funcs[1](2)
+4
+>>> pow_funcs[2](2)
+4
+
+.. note:: All the ``lambda`` functions keep a reference to the loop variable ``exp_val``.
+    When the functions are later called, due to state retention, they all reference ``exp_val``
+    with the last value reached in the loop!
+
+.. seealso:: :doc:`Lambda functions<feature46>`
 """
 
-def enclosing_func(n_value,s_str):
-    """factory function returning an enclosed function accessing a nonlocal variable"""
-    c_value = n_value # local variable initilized here
-    def enclosed_func1(s1_str):
-        """first level of enclosed function"""
-        def enclosed_func2(s2_str):
-            """function accessing nonlocal variable"""
-            nonlocal c_value # refers to the nonlocal 'c_value' variable
-            c_value += 1 # write access!
-            print(s1_str + ":" + s2_str + " " + str(c_value))
-        return enclosed_func2
-    return enclosed_func1(s_str)
+def pow_funcs_maker(n_value):
+    """returns a list of power functions"""
+    funcs = []
+    for exp_val in range(n_value):
+        funcs.append((lambda x_value,pow_val=exp_val: x_value**pow_val))
+    return funcs
+
+def wrong_pow_funcs_maker(n_value):
+    """returns a list of power functions (wrong version)"""
+    funcs = []
+    for exp_val in range(n_value):
+        funcs.append((lambda x_value: x_value**exp_val))
+    return funcs
 
 def feature35():
-    """Accessing non-local variables"""
-    print('Accessing non-local variables')
-    print('=============================\n')
+    """Factory function with lambda and defaults"""
+    print('Factory function with ``lambda`` and defaults')
+    print('=============================================\n')
     print(':py:mod:`codesnippets.feature35`')
     print('--------------------------------\n')
-    print("With ``nonlocal`` a nested function can get write access to variables")
-    print('of enclosing scopes.')
-    print('Such variables must be already existing variables: it is not possible')
-    print('to create a local variable as ``global`` does for module scope variables!\n')
+    print('The following function is a factory function that returns a list of power functions:\n')
+    print(':math:`f(x) = x^k` where :math:`k=0,1,...,n-1`.\n')
     print('.. code-block:: Python\n')
-    print('    def enclosing_func(n_value,s_str):')
-    print('        c_value = n_value # local variable initilized here')
-    print('        def enclosed_func1(s1_str):')
-    print('            def enclosed_func2(s2_str):')
-    print("                nonlocal c_value # refers to the nonlocal 'c_value' variable")
-    print('                c_value += 1 # write access!')
-    print("                print(s1_str + ':' + s2_str+ ' ' + str(c_value))")
-    print('            return enclosed_func2')
-    print('        return enclosed_func1(s_str)\n')
-    print(">>> hello_func = enclosing_func(33,'Hello')")
-    hello_func = enclosing_func(33,"Hello")
-    print(">>> bye_func = enclosing_func(100,'Bye')\n")
-    bye_func = enclosing_func(100,"Bye")
-    print(">>> hello_func('a')")
-    hello_func("a")
-    print(">>> hello_func('b')")
-    hello_func("b")
-    print(">>> hello_func('c')")
-    hello_func("c")
-    print("\n>>> bye_func('e')")
-    bye_func("e")
-    print(">>> bye_func('f')")
-    bye_func("f")
-    print(">>> bye_func('g')")
-    bye_func("g")
-    print('\n.. seealso:: :doc:`Accessing global variables<feature29>`')
+    print('    def pow_funcs_maker(n_value):')
+    print('        funcs = []')
+    print('        for exp_val in range(n_value):')
+    print('            funcs.append((lambda x_value, pow_val=exp_val: x_value**pow_val))')
+    print('        return funcs\n')
+    print('It uses ``lambda`` function syntax with a default parameter ``exp_value``'
+          'that is evaluated')
+    print('at function definition (not later when the function is called!) and')
+    print('set equal to the index ``exp_val`` of the loop.\n')
+    print('>>> pow_funcs = pow_funcs_maker(3)\n')
+    pow_funcs = pow_funcs_maker(3)
+    print('>>> pow_funcs[0](2)')
+    print(pow_funcs[0](2))
+    print('>>> pow_funcs[1](2)')
+    print(pow_funcs[1](2))
+    print('>>> pow_funcs[2](2)')
+    print(pow_funcs[2](2))
+    print('\nWithout a default parameter in the ``lambda`` function definitions, when')
+    print('the power functions are later called, they would all')
+    print('retain the value of the index variable ``exp_val`` at the end of the loop: all')
+    print('power functions would be the same!\n')
+    print('.. code-block:: Python\n')
+    print('    def wrong_pow_funcs_maker(n_value):')
+    print('        funcs = []')
+    print('        for exp_val in range(n_value):')
+    print('            funcs.append((lambda x_value: x_value**exp_val))')
+    print('        return funcs\n')
+    print('>>> pow_funcs = wrong_pow_funcs_maker(3)\n')
+    pow_funcs = wrong_pow_funcs_maker(3)
+    print('>>> pow_funcs[0](2)')
+    print(pow_funcs[0](2))
+    print('>>> pow_funcs[1](2)')
+    print(pow_funcs[1](2))
+    print('>>> pow_funcs[2](2)')
+    print(pow_funcs[2](2))
+    print('\n.. note:: All the ``lambda`` functions keep a reference to the loop variable'
+          ' ``exp_val``.\n    When the functions are later called, due to state retention, '
+          'they all reference ``exp_val``\n    with the last value reached in the loop!\n')
+    print('.. seealso:: :doc:`Lambda functions<feature46>`')
     print(80*'-')

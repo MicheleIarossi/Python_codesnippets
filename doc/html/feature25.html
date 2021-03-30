@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Side effects in loops &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Loop with enumerate() &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="The iteration protocol" href="feature26.html" />
-    <link rel="prev" title="Loop with enumerate()" href="feature24.html" /> 
+    <link rel="next" title="Side effects in loops" href="feature26.html" />
+    <link rel="prev" title="Dictionary construction with zip()" href="feature24.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature26.html" title="The iteration protocol"
+          <a href="feature26.html" title="Side effects in loops"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature24.html" title="Loop with enumerate()"
+          <a href="feature24.html" title="Dictionary construction with zip()"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Side effects in loops</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Loop with <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code></a></li> 
       </ul>
     </div>  
 
@@ -45,32 +45,30 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature25"></span><div class="section" id="side-effects-in-loops">
-<h1>Side effects in loops<a class="headerlink" href="#side-effects-in-loops" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature25"></span><div class="section" id="loop-with-enumerate">
+<h1>Loop with <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code><a class="headerlink" href="#loop-with-enumerate" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature25">
 <h2><a class="reference internal" href="#module-codesnippets.feature25" title="codesnippets.feature25"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature25</span></code></a><a class="headerlink" href="#codesnippets-feature25" title="Permalink to this headline">¶</a></h2>
-<p>If the data type is immutable, there are no side effects!</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<p>The built-in <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code> gives the offset and the item to use:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span><span class="s1">&#39;def&#39;</span><span class="p">,</span><span class="s1">&#39;ghi&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a_value</span> <span class="ow">in</span> <span class="n">a_lst</span><span class="p">:</span>
-<span class="go">        a_value += 1</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="p">(</span><span class="n">i_idx</span><span class="p">,</span><span class="n">s_str</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a_lst</span><span class="p">):</span>
+<span class="go">        print(i_idx,s_str)</span>
+<span class="go">0 abc</span>
+<span class="go">1 def</span>
+<span class="go">2 ghi</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst</span>
-<span class="go">[1, 2, 3, 4]</span>
+<p>A start value can be also given, e.g. starting from 1 instead of 0:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span><span class="s1">&#39;def&#39;</span><span class="p">,</span><span class="s1">&#39;ghi&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>If the data type is mutable, beware of in-place changes!</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst_of_lst</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],[</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">]]</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a_lst</span> <span class="ow">in</span> <span class="n">a_lst_of_lst</span><span class="p">:</span>
-<span class="go">        a_lst += [-1,-2] # calls list extend method</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst_of_lst</span>
-<span class="go">[[1, 2, -1, -2], [3, 4, -1, -2], [5, 6, -1, -2], [7, 8, -1, -2]]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="p">(</span><span class="n">i_idx</span><span class="p">,</span><span class="n">s_str</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a_lst</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span>
+<span class="go">        print(i_idx,s_str)</span>
+<span class="go">1 abc</span>
+<span class="go">2 def</span>
+<span class="go">3 ghi</span>
 </pre></div>
 </div>
 </div>
@@ -85,7 +83,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Side effects in loops</a><ul>
+<li><a class="reference internal" href="#">Loop with <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code></a><ul>
 <li><a class="reference internal" href="#codesnippets-feature25"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature25</span></code></a></li>
 </ul>
 </li>
@@ -93,10 +91,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature24.html"
-                        title="previous chapter">Loop with <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code></a></p>
+                        title="previous chapter">Dictionary construction with <code class="docutils literal notranslate"><span class="pre">zip()</span></code></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature26.html"
-                        title="next chapter">The iteration protocol</a></p>
+                        title="next chapter">Side effects in loops</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -128,13 +126,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature26.html" title="The iteration protocol"
+          <a href="feature26.html" title="Side effects in loops"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature24.html" title="Loop with enumerate()"
+          <a href="feature24.html" title="Dictionary construction with zip()"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Side effects in loops</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Loop with <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code></a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

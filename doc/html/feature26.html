@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The iteration protocol &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Side effects in loops &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="List comprehension on a file" href="feature27.html" />
-    <link rel="prev" title="Side effects in loops" href="feature25.html" /> 
+    <link rel="next" title="The iteration protocol" href="feature27.html" />
+    <link rel="prev" title="Loop with enumerate()" href="feature25.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature27.html" title="List comprehension on a file"
+          <a href="feature27.html" title="The iteration protocol"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature25.html" title="Side effects in loops"
+          <a href="feature25.html" title="Loop with enumerate()"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">The iteration protocol</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Side effects in loops</a></li> 
       </ul>
     </div>  
 
@@ -45,35 +45,32 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature26"></span><div class="section" id="the-iteration-protocol">
-<h1>The iteration protocol<a class="headerlink" href="#the-iteration-protocol" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature26"></span><div class="section" id="side-effects-in-loops">
+<h1>Side effects in loops<a class="headerlink" href="#side-effects-in-loops" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature26">
 <h2><a class="reference internal" href="#module-codesnippets.feature26" title="codesnippets.feature26"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature26</span></code></a><a class="headerlink" href="#codesnippets-feature26" title="Permalink to this headline">¶</a></h2>
-<p>Automatic iteration:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span><span class="s1">&#39;def&#39;</span><span class="p">,</span><span class="s1">&#39;ghi&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a_str</span> <span class="ow">in</span> <span class="n">a_lst</span><span class="p">:</span>
-<span class="go">        print(a_str)</span>
-<span class="go">abc</span>
-<span class="go">def</span>
-<span class="go">ghi</span>
+<p>If the data type is immutable, there are no side effects!</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Manual iteration:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span><span class="s1">&#39;def&#39;</span><span class="p">,</span><span class="s1">&#39;ghi&#39;</span><span class="p">]</span>       <span class="c1"># a list is an iterable object</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a_value</span> <span class="ow">in</span> <span class="n">a_lst</span><span class="p">:</span>
+<span class="go">        a_value += 1</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">str_lst</span><span class="p">)</span>        <span class="c1"># get iterator object</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst</span>
+<span class="go">[1, 2, 3, 4]</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-<span class="go">        try:</span>
-<span class="go">            a_str = next(a_lst_iter)  # same as str_lst_iter.__next__()</span>
-<span class="go">        except StopIteration:</span>
-<span class="go">            break</span>
-<span class="go">        print(a_str)</span>
-<span class="go">abc</span>
-<span class="go">def</span>
-<span class="go">ghi</span>
+<p>If the data type is mutable, beware of in-place changes!</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst_of_lst</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],[</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">]]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a_lst</span> <span class="ow">in</span> <span class="n">a_lst_of_lst</span><span class="p">:</span>
+<span class="go">        a_lst += [-1,-2] # calls list extend method</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_lst_of_lst</span>
+<span class="go">[[1, 2, -1, -2], [3, 4, -1, -2], [5, 6, -1, -2], [7, 8, -1, -2]]</span>
 </pre></div>
 </div>
 </div>
@@ -88,7 +85,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">The iteration protocol</a><ul>
+<li><a class="reference internal" href="#">Side effects in loops</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature26"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature26</span></code></a></li>
 </ul>
 </li>
@@ -96,10 +93,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature25.html"
-                        title="previous chapter">Side effects in loops</a></p>
+                        title="previous chapter">Loop with <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature27.html"
-                        title="next chapter">List comprehension on a file</a></p>
+                        title="next chapter">The iteration protocol</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -131,13 +128,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature27.html" title="List comprehension on a file"
+          <a href="feature27.html" title="The iteration protocol"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature25.html" title="Side effects in loops"
+          <a href="feature25.html" title="Loop with enumerate()"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">The iteration protocol</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Side effects in loops</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

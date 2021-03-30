@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>How to avoid nested scopes &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>The LEGB rule (nested scopes) &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Factory function (state retention)" href="feature32.html" />
-    <link rel="prev" title="The LEGB rule (nested scopes)" href="feature30.html" /> 
+    <link rel="next" title="How to avoid nested scopes" href="feature32.html" />
+    <link rel="prev" title="Accessing global variables" href="feature30.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature32.html" title="Factory function (state retention)"
+          <a href="feature32.html" title="How to avoid nested scopes"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature30.html" title="The LEGB rule (nested scopes)"
+          <a href="feature30.html" title="Accessing global variables"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">How to avoid nested scopes</a></li> 
+        <li class="nav-item nav-item-this"><a href="">The LEGB rule (nested scopes)</a></li> 
       </ul>
     </div>  
 
@@ -45,40 +45,27 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature31"></span><div class="section" id="how-to-avoid-nested-scopes">
-<h1>How to avoid nested scopes<a class="headerlink" href="#how-to-avoid-nested-scopes" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature31"></span><div class="section" id="the-legb-rule-nested-scopes">
+<h1>The LEGB rule (nested scopes)<a class="headerlink" href="#the-legb-rule-nested-scopes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature31">
 <h2><a class="reference internal" href="#module-codesnippets.feature31" title="codesnippets.feature31"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature31</span></code></a><a class="headerlink" href="#codesnippets-feature31" title="Permalink to this headline">¶</a></h2>
-<p>Remember that flat is better than nested!</p>
-<p>Given the function definitions below:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func1</span><span class="p">():</span>
-    <span class="n">global_var</span> <span class="o">=</span> <span class="mi">200</span> <span class="c1"># Shadows the global variable</span>
-    <span class="n">func2</span><span class="p">(</span><span class="n">global_var</span><span class="p">)</span>
+<p>Remember that LEGB = Local, Enclosing, Global(Module), Built-in.</p>
+<p>Given the following code:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">global_counter</span> <span class="o">=</span> <span class="mi">100</span>                <span class="c1"># global variable at module level</span>
 
-<span class="k">def</span> <span class="nf">func2</span><span class="p">(</span><span class="n">x_value</span><span class="p">):</span>
-    <span class="c1"># prints 200</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">x_value</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">func1</span><span class="p">():</span>
+    <span class="n">global_counter</span> <span class="o">=</span> <span class="mi">200</span>            <span class="c1"># shadows the global variable</span>
+    <span class="k">def</span> <span class="nf">func2</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">global_counter</span><span class="p">)</span>       <span class="c1"># gets global_counter from the enclosing scope</span>
+    <span class="n">func2</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Forward referencing is used which is valid code,
-as long as the function <code class="docutils literal notranslate"><span class="pre">func2</span></code> is defined before the function <code class="docutils literal notranslate"><span class="pre">func1</span></code> is called.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Code inside a <code class="docutils literal notranslate"><span class="pre">def</span></code> is never evaluated until the function is called.</p>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">global_var</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># global variable at module level</span>
-</pre></div>
-</div>
+<p>In the function <code class="docutils literal notranslate"><span class="pre">func1</span></code> the local <code class="docutils literal notranslate"><span class="pre">global_counter</span></code> variable shadows the global
+<code class="docutils literal notranslate"><span class="pre">global_counter</span></code> one, and the function <code class="docutils literal notranslate"><span class="pre">func2</span></code> gets the global counter
+from the enclosing scope.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func1</span><span class="p">()</span>
 <span class="go">200</span>
 </pre></div>
-</div>
-<p>The local variable <code class="docutils literal notranslate"><span class="pre">global_var</span></code> inside the function <code class="docutils literal notranslate"><span class="pre">func1</span></code> shadows the global one, but the
-function <code class="docutils literal notranslate"><span class="pre">func2</span></code> gets the value of the local global counter from its parameter istead of
-fetching it from a nested scope.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature30.html"><span class="doc">The LEGB rule (nested scopes)</span></a></p>
 </div>
 </div>
 </div>
@@ -92,7 +79,7 @@ fetching it from a nested scope.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">How to avoid nested scopes</a><ul>
+<li><a class="reference internal" href="#">The LEGB rule (nested scopes)</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature31"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature31</span></code></a></li>
 </ul>
 </li>
@@ -100,10 +87,10 @@ fetching it from a nested scope.</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature30.html"
-                        title="previous chapter">The LEGB rule (nested scopes)</a></p>
+                        title="previous chapter">Accessing global variables</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature32.html"
-                        title="next chapter">Factory function (state retention)</a></p>
+                        title="next chapter">How to avoid nested scopes</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -135,13 +122,13 @@ fetching it from a nested scope.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature32.html" title="Factory function (state retention)"
+          <a href="feature32.html" title="How to avoid nested scopes"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature30.html" title="The LEGB rule (nested scopes)"
+          <a href="feature30.html" title="Accessing global variables"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">How to avoid nested scopes</a></li> 
+        <li class="nav-item nav-item-this"><a href="">The LEGB rule (nested scopes)</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

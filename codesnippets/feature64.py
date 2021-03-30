@@ -1,4 +1,4 @@
-##    Python codesnippets - Operator overloading: add, sub, and basic indexing
+##    Python codesnippets - Class interface techniques
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,261 +19,213 @@
 #
 
 """
-Operator overloading: add, sub, and basic indexing
-==================================================
+Class interface techniques
+==========================
 
 :py:mod:`codesnippets.feature64`
 --------------------------------
 
-This is an example of a container class that implements also the:
+There are different inheritance patterns available for adding new features to derived classes:
 
-* ``__add__`` operator, which is called when class instances are added ``+``
-* ``__sub__`` operator, which is called when class instances are subtracted ``-``
-* ``__getitem__``, ``__setitem__`` operators, which are called when class
-  instances are indexed ``[]``
+* Inheritor,
+* Replacer,
+* Extender,
+* Provider.
+
+Given the following base class:
 
 .. code-block:: Python
 
-    class MyContainer:
-        \"""my container class\"""
-        def __init__(self,data):
-            print('	-> MyContainer.__init__')
-            self._data = data[:]
-        def __repr__(self):
-            print('	-> MyContainer.__repr__')
-            return 'MyContainer(data=%r)' % (self._data)
-        def __add__(self,other):
-            print('	-> MyContainer.__add__')
-            data = [x_val+y_val for (x_val,y_val) in zip(self._data,other._data)]
-            return MyContainer(data)
-        def __sub__(self,other):
-            print('	-> MyContainer.__sub__')
-            data = [x_val-y_val for (x_val,y_val) in zip(self._data,other._data)]
-            return MyContainer(data)
-        def __getitem__(self,key):
-            print('	-> MyContainer.__getitem__')
-            return self._data[key]
-        def __setitem__(self,key,value):
-            print('	-> MyContainer.__setitem__')
-            self._data[key] = value
+    class Super:
+        \"""a base class\"""
+        def method(self):
+            \"""a default method\"""
+            print(f'	-> In Super.method')           # Default behavior
+        def delegate(self):
+            \"""another method\"""
+            self.action()                      # Expected to be defined
 
-``MyContainer`` instances are created as usual:
+This is the default behaviour of the base class above:
 
->>> container1 = MyContainer([0,1,2,3,4,5])
-	-> MyContainer.__init__
->>> container1
-	-> MyContainer.__repr__
-MyContainer(data=[0, 1, 2, 3, 4, 5])
+>>> sup = Super()
+>>> sup.method()
+	-> In Super.method
 
->>> container2 = MyContainer([8,3,14,5,10,19])
-	-> MyContainer.__init__
->>> container2
-	-> MyContainer.__repr__
-MyContainer(data=[8, 3, 14, 5, 10, 19])
+The ``Inheritor`` just derives the methods from the base class as they are:
 
-Containers can be added:
+.. code-block:: Python
 
->>> container3 = container1 + container2
-	-> MyContainer.__add__
-	-> MyContainer.__init__
->>> container3
-	-> MyContainer.__repr__
-MyContainer(data=[8, 4, 16, 8, 14, 24])
+>>> class Inheritor(Super):                    # Inherit method verbatim
+        \"""a derived class\"""
+        pass
 
-Containers can be subtracted:
+The behaviour is the same as the ``Super`` class:
 
->>> container3 = container2 - container1
-	-> MyContainer.__sub__
-	-> MyContainer.__init__
->>> container3
-	-> MyContainer.__repr__
-MyContainer(data=[8, 2, 12, 2, 6, 14])
+>>> inh = Inheritor()
+>>> inh.method()
+	-> In Super.method
 
-Containers can be indexed (read and write):
+The ``Replacer`` redefines methods from the base class:
 
->>> container3[5] = 31
-	-> MyContainer.__setitem__
->>> container3
-	-> MyContainer.__repr__
-MyContainer(data=[8, 2, 12, 2, 6, 31])
+.. code-block:: Python
 
->>> container3[2]
-	-> MyContainer.__getitem__
-12
+    class Replacer(Super):                     # Replace method completely
+        \"""derived class replacing a method\"""
+        def method(self):
+            \"""new method\"""
+            print(f'	-> In Replacer.method')
 
-.. note:: Index operators are also used in all iteration context.
+The ``method`` call is completely replaced by ``Replacer``:
 
-For example:
+>>> rep = Replacer()
+>>> rep.method()
+	-> In Replacer.method
 
-* membership test
+The ``Extender`` extends methods from the base class:
 
->>> 31 in container3
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-True
+.. code-block:: Python
 
-* list comprehension
+    class Extender(Super):                     # Extend method behavior
+        \"""extends the base class\"""
+        def method(self):
+            \"""extends base method function\"""
+            print(f'	-> Starting Extender.method')
+            Super.method(self)
+            print(f'	-> Ending Extender.method')
 
->>> [elem for elem in container3]
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-[8, 2, 12, 2, 6, 31]
+The ``method`` call references ``Super.method()`` and extends it:
 
-* ``map`` call
+>>> ext = Extender()
+>>> ext.method()
+	-> Starting Extender.method
+	-> In Super.method
+	-> Ending Extender.method
 
->>> list(map(str,container3))
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-['8', '2', '12', '2', '6', '31']
+Finally, the ``Provider`` provides the missing method in the base class:
 
-* sequence assignments
+.. code-block:: Python
 
->>> (a_val,b_val,c_val,d_val,e_val,f_val) = container3
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
->>> a_val,b_val,d_val,e_val,f_val
-(8, 2, 12, 2, 6, 31)
+    class Provider(Super):                     # Fill in a required method
+        \"""provides missing method in the base class\"""
+        def action(self):
+            \"""missing method\"""
+            print(f'	-> In Provider.action')
 
-* ``list()``, ``tuple()``, etc.
+The method ``Super.delegate()`` needs an ``action()`` method provided by the ``Provider`` class:
 
->>> list(container3), tuple(container3)
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-	-> MyContainer.__getitem__
-([8, 2, 12, 2, 6, 31], (8, 2, 12, 2, 6, 31))
-
+>>> pro = Provider()
+>>> pro.delegate()
+	-> In Provider.action
 """
 
 def feature64():
-    """Operator overloading: add, sub, and basic indexing"""
-    print('Operator overloading: add, sub, and basic indexing')
-    print('==================================================\n')
+    """Class interface techniques"""
+    print('Class interface techniques')
+    print('==========================\n')
     print(':py:mod:`codesnippets.feature64`')
     print('--------------------------------\n')
-    print('This is an example of a container class that implements also the:\n')
-    print('* ``__add__`` operator, which is called when class instances are added ``+``')
-    print('* ``__sub__`` operator, which is called when class instances are subtracted ``-``')
-    print('* ``__getitem__``, ``__setitem__`` operators, which are called when\n  class '
-          'instances are indexed ``[]``\n')
+    print('There are different inheritance patterns available for adding new'
+          ' features to derived classes:\n')
+    print('* Inheritor,')
+    print('* Replacer,')
+    print('* Extender,')
+    print('* Provider.\n')
+    print('Given the following base class:\n')
     print('.. code-block:: Python\n')
-    print("""    class MyContainer:
-        \\\"""my container class\\\"""
-        def __init__(self,data):
-            print('\t-> MyContainer.__init__')
-            self._data = data[:]
-        def __repr__(self):
-            print('\t-> MyContainer.__repr__')
-            return 'MyContainer(data=%r)' % (self._data)
-        def __add__(self,other):
-            print('\t-> MyContainer.__add__')
-            data = [x_val+y_val for (x_val,y_val) in zip(self._data,other._data)]
-            return MyContainer(data)
-        def __sub__(self,other):
-            print('\t-> MyContainer.__sub__')
-            data = [x_val-y_val for (x_val,y_val) in zip(self._data,other._data)]
-            return MyContainer(data)
-        def __getitem__(self,key):
-            print('\t-> MyContainer.__getitem__')
-            return self._data[key]
-        def __setitem__(self,key,value):
-            print('\t-> MyContainer.__setitem__')
-            self._data[key] = value
-    """)
-    class MyContainer:
-        """my container class"""
-        def __init__(self,data):
-            print('\t-> MyContainer.__init__')
-            self._data = data[:]
-        def __repr__(self):
-            print('\t-> MyContainer.__repr__')
-            return 'MyContainer(data=%r)' % (self._data)
-        def __add__(self,other):
-            print('\t-> MyContainer.__add__')
-            data = [x_val+y_val for (x_val,y_val) in zip(self._data,other._data)]
-            return MyContainer(data)
-        def __sub__(self,other):
-            print('\t-> MyContainer.__sub__')
-            data = [x_val-y_val for (x_val,y_val) in zip(self._data,other._data)]
-            return MyContainer(data)
-        def __getitem__(self,key):
-            print('\t-> MyContainer.__getitem__')
-            return self._data[key]
-        def __setitem__(self,key,value):
-            print('\t-> MyContainer.__setitem__')
-            self._data[key] = value
-    print('``MyContainer`` instances are created as usual:\n')
-    print('>>> container1 = MyContainer([0,1,2,3,4,5])')
-    container1 = MyContainer([0,1,2,3,4,5])
-    print('>>> container1')
-    print(container1)
-    print('\n>>> container2 = MyContainer([8,3,14,5,10,19])')
-    container2 = MyContainer([8,3,14,5,10,19])
-    print('>>> container2')
-    print(container2)
-    print('\nContainers can be added:\n')
-    print('>>> container3 = container1 + container2')
-    container3 = container1+container2
-    print('>>> container3')
-    print(container3)
-    print('\nContainers can be subtracted:\n')
-    print('>>> container3 = container2 - container1')
-    container3 = container2 - container1
-    print('>>> container3')
-    print(container3)
-    print('\nContainers can be indexed (read and write):\n')
-    print('>>> container3[5] = 31')
-    container3[5] = 31
-    print('>>> container3')
-    print(container3)
-    print('\n>>> container3[2]')
-    print(container3[2])
-    print('\n.. note:: Index operators are also used in all iteration context.\n')
-    print('For example:')
-    print('\n* membership test\n')
-    print('>>> 31 in container3')
-    print(31 in container3)
-    print('\n* list comprehension\n')
-    print('>>> [elem for elem in container3]')
-    print([elem for elem in container3])
-    print('\n* ``map`` call\n')
-    print('>>> list(map(str,container3))')
-    print(list(map(str,container3)))
-    print('\n* sequence assignments\n')
-    print('>>> (a_val,b_val,c_val,d_val,e_val,f_val) = container3')
-    (a_val,b_val,c_val,d_val,e_val,f_val) = container3
-    print('>>> a_val,b_val,d_val,e_val,f_val')
-    print((a_val,b_val,c_val,d_val,e_val,f_val))
-    print('\n* ``list()``, ``tuple()``, etc.\n')
-    print('>>> list(container3), tuple(container3)')
-    print((list(container3), tuple(container3)))
+    print("""    class Super:
+        \\\"""a base class\\\"""
+        def method(self):
+            \\\"""a default method\\\"""
+            print(f'\t-> In Super.method')           # Default behavior
+        def delegate(self):
+            \\\"""another method\\\"""
+            self.action()                      # Expected to be defined
+        """)
+    class Super:
+        """a base class"""
+        def method(self):
+            """a default method"""
+            print(f'\t-> In Super.method')           # Default behavior
+        def delegate(self):
+            """another method"""
+            self.action()                      # Expected to be defined
+    print('This is the default behaviour of the base class above:\n')
+    print(">>> sup = Super()")
+    sup = Super()
+    print(">>> sup.method()")
+    sup.method()
+    print('\nThe ``Inheritor`` just derives the methods from the base class as they are:\n')
+    print('.. code-block:: Python\n')
+    print(""">>> class Inheritor(Super):                    # Inherit method verbatim
+        \\\"""a derived class\\\"""
+        pass
+        """)
+    class Inheritor(Super):                    # Inherit method verbatim
+        """a derived class"""
+        pass
+    print('The behaviour is the same as the ``Super`` class:\n')
+    print(">>> inh = Inheritor()")
+    inh = Inheritor()
+    print(">>> inh.method()")
+    inh.method()
+    print('\nThe ``Replacer`` redefines methods from the base class:\n')
+    print('.. code-block:: Python\n')
+    print("""    class Replacer(Super):                     # Replace method completely
+        \\\"""derived class replacing a method\\\"""
+        def method(self):
+            \\\"""new method\\\"""
+            print(f'\t-> In Replacer.method')
+        """)
+
+    class Replacer(Super):                     # Replace method completely
+        """derived class replacing a method"""
+        def method(self):
+            """new method"""
+            print(f'\t-> In Replacer.method')
+    print('The ``method`` call is completely replaced by ``Replacer``:\n')
+    print(">>> rep = Replacer()")
+    rep = Replacer()
+    print(">>> rep.method()")
+    rep.method()
+    print('\nThe ``Extender`` extends methods from the base class:\n')
+    print('.. code-block:: Python\n')
+    print("""    class Extender(Super):                     # Extend method behavior
+        \\\"""extends the base class\\\"""
+        def method(self):
+            \\\"""extends base method function\\\"""
+            print(f'\t-> Starting Extender.method')
+            Super.method(self)
+            print(f'\t-> Ending Extender.method')
+        """)
+    class Extender(Super):                     # Extend method behavior
+        """extends the base class"""
+        def method(self):
+            """extends base method function"""
+            print(f'\t-> Starting Extender.method')
+            Super.method(self)
+            print(f'\t-> Ending Extender.method')
+    print('The ``method`` call references ``Super.method()`` and extends it:\n')
+    print(">>> ext = Extender()")
+    ext = Extender()
+    print(">>> ext.method()")
+    ext.method()
+    print('\nFinally, the ``Provider`` provides the missing method in the base class:\n')
+    print('.. code-block:: Python\n')
+    print("""    class Provider(Super):                     # Fill in a required method
+        \\\"""provides missing method in the base class\\\"""
+        def action(self):
+            \\\"""missing method\\\"""
+            print(f'\t-> In Provider.action')
+        """)
+    class Provider(Super):                     # Fill in a required method
+        """provides missing method in the base class"""
+        def action(self):
+            """missing method"""
+            print(f'\t-> In Provider.action')
+    print('The method ``Super.delegate()`` needs an ``action()`` method '
+          'provided by the ``Provider`` class:\n')
+    print(">>> pro = Provider()")
+    pro = Provider()
+    print(">>> pro.delegate()")
+    pro.delegate()
     print(80*'-')

@@ -1,4 +1,4 @@
-##    Python codesnippets - Avoiding recursive calls by depth-first scanning
+##    Python codesnippets - Recursion
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,92 +19,74 @@
 #
 
 """
-Avoiding recursive calls by depth-first scanning
-================================================
+Recursion
+=========
 
 :py:mod:`codesnippets.feature43`
 --------------------------------
 
 This function sums up all the elements in a list and
-in its contained sublists.
-Sublists are scanned immediately (stacked) and then single elements are summed up.
+in its contained sublists by recursive calls:
 
 .. code-block:: Python
 
-    def sumtree(lst):
-        # Depth-first, explicit stack
+    def sumtree(a_list):
+        print(a_list)
         total = 0
-        # Start with copy of top level
-        items = list(lst)
-        while items:
-            # Fetch/delete front item
-            front = items.pop(0)
-            if not isinstance(front, list):
+        # For each item at this level
+        for elem in a_list:
+            if not isinstance(x, list):
                 # Add numbers directly
-                total += front
-                print(front)
+                total += elem
             else:
-                # Prepend all in nested list
-                items[:0] = front
+                # Recur for sublists
+                total += sumtree(elem)
         return total
 
 >>> lst = [1, [2, [3, 4], 5], 6, [7, 8]]          # Arbitrary nesting
 
 >>> sumtree(lst)                                  # Prints 36
-1
-2
-3
-4
-5
-6
-7
-8
+[1, [2, [3, 4], 5], 6, [7, 8]]
+[2, [3, 4], 5]
+[3, 4]
+[7, 8]
 36
 """
 
-def sumtree(lst):
-    # Depth-first, explicit stack
-    """sums up all the elements in a list and in its sublists by depth-first scanning"""
+def sumtree(a_list):
+    """sums up all the elements in a list and in its sublists"""
+    print(a_list)
     total = 0
-    # Start with copy of top level
-    items = list(lst)
-    while items:
-        # Fetch/delete front item
-        front = items.pop(0)
-        if not isinstance(front, list):
+    # For each item at this level
+    for elem in a_list:
+        if not isinstance(elem, list):
             # Add numbers directly
-            total += front
-            print(front)
+            total += elem
         else:
-            # Prepend all in nested list
-            items[:0] = front
+            # Recur for sublists
+            total += sumtree(elem)
     return total
 
 def feature43():
-    """Avoiding recursive calls by depth-first scanning"""
-    print('Avoiding recursive calls by depth-first scanning')
-    print('================================================\n')
+    """Recursion"""
+    print('Recursion')
+    print('=========\n')
     print(':py:mod:`codesnippets.feature43`')
     print('--------------------------------\n')
     print('This function sums up all the elements in a list and')
-    print('in its contained sublists.')
-    print('Sublists are scanned immediately (stacked) and then single elements are summed up.\n')
+    print('in its contained sublists by recursive calls:\n')
     print('.. code-block:: Python\n')
-    print('    def sumtree(lst):')
-    print('        # Depth-first, explicit stack')
+    print('    def sumtree(a_list):')
+    print('        print(a_list)')
     print('        total = 0')
-    print('        # Start with copy of top level')
-    print('        items = list(lst)')
-    print('        while items:')
-    print('            # Fetch/delete front item')
-    print('            front = items.pop(0)')
-    print('            if not isinstance(front, list):')
+    print('        # For each item at this level')
+    print('        for elem in a_list:')
+    print('            if not isinstance(x, list):')
     print('                # Add numbers directly')
-    print('                total += front')
-    print('                print(front)')
+    print('                total += elem')
     print('            else:')
-    print('                # Prepend all in nested list')
-    print('                items[:0] = front')
+    print('                # Recur for sublists')
+    print('                total += sumtree(elem)')
     print('        return total\n')
     print('>>> lst = [1, [2, [3, 4], 5], 6, [7, 8]]          # Arbitrary nesting\n')
     # Arbitrary nesting

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inheritance attribute lister class &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Unbound and bound methods &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Usage of __getattr__ and __getattribute__" href="feature73.html" />
-    <link rel="prev" title="Unbound and bound methods" href="feature71.html" /> 
+    <link rel="next" title="Inheritance attribute lister class" href="feature73.html" />
+    <link rel="prev" title="Pseudoprivate class attributes" href="feature71.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature73.html" title="Usage of __getattr__ and __getattribute__"
+          <a href="feature73.html" title="Inheritance attribute lister class"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature71.html" title="Unbound and bound methods"
+          <a href="feature71.html" title="Pseudoprivate class attributes"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Inheritance attribute lister class</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Unbound and bound methods</a></li> 
       </ul>
     </div>  
 
@@ -45,90 +45,58 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature72"></span><div class="section" id="inheritance-attribute-lister-class">
-<h1>Inheritance attribute lister class<a class="headerlink" href="#inheritance-attribute-lister-class" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature72"></span><div class="section" id="unbound-and-bound-methods">
+<h1>Unbound and bound methods<a class="headerlink" href="#unbound-and-bound-methods" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature72">
 <h2><a class="reference internal" href="#module-codesnippets.feature72" title="codesnippets.feature72"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature72</span></code></a><a class="headerlink" href="#codesnippets-feature72" title="Permalink to this headline">¶</a></h2>
-<p>The class below uses the <code class="docutils literal notranslate"><span class="pre">dir()</span></code> function for getting all attributes and names,
-and the <code class="docutils literal notranslate"><span class="pre">getattr()</span></code> function for retrieving their values:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ClassInspector</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;a self inspecting class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__attr_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="mi">4</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;provides list of attributes&quot;&quot;&quot;</span>
-        <span class="n">result</span>  <span class="o">=</span> <span class="s1">&#39;Interns</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s%%</span><span class="s1">s</span><span class="se">\n</span><span class="s1">Others</span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">120</span><span class="p">,</span> <span class="n">indent</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">120</span><span class="p">)</span>
-        <span class="n">unders</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                              <span class="c1"># Instance dir()</span>
-            <span class="k">if</span> <span class="n">attr</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;__&#39;</span> <span class="ow">and</span> <span class="n">attr</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="s1">&#39;__&#39;</span><span class="p">:</span>      <span class="c1"># Skip internals</span>
-                <span class="n">unders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">display</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">))[:</span><span class="mi">120</span><span class="o">-</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indent</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">attr</span><span class="p">))]</span>
-                <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">%s%s</span><span class="s1">=</span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">indent</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">display</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span> <span class="o">%</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unders</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;overloading repr operator&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;&lt;Instance of </span><span class="si">%s</span><span class="s1">, address 0x</span><span class="si">%x</span><span class="s1">:</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span>
-                       <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>         <span class="c1"># My class&#39;s name</span>
-                       <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>                        <span class="c1"># My address</span>
-                       <span class="bp">self</span><span class="o">.</span><span class="n">__attr_list</span><span class="p">())</span>              <span class="c1"># name=value list</span>
+<p>Since everything in Python is an object, methods of classes and instances
+can be used as callback functions, but bound methods do not need an explicit
+reference to an instance:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;a class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&lt;Object </span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">val</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;a method function&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&lt;Object </span><span class="si">%s</span><span class="s1">&gt;.function(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span><span class="n">val</span><span class="p">)</span>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;overloading repr operator&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;ClassInspector()&#39;</span>
+        <span class="sd">&quot;&quot;&quot;overloads repr operator&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;MyClass(name=</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The following are some test classes:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Parent</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;a parent class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_parent</span> <span class="o">=</span> <span class="mi">100</span>
-    <span class="k">def</span> <span class="nf">parent_method_1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;a method function&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-    <span class="k">def</span> <span class="nf">parent_method_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;a method function&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-
-<span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">ClassInspector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;a child class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">Parent</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_child1</span> <span class="o">=</span> <span class="mi">200</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_child2</span> <span class="o">=</span> <span class="mi">201</span>
-    <span class="k">def</span> <span class="nf">child_method_1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;a method function&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-    <span class="k">def</span> <span class="nf">child_method_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;a method function&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+<p>The following objects are 2 instances of the class <code class="docutils literal notranslate"><span class="pre">MyClass</span></code> above:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj1</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="s1">&#39;obj1&#39;</span><span class="p">)</span>
+<span class="go">&lt;Object obj1&gt;</span>
 </pre></div>
 </div>
-<p>A <code class="docutils literal notranslate"><span class="pre">Child</span></code> object is created as follows:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_child</span> <span class="o">=</span> <span class="n">Child</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="s1">&#39;obj2&#39;</span><span class="p">)</span>
+<span class="go">&lt;Object obj2&gt;</span>
 </pre></div>
 </div>
-<p>By invoking the <code class="docutils literal notranslate"><span class="pre">print</span></code> function on it, the <code class="docutils literal notranslate"><span class="pre">__str__</span></code> method of the <code class="docutils literal notranslate"><span class="pre">ClassInspector</span></code> is called:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">a_child</span><span class="p">)</span>
-<span class="go">&lt;Instance of Child, address 0x7f9b4839d3a0:</span>
-<span class="go">Interns--------------------------------------------------------------------------------------------------------</span>
-<span class="go">    __class__, __delattr__, __dict__, __dir__, __doc__,</span>
-<span class="go">    __eq__, __format__, __ge__, __getattribute__, __gt__, __hash__,</span>
-<span class="go">    __init__, __init_subclass__, __le__, __lt__, __module__, __ne__,</span>
-<span class="go">    __new__, __reduce__, __reduce_ex__, __repr__, __setattr__, __sizeof__,</span>
-<span class="go">    __str__, __subclasshook__, __weakref__</span>
-<span class="go">Others---------------------------------------------------------------------------------------------------------</span>
-<span class="go">    _ClassInspector__attr_list=&lt;bound method feature72.&lt;locals&gt;.ClassInspector.__attr_list of ClassInspector()&gt;</span>
-<span class="go">    child_method_1=&lt;bound method feature72.&lt;locals&gt;.Child.child_method_1 of ClassInspector()&gt;</span>
-<span class="go">    child_method_2=&lt;bound method feature72.&lt;locals&gt;.Child.child_method_2 of ClassInspector()&gt;</span>
-<span class="go">    data_child1=200</span>
-<span class="go">    data_child2=201</span>
-<span class="go">    data_parent=100</span>
-<span class="go">    parent_method_1=&lt;bound method feature72.&lt;locals&gt;.Parent.parent_method_1 of ClassInspector()&gt;</span>
-<span class="go">    parent_method_2=&lt;bound method feature72.&lt;locals&gt;.Parent.parent_method_2 of ClassInspector()&gt;</span>
-<span class="go">&gt;</span>
+<p>The variable <code class="docutils literal notranslate"><span class="pre">f1_func</span></code> saves a reference to the bound method of the instance <code class="docutils literal notranslate"><span class="pre">obj1</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f1_func</span> <span class="o">=</span> <span class="n">obj1</span><span class="o">.</span><span class="n">function</span>     <span class="c1"># Bound method to the instance obj1</span>
 </pre></div>
 </div>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature1.html"><span class="doc">dir() on an integer variable</span></a></p>
+<p>On the contrary, the variable <code class="docutils literal notranslate"><span class="pre">f2_func</span></code> saves a reference to the
+unbound method of the class <code class="docutils literal notranslate"><span class="pre">MyClass</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f2_func</span> <span class="o">=</span> <span class="n">MyClass</span><span class="o">.</span><span class="n">function</span>  <span class="c1"># Unbound method to the class AClass</span>
+</pre></div>
+</div>
+<p>The function references above can be called in other contexts:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">f1_func</span></code> works directly because already bound to <code class="docutils literal notranslate"><span class="pre">obj1</span></code></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f1_func</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">&lt;Object obj1&gt;.function(5)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">f2_func</span></code> still needs a reference to an object because unbound</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f2_func</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">&lt;Object obj2&gt;.function(5)</span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -142,7 +110,7 @@ and the <code class="docutils literal notranslate"><span class="pre">getattr()</
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Inheritance attribute lister class</a><ul>
+<li><a class="reference internal" href="#">Unbound and bound methods</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature72"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature72</span></code></a></li>
 </ul>
 </li>
@@ -150,10 +118,10 @@ and the <code class="docutils literal notranslate"><span class="pre">getattr()</
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature71.html"
-                        title="previous chapter">Unbound and bound methods</a></p>
+                        title="previous chapter">Pseudoprivate class attributes</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature73.html"
-                        title="next chapter">Usage of <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> and <code class="docutils literal notranslate"><span class="pre">__getattribute__</span></code></a></p>
+                        title="next chapter">Inheritance attribute lister class</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -185,13 +153,13 @@ and the <code class="docutils literal notranslate"><span class="pre">getattr()</
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature73.html" title="Usage of __getattr__ and __getattribute__"
+          <a href="feature73.html" title="Inheritance attribute lister class"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature71.html" title="Unbound and bound methods"
+          <a href="feature71.html" title="Pseudoprivate class attributes"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Inheritance attribute lister class</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Unbound and bound methods</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

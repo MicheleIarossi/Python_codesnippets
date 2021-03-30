@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>lambda functions, map() and list comprehension &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>lambda functions &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Function generators" href="feature47.html" />
-    <link rel="prev" title="lambda functions" href="feature45.html" /> 
+    <link rel="next" title="lambda functions, map() and list comprehension" href="feature47.html" />
+    <link rel="prev" title="Avoiding recursive calls by breadth-first scanning" href="feature45.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature47.html" title="Function generators"
+          <a href="feature47.html" title="lambda functions, map() and list comprehension"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature45.html" title="lambda functions"
+          <a href="feature45.html" title="Avoiding recursive calls by breadth-first scanning"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions, <code class="docutils literal notranslate"><span class="pre">map()</span></code> and <code class="docutils literal notranslate"><span class="pre">list</span></code> comprehension</a></li> 
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions</a></li> 
       </ul>
     </div>  
 
@@ -45,35 +45,45 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature46"></span><div class="section" id="lambda-functions-map-and-list-comprehension">
-<h1><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions, <code class="docutils literal notranslate"><span class="pre">map()</span></code> and <code class="docutils literal notranslate"><span class="pre">list</span></code> comprehension<a class="headerlink" href="#lambda-functions-map-and-list-comprehension" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature46"></span><div class="section" id="lambda-functions">
+<h1><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions<a class="headerlink" href="#lambda-functions" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature46">
 <h2><a class="reference internal" href="#module-codesnippets.feature46" title="codesnippets.feature46"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature46</span></code></a><a class="headerlink" href="#codesnippets-feature46" title="Permalink to this headline">¶</a></h2>
-<p>The combination of <code class="docutils literal notranslate"><span class="pre">lambda</span></code> function plus <code class="docutils literal notranslate"><span class="pre">map()</span></code> for creating a <code class="docutils literal notranslate"><span class="pre">list</span></code> represents
-an alternative to the <code class="docutils literal notranslate"><span class="pre">list</span></code> comprehension pattern.</p>
-<p>The following expressions are equivalent:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">x_var</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x_var</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
-<span class="go">[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</span>
+<p><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions return a value which is a function.
+They are limited to one line expression and should be used only
+for coding simple expressions or logic.
+Default arguments can also be used.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions are expressions and not statements like <code class="docutils literal notranslate"><span class="pre">def</span></code>.</p>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">beta</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span> <span class="n">alpha</span><span class="o">+</span><span class="n">beta</span><span class="o">+</span><span class="n">gamma</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">12</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">()</span>
+<span class="go">3</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x_var</span><span class="p">:</span> <span class="n">x_var</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
-<span class="go">[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</span>
+<p>if-then-else logic can also be coded:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lower</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">alpha</span><span class="p">,</span><span class="n">beta</span> <span class="p">:</span> <span class="n">alpha</span> <span class="k">if</span> <span class="n">alpha</span><span class="o">&gt;</span><span class="n">beta</span> <span class="k">else</span> <span class="n">beta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lower</span><span class="p">(</span><span class="s1">&#39;aa&#39;</span><span class="p">,</span><span class="s1">&#39;bb&#39;</span><span class="p">)</span>
+<span class="go">bb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lower</span><span class="p">(</span><span class="s1">&#39;bb&#39;</span><span class="p">,</span><span class="s1">&#39;aa&#39;</span><span class="p">)</span>
+<span class="go">bb</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">filter()</span></code> built-in function is used if filtering is required.</p>
-<p>The following expressions are equivalent as well:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">x_var</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x_var</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span> <span class="k">if</span> <span class="n">x_var</span><span class="o">%</span><span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span>
-<span class="go">[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</span>
+<p>Loops can be coded by means of list comprehension:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">printall</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s_str</span><span class="p">:</span> <span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span> <span class="k">for</span> <span class="n">sigma</span> <span class="ow">in</span> <span class="n">s_str</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">printall</span><span class="p">([</span><span class="s1">&#39;Hello&#39;</span><span class="p">,</span><span class="s1">&#39;Pippo&#39;</span><span class="p">,</span><span class="s1">&#39;Bye&#39;</span><span class="p">]</span>
+<span class="go">Hello</span>
+<span class="go">Pippo</span>
+<span class="go">Bye</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x_var</span><span class="p">:</span> <span class="n">x_var</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x_var</span><span class="p">:</span> <span class="n">x_var</span><span class="o">!=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))))</span>
-<span class="go">[1, 4, 9, 16, 25, 36, 49, 64, 81]</span>
+<p><code class="docutils literal notranslate"><span class="pre">lambda</span></code> can be nested as well and the same scope rules apply:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="k">lambda</span> <span class="n">alpha</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">beta</span><span class="p">:</span> <span class="n">alpha</span><span class="o">+</span><span class="n">beta</span><span class="p">))(</span><span class="mi">99</span><span class="p">)(</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">103</span>
 </pre></div>
-</div>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature8.html"><span class="doc">List comprehension</span></a>,
-<a class="reference internal" href="feature9.html"><span class="doc">map() on the elements of a list</span></a></p>
 </div>
 </div>
 </div>
@@ -87,7 +97,7 @@ an alternative to the <code class="docutils literal notranslate"><span class="pr
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions, <code class="docutils literal notranslate"><span class="pre">map()</span></code> and <code class="docutils literal notranslate"><span class="pre">list</span></code> comprehension</a><ul>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature46"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature46</span></code></a></li>
 </ul>
 </li>
@@ -95,10 +105,10 @@ an alternative to the <code class="docutils literal notranslate"><span class="pr
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature45.html"
-                        title="previous chapter"><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions</a></p>
+                        title="previous chapter">Avoiding recursive calls by breadth-first scanning</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature47.html"
-                        title="next chapter">Function generators</a></p>
+                        title="next chapter"><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions, <code class="docutils literal notranslate"><span class="pre">map()</span></code> and <code class="docutils literal notranslate"><span class="pre">list</span></code> comprehension</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -130,13 +140,13 @@ an alternative to the <code class="docutils literal notranslate"><span class="pr
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature47.html" title="Function generators"
+          <a href="feature47.html" title="lambda functions, map() and list comprehension"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature45.html" title="lambda functions"
+          <a href="feature45.html" title="Avoiding recursive calls by breadth-first scanning"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions, <code class="docutils literal notranslate"><span class="pre">map()</span></code> and <code class="docutils literal notranslate"><span class="pre">list</span></code> comprehension</a></li> 
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">lambda</span></code> functions</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

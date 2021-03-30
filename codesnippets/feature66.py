@@ -1,4 +1,4 @@
-##    Python codesnippets - Operator overloading: iteration protocol via function generator
+##    Python codesnippets - Operator overloading: iteration protocol
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,17 +19,21 @@
 #
 
 """
-Operator overloading: iteration protocol via function generator
-===============================================================
+Operator overloading: iteration protocol
+========================================
 
 :py:mod:`codesnippets.feature66`
 --------------------------------
 
-In the following, the ``MyContainerClass`` from :doc:`Operator overloading:
-add, sub, and basic indexing<feature64>` is adapted for supporting the
-iteration protocol via function generators. By implementing the ``__iter__`` operator
-and by returning a function generator, which is an iterator, the class
-can still use the iteration protocol:
+In order to support the iteration protocol in a given class, the:
+
+* ``__iter__`` operator needs to be implemented and it must return an iterator class
+* ``__next__`` operator needs to be implemented in the iterator class
+
+
+In the following, the ``MyContainerClass`` from :doc:`Operator overloading: add, sub, and basic
+indexing<feature65>` is adapted for supporting the iteration protocol. By implementing the
+``__iter__`` operator instead of ``__getitem__`` , the class can return an iterator class instance:
 
 .. code-block:: Python
 
@@ -51,14 +55,37 @@ can still use the iteration protocol:
             return MyContainer(data)
         def __iter__(self):
             print('	-> MyContainer.__iter__')
-            for v_val in self._data:
-                yield v_val
+            return MyContainerIterator(self._data)
         def __getitem__(self,key):
             print('	-> MyContainer.__getitem__')
             return self._data[key]
         def __setitem__(self,key,value):
             print('	-> MyContainer.__setitem__')
             self._data[key] = value
+
+In the iterator class ``MyContainerIterator`` the ``__next__`` operator is used for scanning
+each element one by one. Once the elements are exhausted, the ``StopIteration``
+exception is raised:
+
+.. code-block:: Python
+
+    class MyContainerIterator:
+        \"""a container iterator class\"""
+        def __init__(self,data):
+            print('	-> MyContainerIterator.__init__')
+            self.data = data
+            self.key  = 0
+        def __next__(self):
+            print('	-> MyContainerIterator.__next__')
+            if self.key >= len(self.data):
+                raise StopIteration
+            value = self.data[self.key]
+            self.key += 1
+            return value
+        def __repr__(self):
+            \"""overloads repr operator\"""
+            print('	-> MyContainerIterator.__repr__')
+            return 'MyContainerIterator(data=%r)' % (self._data)
 
 ``MyContainer`` instances are created as usual:
 
@@ -68,29 +95,35 @@ can still use the iteration protocol:
 	-> MyContainer.__repr__
 MyContainer(data=[0, 1, 2, 3, 4, 5])
 
-The ``iter`` built-in function is applied now to ``container1`` for getting
-a function generator back:
+The ``iter`` built-in function is applied now to ``container1`` for getting an iterator object back:
 
 >>> iterator_container1 = iter(container1)
+	-> MyContainer.__iter__
+	-> MyContainerIterator.__init__
 
 >>> next(iterator_container1), next(iterator_container1), next(iterator_container1)
-	-> MyContainer.__iter__
+	-> MyContainerIterator.__next__
+	-> MyContainerIterator.__next__
+	-> MyContainerIterator.__next__
 0 1 2
 
-.. seealso:: :doc:`Function generators<feature47>`
+.. seealso:: :doc:`The iteration protocol<feature27>`
 """
 
 def feature66():
-    """Operator overloading: iteration protocol via function generator"""
-    print('Operator overloading: iteration protocol via function generator')
-    print('===============================================================\n')
+    """Operator overloading: iteration protocol"""
+    print('Operator overloading: iteration protocol')
+    print('========================================\n')
     print(':py:mod:`codesnippets.feature66`')
     print('--------------------------------\n')
-    print('In the following, the ``MyContainerClass`` from '
-          ':doc:`Operator overloading:\nadd, sub, and basic indexing<feature64>` is adapted for '
-          'supporting the\niteration protocol via function generators.'
-          'By implementing the ``__iter__`` operator\nand by returning a function '
-          'generator, which is an iterator, the class\ncan still use the iteration protocol:\n')
+    print('In order to support the iteration protocol in a given class, the:\n')
+    print('* ``__iter__`` operator needs to be implemented and it must return an iterator class')
+    print('* ``__next__`` operator needs to be implemented in the iterator class\n')
+    print('\nIn the following, the ``MyContainerClass`` from '
+          ':doc:`Operator overloading: add, sub, and\nbasic indexing<feature65>` is adapted for '
+          'supporting the iteration protocol. By implementing the\n``__iter__`` '
+          'operator instead of ``__getitem__``, the class can return '
+          'an iterator class instance:\n')
     print('.. code-block:: Python\n')
     print("""    class MyContainer:
         \\\"""my container class\\\"""
@@ -110,8 +143,7 @@ def feature66():
             return MyContainer(data)
         def __iter__(self):
             print('\t-> MyContainer.__iter__')
-            for v_val in self._data:
-                yield v_val
+            return MyContainerIterator(self._data)
         def __getitem__(self,key):
             print('\t-> MyContainer.__getitem__')
             return self._data[key]
@@ -137,24 +169,63 @@ def feature66():
             return MyContainer(data)
         def __iter__(self):
             print('\t-> MyContainer.__iter__')
-            for v_val in self._data:
-                yield v_val
+            return MyContainerIterator(self._data)
         def __getitem__(self,key):
             print('\t-> MyContainer.__getitem__')
             return self._data[key]
         def __setitem__(self,key,value):
             print('\t-> MyContainer.__setitem__')
             self._data[key] = value
+    print('In the iterator class ``MyContainerIterator`` the ``__next__`` operator is '
+          'used for scanning each element one by one. Once the elements are exhausted, '
+          'the ``StopIteration`` exception is raised:\n')
+    print('.. code-block:: Python\n')
+    print("""    class MyContainerIterator:
+        \\\"""a container iterator class\\\"""
+        def __init__(self,data):
+            print('\t-> MyContainerIterator.__init__')
+            self.data = data
+            self.key  = 0
+        def __next__(self):
+            print('\t-> MyContainerIterator.__next__')
+            if self.key >= len(self.data):
+                raise StopIteration
+            value = self.data[self.key]
+            self.key += 1
+            return value
+        def __repr__(self):
+            \\\"""overloads repr operator\\\"""
+            print('\t-> MyContainerIterator.__repr__')
+            return 'MyContainerIterator(data=%r)' % (self._data)
+        """)
+    class MyContainerIterator:
+        """a container iterator class"""
+        def __init__(self,data):
+            print('\t-> MyContainerIterator.__init__')
+            self._data = data
+            self._key  = 0
+        def __next__(self):
+            print('\t-> MyContainerIterator.__next__')
+            if self._key >= len(self._data):
+                raise StopIteration
+            value = self._data[self._key]
+            self._key += 1
+            return value
+        def __repr__(self):
+            """overloads repr operator"""
+            print('\t-> MyContainerIterator.__repr__')
+            return 'MyContainerIterator(data=%r)' % (self._data)
+
     print('``MyContainer`` instances are created as usual:\n')
     print('>>> container1 = MyContainer([0,1,2,3,4,5])')
     container1 = MyContainer([0,1,2,3,4,5])
     print('>>> container1')
     print(container1)
-    print('\nThe ``iter`` built-in function is applied now to ``container1`` for getting\n'
-          'a function generator back:\n')
-    iterator_container1 = iter(container1)
+    print('\nThe ``iter`` built-in function is applied now to ``container1`` for getting an '
+          'iterator object back:\n')
     print(">>> iterator_container1 = iter(container1)")
+    iterator_container1 = iter(container1)
     print("\n>>> next(iterator_container1), next(iterator_container1), next(iterator_container1)")
     print(next(iterator_container1), next(iterator_container1), next(iterator_container1))
-    print('\n.. seealso:: :doc:`Function generators<feature47>`')
+    print('\n.. seealso:: :doc:`The iteration protocol<feature27>`')
     print(80*'-')

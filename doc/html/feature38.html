@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Arguments matched by default values, by position and by name &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Simulating output parameters in a function call &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Arbitrary arguments" href="feature39.html" />
-    <link rel="prev" title="Simulating output parameters in a function call" href="feature37.html" /> 
+    <link rel="next" title="Arguments matched by default values, by position and by name" href="feature39.html" />
+    <link rel="prev" title="State retention using mutable list" href="feature37.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature39.html" title="Arbitrary arguments"
+          <a href="feature39.html" title="Arguments matched by default values, by position and by name"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature37.html" title="Simulating output parameters in a function call"
+          <a href="feature37.html" title="State retention using mutable list"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Arguments matched by default values, by position and by name</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Simulating output parameters in a function call</a></li> 
       </ul>
     </div>  
 
@@ -45,34 +45,27 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature38"></span><div class="section" id="arguments-matched-by-default-values-by-position-and-by-name">
-<h1>Arguments matched by default values, by position and by name<a class="headerlink" href="#arguments-matched-by-default-values-by-position-and-by-name" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature38"></span><div class="section" id="simulating-output-parameters-in-a-function-call">
+<h1>Simulating output parameters in a function call<a class="headerlink" href="#simulating-output-parameters-in-a-function-call" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature38">
 <h2><a class="reference internal" href="#module-codesnippets.feature38" title="codesnippets.feature38"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature38</span></code></a><a class="headerlink" href="#codesnippets-feature38" title="Permalink to this headline">¶</a></h2>
-<p>The following function assigns default values to its parameters:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">a_value</span><span class="o">=</span><span class="mi">44</span><span class="p">,</span><span class="n">b_value</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span><span class="n">c_value</span><span class="o">=</span><span class="mi">66</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">a_value</span><span class="p">,</span><span class="n">b_value</span><span class="p">,</span><span class="n">c_value</span><span class="p">)</span>
+<p>Input parameters are always passed by assignment. Immutable objects
+cannot be changed inside the function, but multiple new values
+can be returned by the <code class="docutils literal notranslate"><span class="pre">return</span></code> statement.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">assign_new_values</span><span class="p">(</span><span class="n">a_value</span><span class="p">,</span><span class="n">b_value</span><span class="p">,</span><span class="n">c_value</span><span class="p">):</span>
+    <span class="n">a_value</span><span class="p">,</span> <span class="n">b_value</span><span class="p">,</span> <span class="n">c_value</span> <span class="o">=</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">33</span>
+    <span class="k">return</span> <span class="n">a_value</span><span class="p">,</span> <span class="n">b_value</span><span class="p">,</span> <span class="n">c_value</span>
 </pre></div>
 </div>
-<p>If no arguments are provided, the default values are used:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">()</span>  <span class="c1"># uses default values</span>
-<span class="go">(44, 55, 66)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_value</span><span class="p">,</span> <span class="n">b_value</span><span class="p">,</span> <span class="n">c_value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span>
 </pre></div>
 </div>
-<p>If no special matching is used, position is the normal matching mode, where
-arguments are matched from left to right:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="mi">222</span><span class="p">,</span><span class="mi">333</span><span class="p">)</span>  <span class="c1"># match by position</span>
-<span class="go">(111, 222, 333)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_value</span><span class="p">,</span> <span class="n">b_value</span><span class="p">,</span> <span class="n">c_value</span> <span class="o">=</span> <span class="n">assign_new_values</span><span class="p">(</span><span class="n">a_value</span><span class="p">,</span><span class="n">b_value</span><span class="p">,</span><span class="n">c_value</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>If keyword arguments are used, the matching is done by name in any order:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span><span class="p">(</span><span class="n">c_value</span><span class="o">=</span><span class="mi">333</span><span class="p">,</span><span class="n">b_value</span><span class="o">=</span><span class="mi">222</span><span class="p">,</span><span class="n">a_value</span><span class="o">=</span><span class="mi">111</span><span class="p">)</span>  <span class="c1"># match by name</span>
-<span class="go">(111, 222, 333)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_value</span><span class="p">,</span><span class="n">b_value</span><span class="p">,</span><span class="n">c_value</span>
+<span class="go">(11, 22, 33)</span>
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Positional arguments must precede any keyword arguments.</p>
 </div>
 </div>
 </div>
@@ -86,7 +79,7 @@ arguments are matched from left to right:</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Arguments matched by default values, by position and by name</a><ul>
+<li><a class="reference internal" href="#">Simulating output parameters in a function call</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature38"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature38</span></code></a></li>
 </ul>
 </li>
@@ -94,10 +87,10 @@ arguments are matched from left to right:</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature37.html"
-                        title="previous chapter">Simulating output parameters in a function call</a></p>
+                        title="previous chapter">State retention using mutable list</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature39.html"
-                        title="next chapter">Arbitrary arguments</a></p>
+                        title="next chapter">Arguments matched by default values, by position and by name</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -129,13 +122,13 @@ arguments are matched from left to right:</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature39.html" title="Arbitrary arguments"
+          <a href="feature39.html" title="Arguments matched by default values, by position and by name"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature37.html" title="Simulating output parameters in a function call"
+          <a href="feature37.html" title="State retention using mutable list"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Arguments matched by default values, by position and by name</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Simulating output parameters in a function call</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

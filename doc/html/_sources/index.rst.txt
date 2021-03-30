@@ -46,100 +46,101 @@ Table of contents
    More assignment unpacking<feature16.rst>
    First, rest pattern<feature17.rst>
    Side effects in assignments<feature18.rst>
-   Dictionary-based C-type switch<feature19.rst>
-   Boolean and/or operators<feature20.rst>
-   Ternary expression<feature21.rst>
-   Parallel traversals with zip()<feature22.rst>
-   Dictionary construction with zip()<feature23.rst>
-   Loop with enumerate()<feature24.rst>
-   Side effects in loops<feature25.rst>
-   The iteration protocol<feature26.rst>
-   List comprehension on a file<feature27.rst>
-   Function definitions<feature28.rst>
-   Accessing global variables<feature29.rst>
-   The LEGB rule (nested scopes)<feature30.rst>
-   How to avoid nested scopes<feature31.rst>
-   Factory function (state retention)<feature32.rst>
-   Factory function with lambda<feature33.rst>
-   Factory function with lambda and defaults<feature34.rst>
-   Accessing non-local variables<feature35.rst>
-   State retention using mutable list<feature36.rst>
-   Simulating output parameters in a function call<feature37.rst>
-   Arguments matched by default values, by position and by name<feature38.rst>
-   Arbitrary arguments<feature39.rst>
-   Unpacking arguments<feature40.rst>
-   Keyword only arguments<feature41.rst>
-   Recursion<feature42.rst>
-   Avoiding recursive calls by depth-first scanning<feature43.rst>
-   Avoiding recursive calls by breadth-first scanning<feature44.rst>
-   Lambda functions<feature45.rst>
-   Lambda functions, map() and list comprehension<feature46.rst>
-   Function generators<feature47.rst>
-   Expression generators<feature48.rst>
-   Module import information<feature49.rst>
-   Module import<feature50.rst>
-   Side effects when importing modules<feature51.rst>
-   Module reload<feature52.rst>
-   Module packages<feature53.rst>
-   Absolute import from a module package<feature54.rst>
-   Relative import from a module package<feature55.rst>   
-   Module attribute access<feature56.rst>
-   Module imports with importlib<feature57.rst>  
-   First classes<feature58.rst>
-   Built-in class attributes for introspection<feature59.rst>
-   Adding features via inheritance<feature60.rst>   
-   Class and per-instance attributes<feature61.rst>
-   More on class introspection tools: __class__, __bases__, __dict__<feature62.rst>
-   Class interface techniques<feature63.rst>
-   Operator overloading: add, sub, and basic indexing<feature64.rst>
-   Operator overloading: iteration protocol<feature65.rst>
-   Operator overloading: iteration protocol via function generator<feature66.rst>
-   Operator overloading: specific membership with __contains__<feature67.rst>
-   Operator overloading: __call__, __len__, __bool__<feature68.rst>
-   Operator overloading: final MyContainer class<feature69.rst>
-   Pseudoprivate class attributes<feature70.rst>
-   Unbound and bound methods<feature71.rst>
-   Inheritance attribute lister class<feature72.rst>
-   Usage of __getattr__ and __getattribute__<feature73.rst>
-   Type built-in function applied to classes and instances<feature74.rst>   
-   Built-in operations cannot be delegated via __getattr__<feature75.rst>
-   Built-in method resolution starts at the class<feature76.rst>
-   Method resolution order (MRO)<feature77.rst>
-   Tracing instance attributes<feature78.rst>
-   Slots<feature79.rst>
-   Static methods via built-in function staticmethod()<feature80.rst>
-   Static methods via function decorator @staticmethod<feature81.rst>
-   Usage of super() in diamond class trees<feature82.rst>
-   Constructor calls with multiple inheritance<feature83.rst>   
-   Exception handling<feature84.rst>
-   Exception hierarchies<feature85.rst>
-   Byte and string types<feature86.rst>
-   String type conversions<feature87.rst>
-   ASCII text<feature88.rst>
-   Unicode text<feature89.rst> 
-   String and byte literals<feature90.rst>
-   Bytes, bytearray and string<feature91.rst>
-   The property protocol<feature92.rst>
-   Descriptors<feature93.rst>
-   Generic attribute management<feature94.rst>
-   Proxy pattern<feature95.rst>
-   Basic function decorator<feature96.rst>
-   Wrapper/proxy pattern with function decorator<feature97.rst>
-   Decorator implementation via classes<feature98.rst>
-   Decorator for a method of a class<feature99.rst>
-   Decorator for a class<feature100.rst>
-   Decorator nesting<feature101.rst>
-   Decorator arguments<feature102.rst>
-   Call tracer with a function decorator<feature103.rst>
-   Call tracer with a class descriptor used as decorator<feature104.rst>
-   Implementation of the singleton pattern via function attributes<feature105.rst>
-   Implementation of the singleton pattern via class decorator<feature106.rst>
-   Type<feature107.rst>
-   Class statement protocol<feature108.rst>
-   Metaclass<feature109.rst>
-   Metaclass of a metaclass and __call__ overloading<feature110.rst>
-   Adding methods to classes<feature111.rst>
-  
+   Assignment expressions: walrus operator<feature19.rst>
+   Dictionary-based C-type switch<feature20.rst>
+   Boolean and/or operators<feature21.rst>
+   Ternary expression<feature22.rst>
+   Parallel traversals with zip()<feature23.rst>
+   Dictionary construction with zip()<feature24.rst>
+   Loop with enumerate()<feature25.rst>
+   Side effects in loops<feature26.rst>
+   The iteration protocol<feature27.rst>
+   List comprehension on a file<feature28.rst>
+   Function definitions<feature29.rst>
+   Accessing global variables<feature30.rst>
+   The LEGB rule (nested scopes)<feature31.rst>
+   How to avoid nested scopes<feature32.rst>
+   Factory function (state retention)<feature33.rst>
+   Factory function with lambda<feature34.rst>
+   Factory function with lambda and defaults<feature35.rst>
+   Accessing non-local variables<feature36.rst>
+   State retention using mutable list<feature37.rst>
+   Simulating output parameters in a function call<feature38.rst>
+   Arguments matched by default values, by position and by name<feature39.rst>
+   Arbitrary arguments<feature40.rst>
+   Unpacking arguments<feature41.rst>
+   Keyword only arguments<feature42.rst>
+   Recursion<feature43.rst>
+   Avoiding recursive calls by depth-first scanning<feature44.rst>
+   Avoiding recursive calls by breadth-first scanning<feature45.rst>
+   Lambda functions<feature46.rst>
+   Lambda functions, map() and list comprehension<feature47.rst>
+   Function generators<feature48.rst>
+   Expression generators<feature49.rst>
+   Module import information<feature50.rst>
+   Module import<feature51.rst>
+   Side effects when importing modules<feature52.rst>
+   Module reload<feature53.rst>
+   Module packages<feature54.rst>
+   Absolute import from a module package<feature55.rst>
+   Relative import from a module package<feature56.rst>
+   Module attribute access<feature57.rst>
+   Module imports with importlib<feature58.rst>
+   First classes<feature59.rst>
+   Built-in class attributes for introspection<feature60.rst>
+   Adding features via inheritance<feature61.rst>
+   Class and per-instance attributes<feature62.rst>
+   More on class introspection tools: __class__, __bases__, __dict__<feature63.rst>
+   Class interface techniques<feature64.rst>
+   Operator overloading: add, sub, and basic indexing<feature65.rst>
+   Operator overloading: iteration protocol<feature66.rst>
+   Operator overloading: iteration protocol via function generator<feature67.rst>
+   Operator overloading: specific membership with __contains__<feature68.rst>
+   Operator overloading: __call__, __len__, __bool__<feature69.rst>
+   Operator overloading: final MyContainer class<feature70.rst>
+   Pseudoprivate class attributes<feature71.rst>
+   Unbound and bound methods<feature72.rst>
+   Inheritance attribute lister class<feature73.rst>
+   Usage of __getattr__ and __getattribute__<feature74.rst>
+   Type built-in function applied to classes and instances<feature75.rst>
+   Built-in operations cannot be delegated via __getattr__<feature76.rst>
+   Built-in method resolution starts at the class<feature77.rst>
+   Method resolution order (MRO)<feature78.rst>
+   Tracing instance attributes<feature79.rst>
+   Slots<feature80.rst>
+   Static methods via built-in function staticmethod()<feature81.rst>
+   Static methods via function decorator @staticmethod<feature82.rst>
+   Usage of super() in diamond class trees<feature83.rst>
+   Constructor calls with multiple inheritance<feature84.rst>
+   Exception handling<feature85.rst>
+   Exception hierarchies<feature86.rst>
+   Byte and string types<feature87.rst>
+   String type conversions<feature88.rst>
+   ASCII text<feature89.rst>
+   Unicode text<feature90.rst>
+   String and byte literals<feature91.rst>
+   Bytes, bytearray and string<feature92.rst>
+   The property protocol<feature93.rst>
+   Descriptors<feature94.rst>
+   Generic attribute management<feature95.rst>
+   Proxy pattern<feature96.rst>
+   Basic function decorator<feature97.rst>
+   Wrapper/proxy pattern with function decorator<feature98.rst>
+   Decorator implementation via classes<feature99.rst>
+   Decorator for a method of a class<feature100.rst>
+   Decorator for a class<feature101.rst>
+   Decorator nesting<feature102.rst>
+   Decorator arguments<feature103.rst>
+   Call tracer with a function decorator<feature104.rst>
+   Call tracer with a class descriptor used as decorator<feature105.rst>
+   Implementation of the singleton pattern via function attributes<feature106.rst>
+   Implementation of the singleton pattern via class decorator<feature107.rst>
+   Type<feature108.rst>
+   Class statement protocol<feature109.rst>
+   Metaclass<feature110.rst>
+   Metaclass of a metaclass and __call__ overloading<feature111.rst>
+   Adding methods to classes<feature112.rst>
+
 Indices and tables
 ==================
 

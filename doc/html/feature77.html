@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Method resolution order (MRO) &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Built-in method resolution starts at the class &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Tracing instance attributes" href="feature78.html" />
-    <link rel="prev" title="Built-in method resolution starts at the class" href="feature76.html" /> 
+    <link rel="next" title="Method resolution order (MRO)" href="feature78.html" />
+    <link rel="prev" title="Built-in operations cannot be delegated via __getattr__" href="feature76.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature78.html" title="Tracing instance attributes"
+          <a href="feature78.html" title="Method resolution order (MRO)"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature76.html" title="Built-in method resolution starts at the class"
+          <a href="feature76.html" title="Built-in operations cannot be delegated via __getattr__"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Method resolution order (MRO)</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Built-in method resolution starts at the class</a></li> 
       </ul>
     </div>  
 
@@ -45,40 +45,56 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature77"></span><div class="section" id="method-resolution-order-mro">
-<h1>Method resolution order (MRO)<a class="headerlink" href="#method-resolution-order-mro" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature77"></span><div class="section" id="built-in-method-resolution-starts-at-the-class">
+<h1>Built-in method resolution starts at the class<a class="headerlink" href="#built-in-method-resolution-starts-at-the-class" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature77">
 <h2><a class="reference internal" href="#module-codesnippets.feature77" title="codesnippets.feature77"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature77</span></code></a><a class="headerlink" href="#codesnippets-feature77" title="Permalink to this headline">¶</a></h2>
-<p>The attribute <code class="docutils literal notranslate"><span class="pre">__mro__</span></code> provides the list of classes used for method resolution.</p>
-<p>Consider the following hierarchy of classes:</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ClassA</span><span class="p">:</span>
+<p>Built-in method resolution starts at the class and skips the instance.</p>
+<p>This is equivalent to <code class="docutils literal notranslate"><span class="pre">type(my_obj).__xxxxx__(my_obj,...)</span></code>, which means
+that you have to override the built-in operations in the class itself.</p>
+<p>Consider the following class:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;a class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;ClassA()&#39;</span>
-
-<span class="k">class</span> <span class="nc">ClassB</span><span class="p">(</span><span class="n">ClassA</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;a derived class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;ClassB()&#39;</span>
-
-<span class="k">class</span> <span class="nc">ClassC</span><span class="p">(</span><span class="n">ClassA</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;another derived class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;ClassC()&#39;</span>
-
-<span class="k">class</span> <span class="nc">ClassD</span><span class="p">(</span><span class="n">ClassB</span><span class="p">,</span><span class="n">ClassC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;multiple inheritance class&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;ClassD()&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">valstr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">valstr</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ClassD</span><span class="o">.</span><span class="vm">__mro__</span>
-<span class="go">(&lt;class &#39;codesnippets.feature77.feature77.&lt;locals&gt;.ClassD&#39;&gt;,</span>
-<span class="go">&lt;class &#39;codesnippets.feature77.feature77.&lt;locals&gt;.ClassB&#39;&gt;,</span>
-<span class="go">&lt;class &#39;codesnippets.feature77.feature77.&lt;locals&gt;.ClassC&#39;&gt;,</span>
-<span class="go">&lt;class &#39;codesnippets.feature77.feature77.&lt;locals&gt;.ClassA&#39;&gt;,</span>
-<span class="go">&lt;class &#39;object&#39;&gt;)</span>
+<p>and the following object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
 </pre></div>
+</div>
+<p>When indexed, an exception is thrown since the instance has no <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> built-in defined:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">        --&gt; Exception: &#39;MyClass&#39; object is not subscriptable</span>
+<span class="go">        Instance has no __getitem__ built-in defined</span>
+</pre></div>
+</div>
+<p>But <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> can be added to the instance itself:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">my_getitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
+<span class="go">        return self.data[index]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span><span class="o">.</span><span class="fm">__getitem__</span> <span class="o">=</span> <span class="n">my_getitem</span>
+</pre></div>
+</div>
+<p>If the method is explicitely called, then it works:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">my_obj</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">l</span>
+</pre></div>
+</div>
+<p>But if it is called as a built-in operation, it fails because the
+instance is skipped and the operation is not overloaded in the class:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_obj</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">        --&gt; Exception: &#39;MyClass&#39; object is not subscriptable</span>
+<span class="go">        __getitem__ is not called! Equivalent to type(my_obj).__getitem__(my_obj,idx)</span>
+<span class="go">        and __getitem__ is not overridden in the class!</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> built-in method needs to be overridden in
+the class in order to avoid such exception.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="feature76.html"><span class="doc">Built-in operations cannot be delegated via __getattr__</span></a></p>
 </div>
 </div>
 </div>
@@ -92,7 +108,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Method resolution order (MRO)</a><ul>
+<li><a class="reference internal" href="#">Built-in method resolution starts at the class</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature77"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature77</span></code></a></li>
 </ul>
 </li>
@@ -100,10 +116,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature76.html"
-                        title="previous chapter">Built-in method resolution starts at the class</a></p>
+                        title="previous chapter">Built-in operations cannot be delegated via <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature78.html"
-                        title="next chapter">Tracing instance attributes</a></p>
+                        title="next chapter">Method resolution order (MRO)</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -135,13 +151,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature78.html" title="Tracing instance attributes"
+          <a href="feature78.html" title="Method resolution order (MRO)"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature76.html" title="Built-in method resolution starts at the class"
+          <a href="feature76.html" title="Built-in operations cannot be delegated via __getattr__"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Method resolution order (MRO)</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Built-in method resolution starts at the class</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

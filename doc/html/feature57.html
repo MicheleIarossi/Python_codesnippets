@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Module imports with importlib &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Module attribute access &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="First classes" href="feature58.html" />
-    <link rel="prev" title="Module attribute access" href="feature56.html" /> 
+    <link rel="next" title="Module imports with importlib" href="feature58.html" />
+    <link rel="prev" title="Relative import from a module package" href="feature56.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature58.html" title="First classes"
+          <a href="feature58.html" title="Module imports with importlib"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature56.html" title="Module attribute access"
+          <a href="feature56.html" title="Relative import from a module package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Module imports with <code class="docutils literal notranslate"><span class="pre">importlib</span></code></a></li> 
+        <li class="nav-item nav-item-this"><a href="">Module attribute access</a></li> 
       </ul>
     </div>  
 
@@ -45,23 +45,38 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature57"></span><div class="section" id="module-imports-with-importlib">
-<h1>Module imports with <code class="docutils literal notranslate"><span class="pre">importlib</span></code><a class="headerlink" href="#module-imports-with-importlib" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature57"></span><div class="section" id="module-attribute-access">
+<h1>Module attribute access<a class="headerlink" href="#module-attribute-access" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature57">
 <h2><a class="reference internal" href="#module-codesnippets.feature57" title="codesnippets.feature57"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature57</span></code></a><a class="headerlink" href="#codesnippets-feature57" title="Permalink to this headline">¶</a></h2>
-<p>The library <code class="docutils literal notranslate"><span class="pre">importlib</span></code> lets us import modules via its function <code class="docutils literal notranslate"><span class="pre">import_module</span></code>:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">importlib</span>
+<p>There are several ways to access module attibutes.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">module1</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">modname</span> <span class="o">=</span> <span class="s1">&#39;module1&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">modname</span><span class="p">)</span>
-</pre></div>
-</div>
+<p>Via direct module attribute:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="n">A_LIST</span>
 <span class="go">[4, 5, 6]</span>
 </pre></div>
+</div>
+<p>Via module dictionary attribute:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;A_LIST&#39;</span><span class="p">]</span>
+<span class="go">[4, 5, 6]</span>
+</pre></div>
+</div>
+<p>Via <code class="docutils literal notranslate"><span class="pre">sys.modules</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;module1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">A_LIST</span>
+<span class="go">[4, 5, 6]</span>
+</pre></div>
+</div>
+<p>Via the <code class="docutils literal notranslate"><span class="pre">getattr</span></code> built-in function:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">getattr</span><span class="p">(</span><span class="n">module1</span><span class="p">,</span> <span class="s1">&#39;A_LIST&#39;</span><span class="p">)</span>
+<span class="go">[4, 5, 6]</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="feature50.html"><span class="doc">Module import information</span></a></p>
 </div>
 </div>
 </div>
@@ -75,7 +90,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Module imports with <code class="docutils literal notranslate"><span class="pre">importlib</span></code></a><ul>
+<li><a class="reference internal" href="#">Module attribute access</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature57"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature57</span></code></a></li>
 </ul>
 </li>
@@ -83,10 +98,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature56.html"
-                        title="previous chapter">Module attribute access</a></p>
+                        title="previous chapter">Relative import from a module package</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature58.html"
-                        title="next chapter">First classes</a></p>
+                        title="next chapter">Module imports with <code class="docutils literal notranslate"><span class="pre">importlib</span></code></a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -118,13 +133,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature58.html" title="First classes"
+          <a href="feature58.html" title="Module imports with importlib"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature56.html" title="Module attribute access"
+          <a href="feature56.html" title="Relative import from a module package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Module imports with <code class="docutils literal notranslate"><span class="pre">importlib</span></code></a></li> 
+        <li class="nav-item nav-item-this"><a href="">Module attribute access</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

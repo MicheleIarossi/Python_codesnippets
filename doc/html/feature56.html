@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Module attribute access &#8212; Python codesnippets 1.0.1 documentation</title>
+    <title>Relative import from a module package &#8212; Python codesnippets 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -17,8 +17,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Module imports with importlib" href="feature57.html" />
-    <link rel="prev" title="Relative import from a module package" href="feature55.html" /> 
+    <link rel="next" title="Module attribute access" href="feature57.html" />
+    <link rel="prev" title="Absolute import from a module package" href="feature55.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature57.html" title="Module imports with importlib"
+          <a href="feature57.html" title="Module attribute access"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="feature55.html" title="Relative import from a module package"
+          <a href="feature55.html" title="Absolute import from a module package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Module attribute access</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Relative import from a module package</a></li> 
       </ul>
     </div>  
 
@@ -45,38 +45,43 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <span class="target" id="module-codesnippets.feature56"></span><div class="section" id="module-attribute-access">
-<h1>Module attribute access<a class="headerlink" href="#module-attribute-access" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="module-codesnippets.feature56"></span><div class="section" id="relative-import-from-a-module-package">
+<h1>Relative import from a module package<a class="headerlink" href="#relative-import-from-a-module-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="codesnippets-feature56">
 <h2><a class="reference internal" href="#module-codesnippets.feature56" title="codesnippets.feature56"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature56</span></code></a><a class="headerlink" href="#codesnippets-feature56" title="Permalink to this headline">¶</a></h2>
-<p>There are several ways to access module attibutes.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">module1</span>
+<p>Intrapackage imports work if the relative import syntax is used.</p>
+<p>In the following the <code class="docutils literal notranslate"><span class="pre">.</span></code> is the current working directory (CWD):</p>
+<p><code class="docutils literal notranslate"><span class="pre">./tools.py</span></code> is the <code class="docutils literal notranslate"><span class="pre">tools</span></code> module in the CWD; defines <code class="docutils literal notranslate"><span class="pre">MY_X</span> <span class="pre">=</span> <span class="pre">1</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">./pkg/tools.py</span></code> is the <code class="docutils literal notranslate"><span class="pre">tools</span></code> module in the <code class="docutils literal notranslate"><span class="pre">./pkg</span></code> folder; defines <code class="docutils literal notranslate"><span class="pre">MY_X</span> <span class="pre">=</span> <span class="pre">2</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">./pkg/utilr.py</span></code> is the <code class="docutils literal notranslate"><span class="pre">utilr</span></code>  module in the <code class="docutils literal notranslate"><span class="pre">./pkg</span></code> folder importing <code class="docutils literal notranslate"><span class="pre">tools</span></code>
+with relative syntax</p>
+<p>The question is which <code class="docutils literal notranslate"><span class="pre">tools</span></code> module gets imported when the next import statement is run:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pkg.utilr</span>
 </pre></div>
 </div>
-<p>Via direct module attribute:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="n">A_LIST</span>
-<span class="go">[4, 5, 6]</span>
+<blockquote>
+<div><p>This is the <code class="docutils literal notranslate"><span class="pre">utilr</span></code> module inside <code class="docutils literal notranslate"><span class="pre">./pkg</span></code> .</p>
+<p>In the following code the <code class="docutils literal notranslate"><span class="pre">tools</span></code> module is imported, but
+<strong>relative</strong> import takes place here:
+the <code class="docutils literal notranslate"><span class="pre">tools</span></code> module from the <code class="docutils literal notranslate"><span class="pre">./pkg</span></code> directory is imported,
+not the one in the CWD <code class="docutils literal notranslate"><span class="pre">./tool.py</span></code> !</p>
+<blockquote>
+<div><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tools</span>    <span class="c1"># relative import syntax</span>
 </pre></div>
 </div>
-<p>Via module dictionary attribute:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">module1</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;A_LIST&#39;</span><span class="p">]</span>
-<span class="go">[4, 5, 6]</span>
+<p>This is the <code class="docutils literal notranslate"><span class="pre">tools</span></code> module inside <code class="docutils literal notranslate"><span class="pre">./pkg</span></code></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">MY_X</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
 </div>
-<p>Via <code class="docutils literal notranslate"><span class="pre">sys.modules</span></code>:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;module1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">A_LIST</span>
-<span class="go">[4, 5, 6]</span>
-</pre></div>
-</div>
-<p>Via the <code class="docutils literal notranslate"><span class="pre">getattr</span></code> built-in function:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">getattr</span><span class="p">(</span><span class="n">module1</span><span class="p">,</span> <span class="s1">&#39;A_LIST&#39;</span><span class="p">)</span>
-<span class="go">[4, 5, 6]</span>
+</div></blockquote>
+</div></blockquote>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pkg</span><span class="o">.</span><span class="n">utilr</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">MY_X</span>
+<span class="go">2</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="feature49.html"><span class="doc">Module import information</span></a></p>
+<p><a class="reference internal" href="feature55.html"><span class="doc">Absolute import from a module package</span></a></p>
 </div>
 </div>
 </div>
@@ -90,7 +95,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Module attribute access</a><ul>
+<li><a class="reference internal" href="#">Relative import from a module package</a><ul>
 <li><a class="reference internal" href="#codesnippets-feature56"><code class="xref py py-mod docutils literal notranslate"><span class="pre">codesnippets.feature56</span></code></a></li>
 </ul>
 </li>
@@ -98,10 +103,10 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="feature55.html"
-                        title="previous chapter">Relative import from a module package</a></p>
+                        title="previous chapter">Absolute import from a module package</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="feature57.html"
-                        title="next chapter">Module imports with <code class="docutils literal notranslate"><span class="pre">importlib</span></code></a></p>
+                        title="next chapter">Module attribute access</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -133,13 +138,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="feature57.html" title="Module imports with importlib"
+          <a href="feature57.html" title="Module attribute access"
              >next</a> |</li>
         <li class="right" >
-          <a href="feature55.html" title="Relative import from a module package"
+          <a href="feature55.html" title="Absolute import from a module package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python codesnippets 1.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Module attribute access</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Relative import from a module package</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

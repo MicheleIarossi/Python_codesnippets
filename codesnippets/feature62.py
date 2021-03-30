@@ -1,4 +1,4 @@
-##    Python codesnippets - More on class introspection tools: __class__, __bases__, __dict__
+##    Python codesnippets - Class and per-instance attributes
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,174 +19,115 @@
 #
 
 """
-More on class introspection tools: ``__class__`` , ``__bases__`` , ``__dict__``
-===============================================================================
+Class and per-instance attributes
+=================================
 
 :py:mod:`codesnippets.feature62`
 --------------------------------
 
-These special attributes are useful as introspection tools:
-
-* ``__class__`` is a reference to the class object,
-* ``__bases__`` is a list of references to the base class objects,
-* ``__dict__`` is a dictionary of the object attributes.
-
-Their usage is shown by means of the following classes:
+In Python a class is a statement that is run and not only a declaration:
 
 .. code-block:: Python
 
-    class Aircraft:
-	\"""a base class\"""
-        counter = 0
-        def __init__(self,name):
-            self._name = name
-            Aircraft.counter += 1
+    class Car:
+        \"""A simple Car class\"""
+        n_val = 0 # global class counter
+        def __init__(self,brand='BMW',color='navy'):
+            \"""Simple constructor for Car instances\"""
+            self.brand = brand # Per instance attributes
+            self.color = color
+            Car.n_val += 1
         def __repr__(self):
             \"""overloads repr operator\"""
-            return 'Aircraft(name=%r)' % (self._name)
+            return 'Car(brand=%r,color=%r)' % (self.brand,self.color)
 
-.. code-block:: Python
+When the class definition is run, it creates a global class counter ``n_val``:
 
-    class Airplane(Aircraft):
-	\"""a derived class\"""
-        max_speed = 900
-        def __init__(self,name,passengers):
-            Aircraft.__init__(self,name)
-            self._passengers = passengers
-        def __repr__(self):
-            \"""overloads repr operator\"""
-            return 'Airplane(name=%r,passengers=%r)' % (self._name,self._passengers)
+>>> Car.n_val
+0
 
-These are now examples of instances:
+The attribute ``n_value`` really belongs to the class,
+but it can be accessed by the instances as well:
 
->>> helicopter = Aircraft('Helicopter')
->>> helicopter
-Aircraft(name='Helicopter')
+>>> golf = Car('VW', 'black')
+>>> (golf.n_val, Car.n_val)
+(1, 1)
 
->>> airbus320 = Airplane('Airbus_320',300)
->>> airbus320
-Airplane(name='Airbus_320',passengers=300)
+The attribute ``n_value`` is shared among the instances:
 
-The attribute ``__class__`` provides a reference to the class object:
+>>> bmw = Car('BMW','red')
+>>> (bmw.n_val, Car.n_val) # Attribute n is shared among the instances
+(2, 2)
+>>> (golf.n_val,Car.n_val) # Attribute n is shared among the instances
+(2, 2)
 
->>> helicopter.__class__
-<class 'codesnippets.feature62.feature62.<locals>.Aircraft'>
->>> helicopter.__class__.__name__ # String of the name of the class
-Aircraft
+Per-instance attributes, e.g. ``brand`` or ``color``, are created
+when ``__init__`` is called, i.e. at instance creation:
 
->>> airbus320.__class__
-<class 'codesnippets.feature62.feature62.<locals>.Airplane'>
->>> airbus320.__class__.__name__ # String of the name of the class
-Airplane
+>>> jaguar = Car('Jaguar','silver')
+>>> jaguar.brand, jaguar.color
+('Jaguar', 'silver')
 
-The attribute ``__dict__`` provides a dictionary of attributes.
-Notice the difference when applied to an instance and to a class:
+These per-intstance attributes are printed when the ``__repr__`` method is called:
 
->>> list(helicopter.__dict__.keys())
-['_name']
->>> list(airbus320.__dict__.keys())
-['_name', '_passengers']
-
->>> list(Aircraft.__dict__.keys())
-['__module__', '__doc__', 'counter', '__init__', '__repr__', '__dict__', '__weakref__']
->>> list(Airplane.__dict__.keys())
-['__module__', '__doc__', 'max_speed', '__init__', '__repr__']
-
-The attribute ``__bases__`` provides a list of the superclasses.
-It can be used only on class objects, not instances:
-
->>> Aircraft.__bases__
-(<class 'object'>,)
->>> Airplane.__bases__
-(<class 'codesnippets.feature62.feature62.<locals>.Aircraft'>,)
-
-.. seealso:: :doc:`Built-in class attributes for introspection<feature59>`
+>>> jaguar
+Car(brand='Jaguar',color='silver')
 """
 
 def feature62():
-    """More on class introspection tools: __class__, __bases__, __dict__"""
-    print('More on class introspection tools: ``__class__`` , ``__bases__`` , ``__dict__``')
-    print('===============================================================================\n')
+    """Class and per-instance attributes"""
+    print('Class and per-instance attributes')
+    print('=================================\n')
     print(':py:mod:`codesnippets.feature62`')
     print('--------------------------------\n')
-    print("These special attributes are useful as introspection tools:\n")
-    print('* ``__class__`` is a reference to the class object,')
-    print('* ``__bases__`` is a list of references to the base class objects,')
-    print('* ``__dict__`` is a dictionary of the object attributes.')
-    print('\nTheir usage is shown by means of the following classes:\n')
-    class Aircraft:
-        """a base class"""
-        counter = 0
-        def __init__(self,name):
-            self._name = name
-            Aircraft.counter += 1
+    print('In Python a class is a statement that is run and not only a declaration:\n')
+    class Car:
+        """ A simple Car class"""
+        n_val = 0 # global class counter
+        def __init__(self,brand='BMW',color='navy'):
+            """Simple constructor for Car instances"""
+            self.brand = brand # Per instance attributes
+            self.color = color
+            Car.n_val += 1
         def __repr__(self):
             """overloads repr operator"""
-            return 'Aircraft(name=%r)' % (self._name)
+            return 'Car(brand=%r,color=%r)' % (self.brand,self.color)
     print('.. code-block:: Python\n')
-    print("""    class Aircraft:
-	\\\"""a base class\\\"""
-        counter = 0
-        def __init__(self,name):
-            self._name = name
-            Aircraft.counter += 1
+    print("""    class Car:
+        \\\"""A simple Car class\\\"""
+        n_val = 0 # global class counter
+        def __init__(self,brand='BMW',color='navy'):
+            \\\"""Simple constructor for Car instances\\\"""
+            self.brand = brand # Per instance attributes
+            self.color = color
+            Car.n_val += 1
         def __repr__(self):
             \\\"""overloads repr operator\\\"""
-            return 'Aircraft(name=%r)' % (self._name)
-	""")
-    class Airplane(Aircraft):
-        """a derived class"""
-        max_speed = 900
-        def __init__(self,name,passengers):
-            Aircraft.__init__(self,name)
-            self._passengers = passengers
-        def __repr__(self):
-            """overloads repr operator"""
-            return 'Airplane(name=%r,passengers=%r)' % (self._name,self._passengers)
-    print('.. code-block:: Python\n')
-    print("""   class Airplane(Aircraft):
-	\\\"""a derived class\\\"""
-        max_speed = 900
-        def __init__(self,name,passengers):
-            Aircraft.__init__(self,name)
-            self._passengers = passengers
-        def __repr__(self):
-            \\\"""overloads repr operator\\\"""
-            return 'Airplane(name=%r,passengers=%r)' % (self._name,self._passengers)
-	""")
-    print("These are now examples of instances:\n")
-    print(">>> helicopter = Aircraft('Helicopter')")
-    helicopter = Aircraft('Helicopter')
-    print(">>> helicopter")
-    print(helicopter)
-    print("\n>>> airbus320 = Airplane('Airbus_320',300)")
-    airbus320 = Airplane('Airbus_320',300)
-    print(">>> airbus320")
-    print(airbus320)
-    print("\nThe attribute ``__class__`` provides a reference to the class object:\n")
-    print(">>> helicopter.__class__")
-    print(helicopter.__class__)
-    print(">>> helicopter.__class__.__name__ # String of the name of the class")
-    print(helicopter.__class__.__name__)
-    print("\n>>> airbus320.__class__")
-    print(airbus320.__class__)
-    print(">>> airbus320.__class__.__name__ # String of the name of the class")
-    print(airbus320.__class__.__name__)
-    print("\nThe attribute ``__dict__`` provides a dictionary of attributes.")
-    print("Notice the difference when applied to an instance and to a class:\n")
-    print(">>> list(helicopter.__dict__.keys())")
-    print(list(helicopter.__dict__.keys()))
-    print(">>> list(airbus320.__dict__.keys())")
-    print(list(airbus320.__dict__.keys()))
-    print("\n>>> list(Aircraft.__dict__.keys())")
-    print(list(Aircraft.__dict__.keys()))
-    print(">>> list(Airplane.__dict__.keys())")
-    print(list(Airplane.__dict__.keys()))
-    print("\nThe attribute ``__bases__`` provides a list of the superclasses. ")
-    print("It can be used only on class objects, not instances:\n")
-    print(">>> Aircraft.__bases__")
-    print(Aircraft.__bases__)
-    print(">>> Airplane.__bases__")
-    print(Airplane.__bases__)
-    print('\n.. seealso:: :doc:`Built-in class attributes for introspection<feature59>`')
+            return 'Car(brand=%r,color=%r)' % (self.brand,self.color)
+        """)
+    print('When the class definition is run, it creates a global class counter ``n_val``:\n')
+    print(">>> Car.n_val")
+    print(Car.n_val)
+    print('\nThe attribute ``n_value`` really belongs to the class,\nbut it can be accessed '
+          'by the instances as well:\n')
+    print(">>> golf = Car('VW', 'black')")
+    golf = Car('VW', 'black')
+    print(">>> (golf.n_val, Car.n_val)")
+    print("(%s, %s)" % (golf.n_val, Car.n_val))
+    print('\nThe attribute ``n_value`` is shared among the instances:\n')
+    print(">>> bmw = Car('BMW','red')")
+    bmw = Car('BMW','red')
+    print(">>> (bmw.n_val, Car.n_val) # Attribute n is shared among the instances")
+    print("(%s, %s)" % (bmw.n_val, Car.n_val))
+    print(">>> (golf.n_val,Car.n_val) # Attribute n is shared among the instances")
+    print("(%s, %s)" % (golf.n_val, Car.n_val))
+    print('\nPer-instance attributes, e.g. ``brand`` or ``color``, are created '
+          '\n when ``__init__`` is called, i.e. at instance creation:\n')
+    print(">>> jaguar = Car('Jaguar','silver')")
+    jaguar = Car('Jaguar','silver')
+    print('>>> jaguar.brand, jaguar.color')
+    print((jaguar.brand, jaguar.color))
+    print('\nThese per-intstance attributes are printed when the ``__repr__`` method is called:\n')
+    print('>>> jaguar')
+    print(jaguar)
     print(80*'-')

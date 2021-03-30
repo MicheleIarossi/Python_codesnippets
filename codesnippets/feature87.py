@@ -1,4 +1,4 @@
-##    Python codesnippets - String type conversions
+##    Python codesnippets - Byte and string types
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,106 +19,66 @@
 #
 
 """
-String type conversions
-=======================
+Byte and string types
+=====================
 
 :py:mod:`codesnippets.feature87`
 --------------------------------
 
-From ``str`` to ``bytes``: ``str.encode(encoding)`` and ``bytes(str, encoding)``
+The type ``byte`` is used for representing binary data.
+And the type ``str`` is used for representing strings, whose
+binary representation depends on the encoding chosen.
 
-From ``bytes`` to ``str``  : ``bytes.decode(encoding)`` and ``str(bytes, encoding)``
+.. note:: The two types cannot be mixed.
 
->>> import sys, locale
+>>> bin_array = bytes([100,234,98,23,67,180,201])
 
-Get the platform name:
+>>> type(bin_array)
+<class 'bytes'>
 
->>> sys.platform
-darwin
+>>> bin_array
+b'd\\xeab\\x17C\\xb4\\xc9'
 
-Get the default encoding on this platform:
+>>> len(bin_array)
+7
 
->>> encoding = sys.getdefaultencoding()
->>> encoding
-utf-8
+>>> text_str = 'The sky is blue.'
 
-A simple string:
+>>> type(text_str)
+<class 'str'>
 
->>> a_str = 'hello, world'
+>>> text_str.encode('UTF-16')
+b'\\xff\\xfeT\\x00h\\x00e\\x00 \\x00s\\x00k\\x00y\\x00 \\x00i\\x00s\\x00 \\x00b\\x00l\\x00u\\x00e\\x00.\\x00'
 
-From ``str`` to ``bytes`` with ``str.encode()`` which uses
-the default encoding if no parameter is given:
-
->>> b_bytes = a_str.encode()
->>> b_bytes
-b'hello, world'
-
-or
-
->>> b_bytes = bytes(a_str,encoding) # requires the encoding type!
->>> b_bytes
-b'hello, world'
-
-From ``bytes`` to ``str`` with ``bytes.decode()`` which uses
-the default encoding if no parameter is given:
-
->>> b_bytes.decode()
-hello, world
->>> b_bytes.decode() == a_str
-True
-
-or
-
->>> str(b_bytes,encoding) # requires the encoding type!
-hello, world
->>> str(b_bytes,encoding) == a_str
-True
+>>> len(text_str)
+16
 """
 
-import sys
-
 def feature87():
-    """String type conversions"""
-    print('String type conversions')
-    print('=======================\n')
+    """Byte and string types"""
+    print('Byte and string types')
+    print('=====================\n')
     print(':py:mod:`codesnippets.feature87`')
     print('--------------------------------\n')
-    print("From ``str`` to ``bytes``: ``str.encode(encoding)`` and ``bytes(str, encoding)``\n")
-    print("From ``bytes`` to ``str``  : ``bytes.decode(encoding)`` and ``str(bytes, encoding)``\n")
-    print(">>> import sys, locale")
-    print("\nGet the platform name:")
-    print("\n>>> sys.platform")
-    print(sys.platform)
-    print("\nGet the default encoding on this platform:")
-    print("\n>>> encoding = sys.getdefaultencoding()")
-    encoding = sys.getdefaultencoding()
-    print(">>> encoding")
-    print(encoding)
-    print('\nA simple string:')
-    print("\n>>> a_str = 'hello, world'")
-    a_str = 'hello, world'
-    print("\nFrom ``str`` to ``bytes`` with ``str.encode()`` which uses\nthe default"
-          " encoding if no parameter "
-          "is given:")
-    print("\n>>> b_bytes = a_str.encode()")
-    b_bytes = a_str.encode()
-    print(">>> b_bytes")
-    print(b_bytes)
-    print('\nor')
-    print("\n>>> b_bytes = bytes(a_str,encoding) # requires the encoding type!")
-    b_bytes = bytes(a_str,encoding)
-    print(">>> b_bytes")
-    print(b_bytes)
-    print("\nFrom ``bytes`` to ``str`` with ``bytes.decode()`` which uses\nthe default"
-          " encoding if no parameter "
-          "is given:")
-    print("\n>>> b_bytes.decode()")
-    print(b_bytes.decode())
-    print(">>> b_bytes.decode() == a_str")
-    print(b_bytes.decode() == a_str)
-    print('\nor')
-    print("\n>>> str(b_bytes,encoding) # requires the encoding type!")
-    print(str(b_bytes,encoding))
-    print(">>> str(b_bytes,encoding) == a_str")
-    print(str(b_bytes,encoding) == a_str)
+    print("The type ``byte`` is used for representing binary data.")
+    print("And the type ``str`` is used for representing strings, whose")
+    print("binary representation depends on the encoding chosen.\n")
+    print(".. note: The two types cannot be mixed.\n")
+    print(">>> bin_array = bytes([100,234,98,23,67,180,201])")
+    bin_array = bytes([100,234,98,23,67,180,201])
+    print("\n>>> type(bin_array)")
+    print(type(bin_array))
+    print("\n>>> bin_array")
+    print(bin_array)
+    print("\n>>> len(bin_array)")
+    print(len(bin_array))
+    print()
+    print(">>> text_str = 'The sky is blue.'")
+    text_str = 'The sky is blue.'
+    print("\n>>> type(text_str)")
+    print(type(text_str))
+    print("\n>>> text_str.encode('UTF-16')")
+    print(text_str.encode('UTF-16'))
+    print("\n>>> len(text_str)")
+    print(len(text_str))
     print(80*'-')

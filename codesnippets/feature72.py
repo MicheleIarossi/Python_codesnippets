@@ -1,4 +1,4 @@
-##    Python codesnippets - Inheritance attribute lister class
+##    Python codesnippets - Unbound and bound methods
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,209 +19,111 @@
 #
 
 """
-Inheritance attribute lister class
-==================================
+Unbound and bound methods
+=========================
 
 :py:mod:`codesnippets.feature72`
 --------------------------------
 
-The class below uses the ``dir()`` function for getting all attributes and names,
-and the ``getattr()`` function for retrieving their values:
+Since everything in Python is an object, methods of classes and instances
+can be used as callback functions, but bound methods do not need an explicit
+reference to an instance:
 
 .. code-block:: Python
 
-    class ClassInspector:
-        \"""a self inspecting class\"""
-        def __attr_list(self, indent=' '*4):
-            \"""provides list of attributes\"""
-            result  = 'Interns%s\\n%s%%s\\nOthers%s\\n' % ('-'*120, indent, '-'*120)
-            unders = []
-            for attr in dir(self):                              # Instance dir()
-                if attr[:2] == '__' and attr[-2:] == '__':      # Skip internals
-                    unders.append(attr)
-                else:
-                    display = str(getattr(self, attr))[:120-(len(indent) + len(attr))]
-                    result += '%s%s=%s\\n' % (indent, attr, display)
-            return result % ', '.join(unders)
-        def __str__(self):
-            \"""overloading repr operator\"""
-            return '<Instance of %s, address 0x%x:\\n%s>' % (
-                           self.__class__.__name__,         # My class's name
-                           id(self),                        # My address
-                           self.__attr_list())              # name=value list
+    class MyClass:
+        \"""a class\"""
+        def __init__(self,name):
+            self._name = name
+            print('<Object %s>' % (self._name))
+        def function(self,val):
+            \"""a method function\"""
+            print('<Object %s>.function(%s)' % (self._name,val)
         def __repr__(self):
-            \"""overloading repr operator\"""
-            return 'ClassInspector()'
+            \"""overloads repr operator\"""
+            return 'MyClass(name=%r)' % (self._name)
 
-The following are some test classes:
+The following objects are 2 instances of the class ``MyClass`` above:
 
-.. code-block:: Python
+>>> obj1 = MyClass('obj1')
+<Object obj1>
 
-    class Parent:
-        \"""a parent class\"""
-        def __init__(self):
-            self.data_parent = 100
-        def parent_method_1(self):
-            \"""a method function\"""
-            pass
-        def parent_method_2(self):
-            \"""a method function\"""
-            pass
+>>> obj2 = MyClass('obj2')
+<Object obj2>
 
-    class Child(Parent, ClassInspector):
-        \"""a child class\"""
-        def __init__(self):
-            Parent.__init__(self)
-            self.data_child1 = 200
-            self.data_child2 = 201
-        def child_method_1(self):
-            \"""a method function\"""
-            pass
-        def child_method_2(self):
-            \"""a method function\"""
-            pass
+The variable ``f1_func`` saves a reference to the bound method of the instance ``obj1``:
 
-A ``Child`` object is created as follows:
+>>> f1_func = obj1.function     # Bound method to the instance obj1
 
->>> a_child = Child()
+On the contrary, the variable ``f2_func`` saves a reference to the
+unbound method of the class ``MyClass``:
 
-By invoking the ``print`` function on it, the ``__str__`` method of the ``ClassInspector`` is called:
+>>> f2_func = MyClass.function  # Unbound method to the class AClass
 
->>> print(a_child)
-<Instance of Child, address 0x7f9b4839d3a0:
-Interns--------------------------------------------------------------------------------------------------------
-    __class__, __delattr__, __dict__, __dir__, __doc__,
-    __eq__, __format__, __ge__, __getattribute__, __gt__, __hash__,
-    __init__, __init_subclass__, __le__, __lt__, __module__, __ne__,
-    __new__, __reduce__, __reduce_ex__, __repr__, __setattr__, __sizeof__,
-    __str__, __subclasshook__, __weakref__
-Others---------------------------------------------------------------------------------------------------------
-    _ClassInspector__attr_list=<bound method feature72.<locals>.ClassInspector.__attr_list of ClassInspector()>
-    child_method_1=<bound method feature72.<locals>.Child.child_method_1 of ClassInspector()>
-    child_method_2=<bound method feature72.<locals>.Child.child_method_2 of ClassInspector()>
-    data_child1=200
-    data_child2=201
-    data_parent=100
-    parent_method_1=<bound method feature72.<locals>.Parent.parent_method_1 of ClassInspector()>
-    parent_method_2=<bound method feature72.<locals>.Parent.parent_method_2 of ClassInspector()>
->
+The function references above can be called in other contexts:
 
-.. seealso:: :doc:`dir() on an integer variable<feature1>`
+* ``f1_func`` works directly because already bound to ``obj1``
+
+>>> f1_func(5)
+<Object obj1>.function(5)
+
+* ``f2_func`` still needs a reference to an object because unbound
+
+>>> f2_func(obj2,5)
+<Object obj2>.function(5)
 """
 
 def feature72():
-    """Inheritance attribute lister class"""
-    print('Inheritance attribute lister class')
-    print('==================================\n')
+    """Unbound and bound methods"""
+    print('Unbound and bound methods')
+    print('=========================\n')
     print(':py:mod:`codesnippets.feature72`')
     print('--------------------------------\n')
-    print('The class below uses the ``dir()`` function for getting all attributes and names,')
-    print('and the ``getattr()`` function for retrieving their values:\n')
-    class ClassInspector:
-        """a self inspecting class"""
-        def __attr_list(self, indent=' '*4, count=6):
-            """provides list of attributes"""
-            result  = 'Interns%s\n%s%%s\nOthers%s\n' % ('-'*104, indent, '-'*105)
-            interns = []
-            cnt = 0
-            for attr in dir(self):                              # Instance dir()
-                if attr[:2] == '__' and attr[-2:] == '__':      # Skip internals
-                    cnt += 1
-                    if cnt == count:
-                        attr = '\n' + indent + attr
-                        cnt = 0
-                    interns.append(attr)
-                else:
-                    display = str(getattr(self, attr))[:120-(len(indent) + len(attr))]
-                    result += '%s%s=%s\n' % (indent, attr, display)
-            return result % ', '.join(interns)
-        def __str__(self):
-            """overloading str operator"""
-            return '<Instance of %s, address 0x%x:\n%s>' % (
-                           self.__class__.__name__,         # My class's name
-                           id(self),                        # My address
-                           self.__attr_list())              # name=value list
+    print('Since everything in Python is an object, methods of classes and instances')
+    print('can be used as callback functions, but bound methods do not need an explicit')
+    print('reference to an instance:\n')
+    class MyClass:
+        """a class"""
+        def __init__(self,name):
+            self._name = name
+            print('<Object %s>' % (self._name))
+        def function(self,val):
+            """a method function"""
+            print('<Object %s>.function(%s)' % (self._name,val))
         def __repr__(self):
-            """overloading repr operator"""
-            return 'ClassInspector()'
+            """overloads repr operator"""
+            return 'MyClass(name=%r)' % (self._name)
     print('.. code-block:: Python\n')
-    print("""    class ClassInspector:
-        \\\"""a self inspecting class\\\"""
-        def __attr_list(self, indent=' '*4):
-            \\\"""provides list of attributes\\\"""
-            result  = 'Interns%s\\\\n%s%%s\\\\nOthers%s\\\\n' % ('-'*120, indent, '-'*120)
-            interns = []
-            for attr in dir(self):                              # Instance dir()
-                if attr[:2] == '__' and attr[-2:] == '__':      # Skip internals
-                    interns.append(attr)
-                else:
-                    display = str(getattr(self, attr))[:120-(len(indent) + len(attr))]
-                    result += '%s%s=%s\\\\n' % (indent, attr, display)
-            return result % ', '.join(interns)
-        def __str__(self):
-            \\\"""overloading repr operator\\\"""
-            return '<Instance of %s, address 0x%x:\\\\n%s>' % (
-                           self.__class__.__name__,         # My class's name
-                           id(self),                        # My address
-                           self.__attr_list())              # name=value list
+    print("""    class MyClass:
+        \\\"""a class\\\"""
+        def __init__(self,name):
+            self._name = name
+            print('<Object %s>' % (self._name))
+        def function(self,val):
+            \\\"""a method function\\\"""
+            print('<Object %s>.function(%s)' % (self._name,val)
         def __repr__(self):
-            \\\"""overloading repr operator\\\"""
-            return 'ClassInspector()'
+            \\\"""overloads repr operator\\\"""
+            return 'MyClass(name=%r)' % (self._name)
         """)
-    print('The following are some test classes:\n')
-    class Parent:
-        """a parent class"""
-        def __init__(self):
-            self.data_parent = 100
-        def parent_method_1(self):
-            """a method function"""
-            pass
-        def parent_method_2(self):
-            """a method function"""
-            pass
-    class Child(Parent, ClassInspector):
-        """a child class"""
-        def __init__(self):
-            Parent.__init__(self)
-            self.data_child1 = 200
-            self.data_child2 = 201
-        def child_method_1(self):
-            """a method function"""
-            pass
-        def child_method_2(self):
-            """a method function"""
-            pass
-    print('.. code-block:: Python\n')
-    print("""    class Parent:
-        \\\"""a parent class\\\"""
-        def __init__(self):
-            self.data_parent = 100
-        def parent_method_1(self):
-            \\\"""a method function\\\"""
-            pass
-        def parent_method_2(self):
-            \\\"""a method function\\\"""
-            pass
-        """)
-    print("""    class Child(Parent, ClassInspector):
-        \\\"""a child class\\\"""
-        def __init__(self):
-            Parent.__init__(self)
-            self.data_child1 = 200
-            self.data_child2 = 201
-        def child_method_1(self):
-            \\\"""a method function\\\"""
-            pass
-        def child_method_2(self):
-            \\\"""a method function\\\"""
-            pass
-        """)
-    print('A ``Child`` object is created as follows:\n')
-    print('>>> a_child = Child()')
-    a_child = Child()
-    print('\nBy invoking the ``print`` function on it, the ``__str__`` method of '
-          'the ``ClassInspector`` is called:\n')
-    print('>>> print(a_child)')
-    print(a_child)
-    print('\n.. seealso:: :doc:`dir() on an integer variable<feature1>`')
+    print('The following objects are 2 instances of the class ``MyClass`` above:\n')
+    print(">>> obj1 = MyClass('obj1')")
+    obj1 = MyClass('obj1')
+    print("\n>>> obj2 = MyClass('obj2')")
+    obj2 = MyClass('obj2')
+    print('\nThe variable ``f1_func`` saves a reference to the bound method of '
+          'the instance ``obj1``:\n')
+    print('>>> f1_func = obj1.function    # Bound method to the instance obj1')
+    f1_func = obj1.function
+    print('\nOn the contrary, the variable ``f2_func`` saves a reference to the\n'
+          'unbound method of the class ``MyClass``:\n')
+    print('>>> f2_func = MyClass.function  # Unbound method to the class AClass')
+    f2_func = MyClass.function
+    print('\nThe function references above can be called in other contexts:')
+    print('\n* ``f1_func`` works directly because already bound to ``obj1``\n')
+    print('>>> f1_func(5)')
+    f1_func(5)
+    print('\n* ``f2_func`` still needs a reference to an object because unbound\n')
+    print('>>> f2_func(obj2,5)')
+    f2_func(obj2,5)
     print(80*'-')

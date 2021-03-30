@@ -1,4 +1,4 @@
-##    Python codesnippets - Decorator nesting
+##    Python codesnippets - Decorator for a class
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,98 +19,94 @@
 #
 
 """
-Decorator nesting
-=================
+Decorator for a ``class``
+=========================
 
 :py:mod:`codesnippets.feature101`
 ---------------------------------
 
-Allows to add multiple layers of wrapper logic:
+The class is given to the decorator which rebinds it to a wrapper class:
 
 .. code-block:: Python
 
-    def decorator_1(func):
-        \"""very basic function decorator\"""
-        print(f"\t-> inside decorator_1...")
-        return func
+    def decorator(a_class):
+        class Wrapper:
+            \"""a wrapper class\"""
+            def __init__(self, *args):
+                print(f"	-> Wrapper.__init__(self,{args})")
+                self.wrapped = a_class(*args)
+            def __getattr__(self,attr):
+                print(f"	-> Wrapper.__getattr__(self,{attr})")
+                return getattr(self.wrapped,attr)
+        return Wrapper
 
-    def decorator_2(func):
-        \"""very basic function decorator\"""
-        print(f"\t-> inside decorator_2...")
-        return func
+>>> @decorator
+    class MyClass:
+        \"""a class\"""
+        def __init__(self,a,b):
+            print(f"	-> MyClass.__init__(self,{a},{b})")
+            self.name = "MyClass"
 
-    def decorator_3(func):
-        \"""very basic function decorator\"""
-        print(f"\t-> inside decorator_3...")
-        return func
+The following object is actually an instance of ``Wrapper``:
 
->>> @decorator1
-    @decorator2
-    @decorator3
-    def myfunction(param_a,param_b):
-        \"""decorated function\"""
-        print(f"\t-> inside myfunction({param_a},{param_b})")
-	-> inside decorator_3...
-	-> inside decorator_2...
-	-> inside decorator_1...
+>>> obj = MyClass(43,67)
+	-> Wrapper.__init__(self,(43, 67))
+	-> MyClass.__init__(self,43,67)
 
-This is equivalent to:
+``Wrapper`` has no attribute 'name' which is passed on to the wrapped class:
 
->>> myfunction = decorator1(decorato2(decorator3(myfunction))))
-
->>> myfunction(4,5)
-	-> inside myfunction(4,5)
+>>> obj.name
+	-> Wrapper.__getattr__(self,name)
+MyClass
 """
 
 def feature101():
-    """Decorator nesting"""
-    print('Decorator nesting')
-    print('=================\n')
+    """Decorator for a class"""
+    print('Decorator for a ``class``')
+    print('=========================\n')
     print(':py:mod:`codesnippets.feature101`')
     print('---------------------------------\n')
-    print('Allows to add multiple layers of wrapper logic:\n')
+    print("The class is given to the decorator which rebinds it to a wrapper class:\n")
+    def decorator(a_class):
+        class Wrapper:
+            """a wrapper class"""
+            def __init__(self, *args):
+                print(f"\t-> Wrapper.__init__(self,{args})")
+                self.wrapped = a_class(*args)
+            def __getattr__(self,attr):
+                print(f"\t-> Wrapper.__getattr__(self,{attr})")
+                return getattr(self.wrapped,attr)
+        return Wrapper
     print('.. code-block:: Python\n')
-    print("""    def decorator_1(func):
-        \\\"""very basic function decorator\\\"""
-        print(f"\\t-> inside decorator_1...")
-        return func
+    print("""    def decorator(a_class):
+        class Wrapper:
+            \\\"""a wrapper class\\\"""
+            def __init__(self, *args):
+                print(f"\t-> Wrapper.__init__(self,{args})")
+                self.wrapped = a_class(*args)
+            def __getattr__(self,attr):
+                print(f"\t-> Wrapper.__getattr__(self,{attr})")
+                return getattr(self.wrapped,attr)
+        return Wrapper
         """)
-    print("""    def decorator_2(func):
-        \\\"""very basic function decorator\\\"""
-        print(f"\\t-> inside decorator_2...")
-        return func
+    print(""">>> @decorator
+    class MyClass:
+        \\\"""a class\\\"""
+        def __init__(self,a,b):
+            print(f"\t-> MyClass.__init__(self,{a},{b})")
+            self.name = "MyClass"
         """)
-    print("""    def decorator_3(func):
-        \\\"""very basic function decorator\\\"""
-        print(f"\\t-> inside decorator_3...")
-        return func
-        """)
-    def decorator_1(func):
-        """very basic function decorator"""
-        print(f"\t-> inside decorator_1...")
-        return func
-    def decorator_2(func):
-        """very basic function decorator"""
-        print(f"\t-> inside decorator_2...")
-        return func
-    def decorator_3(func):
-        """very basic function decorator"""
-        print(f"\t-> inside decorator_3...")
-        return func
-    print(""">>> @decorator1
-    @decorator2
-    @decorator3
-    def myfunction(param_a,param_b):
-        \\\"""decorated function\\\"""
-        print(f"\\t-> inside myfunction({param_a},{param_b})") """)
-    @decorator_1
-    @decorator_2
-    @decorator_3
-    def myfunction(param_a,param_b):
-        """decorated function"""
-        print(f"\t-> inside myfunction({param_a},{param_b})")
-    print("\nThis is equivalent to:\n")
-    print(">>> myfunction = decorator1(decorato2(decorator3(myfunction))))\n")
-    print(">>> myfunction(4,5)")
-    myfunction(4,5)
+    @decorator
+    class MyClass:
+        """a class"""
+        def __init__(self,a,b):
+            print(f"\t-> MyClass.__init__(self,{a},{b})")
+            self.name = "MyClass"
+    print("The following object is actually an instance of ``Wrapper``:\n")
+    print(">>> obj = MyClass(43,67)")
+    obj = MyClass(43,67)
+    print()
+    print("``Wrapper`` has no attribute 'name' which is passed on to the wrapped class:\n")
+    print(">>> obj.name")
+    print(obj.name)
     print(80*'-')

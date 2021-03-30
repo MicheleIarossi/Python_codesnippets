@@ -1,4 +1,4 @@
-##    Python codesnippets - Arguments matched by default values, by position and by name
+##    Python codesnippets - Simulating output parameters in a function call
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,62 +19,54 @@
 #
 
 """
-Arguments matched by default values, by position and by name
-============================================================
+Simulating output parameters in a function call
+===============================================
 
 :py:mod:`codesnippets.feature38`
 --------------------------------
 
-The following function assigns default values to its parameters:
+Input parameters are always passed by assignment. Immutable objects
+cannot be changed inside the function, but multiple new values
+can be returned by the ``return`` statement.
 
 .. code-block:: Python
 
-    def func(a_value=44,b_value=55,c_value=66):
-        print(a_value,b_value,c_value)
+    def assign_new_values(a_value,b_value,c_value):
+        a_value, b_value, c_value = 11, 22, 33
+        return a_value, b_value, c_value
 
-If no arguments are provided, the default values are used:
+>>> a_value, b_value, c_value = 1, 2, 3
 
->>> func()  # uses default values
-(44, 55, 66)
+>>> a_value, b_value, c_value = assign_new_values(a_value,b_value,c_value)
 
-If no special matching is used, position is the normal matching mode, where
-arguments are matched from left to right:
-
->>> func(111,222,333)  # match by position
-(111, 222, 333)
-
-If keyword arguments are used, the matching is done by name in any order:
-
->>> func(c_value=333,b_value=222,a_value=111)  # match by name
-(111, 222, 333)
-
-.. note:: Positional arguments must precede any keyword arguments.
+>>> a_value,b_value,c_value
+(11, 22, 33)
 """
 
-def func(a_value=44,b_value=55,c_value=66):
-    """default values assigned to its parameters"""
-    print((a_value,b_value,c_value))
+def assign_new_values(a_value,b_value,c_value):
+    """shadows its input parameters"""
+    a_value, b_value, c_value = 11, 22, 33
+    return a_value, b_value, c_value
 
 
 def feature38():
-    """Arguments matched by position and by name"""
-    print('Arguments matched by default values, by position and by name')
-    print('============================================================\n')
+    """Simulating output parameters in a function call"""
+    print('Simulating output parameters in a function call')
+    print('===============================================\n')
     print(':py:mod:`codesnippets.feature38`')
     print('--------------------------------\n')
-    print('The following function assigns default values to its parameters:\n')
+    print('Input parameters are always passed by assignment. Immutable objects')
+    print('cannot be changed inside the function, but multiple new values')
+    print('can be returned by the ``return`` statement.\n')
     print('.. code-block:: Python\n')
-    print('    def func(a_value=44,b_value=55,c_value=66):')
-    print('        print(a_value,b_value,c_value)\n')
-    print('If no arguments are provided, the default values are used:\n')
-    print('>>> func()  # uses default values')
-    func()  # default values
-    print('\nIf no special matching is used, position is the normal matching mode, where')
-    print('arguments are matched from left to right:\n')
-    print('>>> func(111,222,333)  # match by position')
-    func(111,222,333)  # match by position
-    print('\nIf keyword arguments are used, the matching is done by name in any order:\n')
-    print('>>> func(c_value=333,b_value=222,a_value=111)  # match by name')
-    func(c_value=333,b_value=222,a_value=111)  # match by name
-    print('\n.. note:: Positional arguments must precede any keyword arguments.')
+    print('    def assign_new_values(a_value,b_value,c_value):')
+    print('        a_value, b_value, c_value = 11, 22, 33')
+    print('        return a_value, b_value, c_value')
+    print()
+    print('>>> a_value, b_value, c_value = 1, 2, 3\n')
+    a_value, b_value, c_value = 1, 2, 3
+    print('>>> a_value, b_value, c_value = assign_new_values(a_value,b_value,c_value)\n')
+    a_value, b_value, c_value = assign_new_values(a_value,b_value,c_value)
+    print('>>> a_value,b_value,c_value')
+    print((a_value,b_value,c_value))
     print(80*'-')

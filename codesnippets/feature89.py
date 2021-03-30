@@ -1,4 +1,4 @@
-##    Python codesnippets - Unicode text
+##    Python codesnippets - ASCII text
 ##    Copyright (C) 2021  Michele Iarossi (micheleiarossi@gmail.com)
 ##
 ##    This program is free software: you can redistribute it and/or modify
@@ -19,76 +19,47 @@
 #
 
 """
-Unicode text
-============
+ASCII text
+==========
 
 :py:mod:`codesnippets.feature89`
 --------------------------------
 
-Unicode escapes can be used.
+ASCII uses only 7 bits for the encoding.
+ASCII is supported by Latin-1 and UTF-8.
+Latin-1 uses 8 bits, and UTF-8/16/32 uses 8, 16 or 32 bits.
 
-.. note:: ASCII encoding works only if 7 bit representation is possible!
-
->>> a_str = '\u00d3\u00e8'
->>> a_str
-Óè
-
+>>> a_str = 'ABC'
 >>> len(a_str)
-2
-
->>> a_str_enc = a_str.encode('utf-8')
-
->>> list(a_str_enc)
-[195, 147, 195, 168]
-
->>> len(a_str_enc)
-4
-
-ASCII encoding fails in this case because 7 bits are not enough!
+3
 
 >>> list(a_str.encode('ascii'))
-UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-1: ordinal not in range(128)
+[65, 66, 67]
 
-Decoding provides the original string:
+>>> list(a_str.encode('latin-1'))
+[65, 66, 67]
 
->>> a_str_enc.decode('utf-8')
-Óè
->>> a_str == a_str_enc.decode('utf-8')
-True
+>>> list(a_str.encode('utf-8'))
+[65, 66, 67]
 """
 
 def feature89():
-    """Unicode text"""
-    print('Unicode text')
-    print('============\n')
+    """ASCII text"""
+    print('ASCII text')
+    print('==========\n')
     print(':py:mod:`codesnippets.feature89`')
     print('--------------------------------\n')
-    print("Unicode escapes can be used.\n")
-    print(".. note:: ASCII encoding works only if 7 bit representation is possible!\n")
-    print(r">>> a_str = '\u00d3\u00e8'")
-    a_str = '\u00d3\u00e8'
-    print(">>> a_str")
-    print(a_str)
-    print("\n>>> len(a_str)")
+    print("ASCII uses only 7 bits for the encoding.")
+    print("ASCII is supported by Latin-1 and UTF-8.")
+    print("Latin-1 uses 8 bits, and UTF-8/16/32 uses 8, 16 or 32 bits.\n")
+    print(">>> a_str = 'ABC'")
+    a_str = 'ABC'
+    print(">>> len(a_str)")
     print(len(a_str))
-    print("\n>>> a_str_enc = a_str.encode('utf-8')")
-    a_str_enc = a_str.encode('utf-8')
-    print("\n>>> list(a_str_enc)")
-    print(list(a_str_enc))
-    print("\n>>> len(a_str_enc)")
-    print(len(a_str_enc))
-    print()
-    print('ASCII encoding fails in this case because 7 bits are not enough!\n')
-    print(">>> list(a_str.encode('ascii'))")
-    try:
-        print(list(a_str.encode('ascii')))
-    except UnicodeEncodeError as exc:
-        print(exc.__class__.__name__ + ': ' + str(exc))
-    finally:
-        print()
-    print('Decoding provides the original string:\n')
-    print(">>> a_str_enc.decode('utf-8')")
-    print(a_str_enc.decode('utf-8'))
-    print(">>> a_str == a_str_enc.decode('utf-8')")
-    print(a_str == a_str_enc.decode('utf-8'))
+    print("\n>>> list(a_str.encode('ascii'))")
+    print(list(a_str.encode('ascii')))
+    print("\n>>> list(a_str.encode('latin-1'))")
+    print(list(a_str.encode('latin-1')))
+    print("\n>>> list(a_str.encode('utf-8'))")
+    print(list(a_str.encode('utf-8')))
     print(80*'-')
